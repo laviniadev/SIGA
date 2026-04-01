@@ -4,8 +4,17 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle } from "lucide-react"
 import { Link } from "react-router-dom"
+import { useCartStore } from "@/stores/useCartStore"
+import { toast } from "sonner"
 
 export default function Checkout() {
+  const { cartItems, cartTotal, clearCart } = useCartStore();
+  const total = cartTotal();
+  const handleConfirm = () => {
+     toast.success("Pedido realizado com sucesso!");
+     clearCart();
+  };
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
       <h1 className="text-3xl font-bold tracking-tight text-foreground mb-8 text-center text-primary">Finalizar Compra</h1>
@@ -101,20 +110,30 @@ export default function Checkout() {
         <div className="w-full md:w-1/3">
            <div className="bg-card p-6 rounded-lg border shadow-md space-y-4 sticky top-24">
              <h3 className="font-semibold text-lg border-b pb-4">Resumo da Compra</h3>
-             <div className="space-y-3 py-4 text-sm">
-                <div className="flex justify-between text-muted-foreground">
-                   <span>Tênis Urban Style (1x)</span>
-                   <span>R$ 299,90</span>
-                </div>
+             <div className="space-y-3 py-4 text-sm max-h-60 overflow-y-auto pr-2">
+                 {cartItems.map((item) => (
+                   <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between text-muted-foreground gap-2">
+                      <span className="line-clamp-1 flex-1">
+                        {item.name} 
+                        <span className="text-[10px] font-bold ml-2 text-secondary uppercase bg-secondary/10 px-1.5 py-0.5 rounded leading-none">
+                          Tamanho {item.selectedSize}
+                        </span>
+                        <span className="ml-2 text-xs">({item.quantity}x)</span>
+                      </span>
+                      <span className="font-semibold text-foreground whitespace-nowrap">
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)}
+                      </span>
+                   </div>
+                 ))}
              </div>
              <div className="space-y-2 text-sm text-muted-foreground border-t pt-4">
                 <div className="flex justify-between">
                    <span>Subtotal</span>
-                   <span>R$ 299,90</span>
+                   <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
                 </div>
-                <div className="flex justify-between">
-                   <span>Desconto (PIX)</span>
-                   <span className="text-success font-medium">- R$ 14,99</span>
+                <div className="flex justify-between items-center text-success">
+                   <span>Desconto (PIX 5%)</span>
+                   <span className="font-medium">- {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.05)}</span>
                 </div>
                 <div className="flex justify-between">
                    <span>Frete</span>
@@ -122,12 +141,12 @@ export default function Checkout() {
                 </div>
              </div>
              
-             <div className="pt-4 border-t flex justify-between font-bold text-xl text-foreground">
-                <span>Total a pagar</span>
-                <span>R$ 284,91</span>
+             <div className="pt-4 border-t flex justify-between items-end font-bold text-xl text-foreground">
+                <span className="text-base text-muted-foreground font-normal">Total a pagar</span>
+                <span className="text-2xl text-primary">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.95)}</span>
              </div>
              
-             <Button className="w-full bg-success hover:bg-green-600 h-14 shadow-md uppercase font-bold tracking-widest mt-6 text-lg" asChild>
+             <Button className="w-full bg-success hover:bg-green-600 h-14 shadow-md uppercase font-bold tracking-widest mt-6 text-lg" onClick={handleConfirm} asChild>
                 <Link to="/customer"><CheckCircle className="mr-2 h-5 w-5" /> Confirmar Pedido</Link>
              </Button>
            </div>

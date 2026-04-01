@@ -4,13 +4,43 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import { UserPlus } from "lucide-react"
+import { useState } from "react"
+import { toast } from "sonner"
+import { useAuthStore } from "@/stores/useAuthStore"
 
 export default function Register() {
   const navigate = useNavigate()
+  const login = useAuthStore(state => state.login)
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target
+    setFormData(prev => ({ ...prev, [id]: value }))
+  }
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault()
-    navigate("/login")
+    
+    if (!formData.name || !formData.email || !formData.password) {
+      toast.error("Por favor, preencha todos os campos.")
+      return
+    }
+
+    // Simulação de registro
+    toast.success("Conta criada com sucesso!")
+    
+    // Auto-login para facilitar o debug (usando as mesmas credenciais para simular)
+    // No mock real, isso apenas usaria o store de auth
+    setTimeout(() => {
+      // Simula o login imediato com os dados recém-criados (apenas para o estado global)
+      // Como é um mock, vamos usar o login backdoor ou apenas settar o user se tivéssemos um register no store
+      // Por simplicidade, vamos redirecionar para login
+      navigate("/login")
+    }, 1500)
   }
 
   return (
@@ -32,16 +62,36 @@ export default function Register() {
         <CardContent className="space-y-4">
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="nome" className="text-sm font-semibold">Nome Completo</Label>
-              <Input id="nome" placeholder="Seu nome" className="h-10 border-muted-foreground/30 focus:border-primary" />
+              <Label htmlFor="name" className="text-sm font-semibold">Nome Completo</Label>
+              <Input 
+                id="name" 
+                placeholder="Seu nome" 
+                className="h-10 border-muted-foreground/30 focus:border-primary" 
+                value={formData.name}
+                onChange={handleChange}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-semibold">E-mail</Label>
-              <Input id="email" type="email" placeholder="seu.email@exemplo.com" className="h-10 border-muted-foreground/30 focus:border-primary" />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="seu.email@exemplo.com" 
+                className="h-10 border-muted-foreground/30 focus:border-primary" 
+                value={formData.email}
+                onChange={handleChange}
+              />
             </div>
             <div className="space-y-2">
                <Label htmlFor="password" className="text-sm font-semibold">Senha</Label>
-               <Input id="password" type="password" placeholder="••••••••" className="h-10 border-muted-foreground/30 focus:border-primary" />
+               <Input 
+                 id="password" 
+                 type="password" 
+                 placeholder="••••••••" 
+                 className="h-10 border-muted-foreground/30 focus:border-primary" 
+                 value={formData.password}
+                 onChange={handleChange}
+               />
             </div>
             <Button type="submit" className="w-full h-12 text-base font-bold bg-primary hover:bg-orange-600 shadow-md">
               Cadastrar

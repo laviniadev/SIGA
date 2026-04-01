@@ -1,7 +1,20 @@
-import { Outlet, Link } from "react-router-dom"
-import { ShoppingBag, User } from "lucide-react"
+import { Outlet, Link, useNavigate } from "react-router-dom"
+import { ShoppingBag, User, LogOut } from "lucide-react"
+import { useCartStore } from "@/stores/useCartStore"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { toast } from "sonner"
 
 export function PublicLayout() {
+  const navigate = useNavigate();
+  const cartCount = useCartStore((state) => state.cartCount());
+  const { isAuthenticated, logout, user } = useAuthStore();
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Sessão encerrada.");
+    navigate("/");
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -18,13 +31,32 @@ export function PublicLayout() {
           <div className="flex items-center space-x-4">
             <Link to="/cart" className="text-muted-foreground hover:text-primary relative transition-colors">
               <ShoppingBag className="h-6 w-6" />
-              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold">
-                2
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold">
+                  {cartCount}
+                </span>
+              )}
             </Link>
-            <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors">
-              <User className="h-6 w-6" />
-            </Link>
+            
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-3">
+                <Link to="/customer" className="text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors">
+                  <User className="h-6 w-6" />
+                  <span className="hidden md:inline text-xs font-semibold">{user?.name.split(' ')[0]}</span>
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+                  title="Sair"
+                >
+                  <LogOut className="h-5 w-5" />
+                </button>
+              </div>
+            ) : (
+              <Link to="/login" className="text-muted-foreground hover:text-primary transition-colors">
+                <User className="h-6 w-6" />
+              </Link>
+            )}
           </div>
         </div>
       </header>
