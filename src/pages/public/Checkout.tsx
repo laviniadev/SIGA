@@ -16,91 +16,92 @@ export default function Checkout() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-6xl">
-      <h1 className="text-3xl font-bold tracking-tight text-foreground mb-8 text-center text-primary">Finalizar Compra</h1>
+    <div className="container mx-auto px-4 py-12 max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <h1 className="text-3xl font-extrabold tracking-tight text-foreground mb-8 text-center text-primary uppercase tracking-widest">Finalizar Compra</h1>
       
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-2/3 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-secondary">1. Identificação</CardTitle>
+          <Card className="shadow-lg border-muted/20">
+            <CardHeader className="bg-muted/5 border-b">
+              <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">1. Identificação Pessoal</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="nome">Nome Completo</Label>
-                  <Input id="nome" placeholder="Ex: João da Silva" />
+                <div className="space-y-2 group">
+                  <Label htmlFor="nome" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Nome Completo</Label>
+                  <Input id="nome" placeholder="Ex: João da Silva" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="cpf">CPF</Label>
-                  <Input id="cpf" placeholder="000.000.000-00" />
+                <div className="space-y-2 group">
+                  <Label htmlFor="cpf" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">CPF</Label>
+                  <Input id="cpf" placeholder="000.000.000-00" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input id="email" type="email" placeholder="seuemail@exemplo.com" />
+              <div className="space-y-2 group">
+                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">E-mail para Notificações</Label>
+                <Input id="email" type="email" placeholder="seuemail@exemplo.com" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
               </div>
-              <div className="space-y-2">
-                 <Label htmlFor="telefone">Telefone / WhatsApp</Label>
-                 <Input id="telefone" placeholder="(11) 98765-4321" />
+              <div className="space-y-2 group">
+                 <Label htmlFor="telefone" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Telefone / WhatsApp</Label>
+                 <Input id="telefone" placeholder="(11) 98765-4321" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
               </div>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-secondary">2. Endereço de Entrega</CardTitle>
+          <Card className="shadow-lg border-muted/20">
+            <CardHeader className="bg-muted/5 border-b">
+              <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">2. Endereço de Entrega</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-1 space-y-2">
-                  <Label htmlFor="cep">CEP</Label>
-                  <Input id="cep" placeholder="00000-000" />
+                <div className="col-span-1 space-y-2 group">
+                  <Label htmlFor="cep" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">CEP</Label>
+                  <Input id="cep" placeholder="00000-000" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                 </div>
-                <div className="col-span-2 space-y-2">
-                   <Label htmlFor="endereco">Logradouro</Label>
-                   <Input id="endereco" placeholder="Ex: Rua das Flores" />
+                <div className="col-span-2 space-y-2 group">
+                   <Label htmlFor="endereco" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Logradouro</Label>
+                   <Input id="endereco" placeholder="Ex: Rua das Flores" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4">
-                 <div className="space-y-2">
-                    <Label htmlFor="numero">Número</Label>
-                    <Input id="numero" placeholder="123" />
+                 <div className="space-y-2 group">
+                    <Label htmlFor="numero" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Número</Label>
+                    <Input id="numero" placeholder="123" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                  </div>
-                 <div className="col-span-2 space-y-2">
-                    <Label htmlFor="complemento">Complemento</Label>
-                    <Input id="complemento" placeholder="Apto, Sala, Bloco..." />
+                 <div className="col-span-2 space-y-2 group">
+                    <Label htmlFor="complemento" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Complemento</Label>
+                    <Input id="complemento" placeholder="Apto, Sala, Bloco..." className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                  </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                 <div className="space-y-2">
-                   <Label htmlFor="cidade">Cidade</Label>
-                   <Input id="cidade" placeholder="Ex: São Paulo" />
+                 <div className="space-y-2 group">
+                   <Label htmlFor="cidade" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Cidade</Label>
+                   <Input id="cidade" placeholder="Ex: São Paulo" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                  </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="estado">Estado</Label>
-                    <Input id="estado" placeholder="SP" />
+                 <div className="space-y-2 group">
+                    <Label htmlFor="estado" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Estado</Label>
+                    <Input id="estado" placeholder="SP" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                  </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader>
-               <CardTitle className="text-secondary">3. Pagamento</CardTitle>
+          <Card className="shadow-lg border-muted/20 overflow-hidden">
+            <CardHeader className="bg-muted/5 border-b">
+               <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">3. Método de Pagamento</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="border border-primary rounded-lg p-4 cursor-pointer hover:bg-muted/40 transition-colors flex flex-col items-center justify-center space-y-2 text-primary font-medium bg-primary/5">
-                   <span>PIX</span>
-                   <span className="text-xs text-success font-bold">-5% Off</span>
+                <div className="border-2 border-primary rounded-xl p-6 cursor-pointer hover:bg-primary/5 transition-all flex flex-col items-center justify-center space-y-2 text-primary font-black bg-primary/5 shadow-inner scale-105">
+                   <span className="text-lg">PIX</span>
+                   <span className="text-[10px] font-black text-success uppercase animate-pulse">Menor Preço (-5% OFF)</span>
                 </div>
-                <div className="border rounded-lg p-4 cursor-pointer hover:bg-muted/40 transition-colors flex flex-col items-center justify-center space-y-2 text-muted-foreground font-medium">
-                   <span>Cartão de Crédito</span>
-                   <span className="text-xs">Até 12x</span>
+                <div className="border border-muted rounded-xl p-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all duration-300 flex flex-col items-center justify-center space-y-2 text-muted-foreground font-bold active:scale-95">
+                   <span className="text-lg">Cartão</span>
+                   <span className="text-[10px] font-bold opacity-60">Até 12x Sem Juros</span>
                 </div>
-                <div className="border rounded-lg p-4 cursor-pointer hover:bg-muted/40 transition-colors flex flex-col items-center justify-center space-y-2 text-muted-foreground font-medium">
-                   <span>Boleto Bancário</span>
+                <div className="border border-muted rounded-xl p-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all duration-300 flex flex-col items-center justify-center space-y-2 text-muted-foreground font-bold active:scale-95 text-center">
+                   <span className="text-lg">Boleto</span>
+                   <span className="text-[10px] font-bold opacity-60">Vencimento 3 dias</span>
                 </div>
               </div>
             </CardContent>
@@ -108,47 +109,57 @@ export default function Checkout() {
         </div>
         
         <div className="w-full md:w-1/3">
-           <div className="bg-card p-6 rounded-lg border shadow-md space-y-4 sticky top-24">
-             <h3 className="font-semibold text-lg border-b pb-4">Resumo da Compra</h3>
-             <div className="space-y-3 py-4 text-sm max-h-60 overflow-y-auto pr-2">
+           <div className="bg-card p-8 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-6 sticky top-24 transform transition-transform hover:shadow-primary/5">
+             <h3 className="font-black text-xl border-b pb-4 uppercase tracking-tighter">Resumo Final</h3>
+             <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
                  {cartItems.map((item) => (
-                   <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between text-muted-foreground gap-2">
-                      <span className="line-clamp-1 flex-1">
-                        {item.name} 
-                        <span className="text-[10px] font-bold ml-2 text-secondary uppercase bg-secondary/10 px-1.5 py-0.5 rounded leading-none">
-                          Tamanho {item.selectedSize}
-                        </span>
-                        <span className="ml-2 text-xs">({item.quantity}x)</span>
-                      </span>
-                      <span className="font-semibold text-foreground whitespace-nowrap">
+                   <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between items-start gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
+                      <div className="flex-1">
+                        <p className="font-bold text-sm line-clamp-1 leading-none mb-1">{item.name}</p>
+                        <div className="flex gap-2">
+                           <span className="text-[9px] font-black uppercase bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tamanho {item.selectedSize}</span>
+                           <span className="text-[9px] font-bold text-muted-foreground uppercase">{item.quantity} unidades</span>
+                        </div>
+                      </div>
+                      <span className="font-black text-sm tabular-nums whitespace-nowrap">
                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)}
                       </span>
                    </div>
                  ))}
              </div>
-             <div className="space-y-2 text-sm text-muted-foreground border-t pt-4">
+             
+             <div className="space-y-3 pt-6 border-t font-medium text-sm text-muted-foreground">
                 <div className="flex justify-between">
                    <span>Subtotal</span>
-                   <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+                   <span className="tabular-nums">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
                 </div>
-                <div className="flex justify-between items-center text-success">
-                   <span>Desconto (PIX 5%)</span>
-                   <span className="font-medium">- {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.05)}</span>
+                <div className="flex justify-between items-center text-success font-black group">
+                   <span>Desconto Especial (PIX)</span>
+                   <span className="tabular-nums group-hover:scale-110 transition-transform">- {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.05)}</span>
                 </div>
                 <div className="flex justify-between">
-                   <span>Frete</span>
-                   <span className="text-success font-medium">Grátis</span>
+                   <span>Taxa de Entrega</span>
+                   <span className="text-success font-black uppercase text-[10px] tracking-widest">Grátis</span>
                 </div>
              </div>
              
-             <div className="pt-4 border-t flex justify-between items-end font-bold text-xl text-foreground">
-                <span className="text-base text-muted-foreground font-normal">Total a pagar</span>
-                <span className="text-2xl text-primary">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.95)}</span>
+             <div className="pt-6 border-t-2 flex flex-col items-end gap-1">
+                <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Total a pagar agora</span>
+                <span className="text-4xl font-black text-primary tabular-nums tracking-tighter drop-shadow-sm">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.95)}
+                </span>
              </div>
              
-             <Button className="w-full bg-success hover:bg-green-600 h-14 shadow-md uppercase font-bold tracking-widest mt-6 text-lg" onClick={handleConfirm} asChild>
-                <Link to="/customer"><CheckCircle className="mr-2 h-5 w-5" /> Confirmar Pedido</Link>
+             <Button className="w-full bg-success hover:bg-green-600 h-16 shadow-xl rounded-full uppercase font-black tracking-widest mt-4 text-lg active:scale-95 transition-all group overflow-hidden relative" onClick={handleConfirm} asChild>
+                <Link to="/customer">
+                  <span className="relative z-10 flex items-center"><CheckCircle className="mr-3 h-5 w-5" /> Finalizar Pedido</span>
+                  <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                </Link>
              </Button>
+             
+             <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center mt-2">
+                <span className="h-1.5 w-1.5 bg-success rounded-full animate-ping"></span> Compra 100% Protegida
+             </div>
            </div>
         </div>
       </div>

@@ -1,96 +1,86 @@
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
-import { ShoppingCart, Filter } from "lucide-react"
+import { Filter } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
-import { useCartStore } from "@/stores/useCartStore"
-import { toast } from "sonner"
-import { useState } from "react"
-import { cn } from "@/lib/utils"
+import { useState, useRef, useCallback } from "react"
+import { ProductCard } from "@/components/public/ProductCard"
 
 export default function ProductsList() {
-  const addToCart = useCartStore((state) => state.addToCart);
-  const [quickAddId, setQuickAddId] = useState<string | null>(null);
+  const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>(mockProducts.slice(0, 5));
+  const [hasMore, setHasMore] = useState(mockProducts.length > 5);
+  const [isLoading, setIsLoading] = useState(false);
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  const handleAddToCart = (product: typeof mockProducts[0], size: string) => {
-    addToCart(product, size);
-    toast.success(`${product.name} (${size}) adicionado!`);
-    setQuickAddId(null);
-  };
+  const lastProductElementRef = useCallback((node: HTMLElement | null) => {
+    if (isLoading) return;
+    if (observer.current) observer.current.disconnect();
 
-  const getSizes = (category: string) => {
-    if (category === "Roupas") return ["P", "M", "G", "GG"];
-    if (category === "Calçados") return ["38", "39", "40", "41", "42"];
-    return ["Único"];
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMore();
+      }
+    });
+
+    if (node) observer.current.observe(node);
+  }, [hasMore, isLoading, displayProducts.length]);
+
+  const loadMore = () => {
+    if (isLoading || !hasMore) return;
+    
+    setIsLoading(true);
+    // Delay suave para feedback visual
+    setTimeout(() => {
+      const currentLength = displayProducts.length;
+      const nextBatch = mockProducts.slice(currentLength, currentLength + 5);
+      
+      if (nextBatch.length > 0) {
+        setDisplayProducts(prev => [...prev, ...nextBatch]);
+        setHasMore(currentLength + nextBatch.length < mockProducts.length);
+      } else {
+        setHasMore(false);
+      }
+      setIsLoading(false);
+    }, 600);
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Todos os Produtos</h1>
-        <Button variant="outline" className="flex items-center gap-2 border-2 px-6">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter text-foreground mb-2 text-left">Coleção Completa</h1>
+          <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold text-left">Explorar {mockProducts.length} itens exclusivos</p>
+        </div>
+        <Button variant="outline" className="flex items-center gap-2 border-2 px-8 py-6 rounded-none font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
           <Filter className="w-4 h-4" /> Filtros
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {mockProducts.map((product) => (
-          <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 border-muted flex flex-col group relative">
-            <div className="aspect-square bg-muted/20 flex items-center justify-center p-0 relative overflow-hidden">
-              <img src={product.image} alt={product.name} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" />
-              
-              {/* Quick Add Overlay */}
-              <div className={cn(
-                "absolute inset-0 bg-black/70 backdrop-blur-[2px] transition-all duration-300 flex flex-col items-center justify-center p-4 space-y-3 z-20",
-                quickAddId === product.id ? "opacity-100 visible" : "opacity-0 invisible"
-              )}>
-                <p className="text-white font-bold text-xs uppercase tracking-widest text-center">Selecionar Tamanho</p>
-                <div className="flex flex-wrap justify-center gap-1.5">
-                   {getSizes(product.category).map(size => (
-                     <button 
-                       key={size}
-                       onClick={() => handleAddToCart(product, size)}
-                       className="h-9 w-9 bg-white hover:bg-primary hover:text-white text-black font-extrabold rounded-md transition-all text-[10px] shadow-sm hover:scale-110"
-                     >
-                       {size}
-                     </button>
-                   ))}
-                </div>
-                <button 
-                  onClick={() => setQuickAddId(null)} 
-                  className="text-white/60 text-[10px] hover:text-white hover:underline transition-colors mt-2 font-medium"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-            
-            <CardContent className="p-4 flex flex-col flex-grow">
-              <div className="mb-2">
-                <span className="text-[10px] font-bold text-secondary uppercase tracking-tighter bg-secondary/10 px-2 py-0.5 rounded-sm">
-                  {product.category}
-                </span>
-              </div>
-              <Link to={`/product/${product.id}`} className="hover:text-primary transition-colors flex-grow">
-                <h3 className="font-bold text-base mb-1 line-clamp-1">{product.name}</h3>
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-tight">{product.description}</p>
-              </Link>
-              <div className="flex items-center justify-between mt-4">
-                <p className="font-extrabold text-foreground text-xl">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                </p>
-                <Button 
-                  size="icon" 
-                  className="bg-success hover:bg-green-600 rounded-full h-10 w-10 flex-shrink-0 shadow-lg ring-offset-background transition-transform active:scale-95" 
-                  onClick={() => setQuickAddId(product.id)}
-                >
-                  <ShoppingCart className="h-5 w-5 text-white" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        {displayProducts.map((product, index) => (
+          <ProductCard 
+            key={product.id} 
+            product={product} 
+            innerRef={index === displayProducts.length - 1 ? lastProductElementRef : undefined}
+            animationDelay={`${(index % 5) * 100}ms`}
+          />
         ))}
       </div>
+
+      {(isLoading || hasMore) && (
+        <div className="flex justify-center py-24">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Explorando o Catálogo...</p>
+          </div>
+        </div>
+      )}
+
+      {!hasMore && !isLoading && (
+        <div className="py-24 text-center">
+          <div className="inline-block px-12 py-4 border-2 border-muted">
+            <p className="text-muted-foreground text-[10px] uppercase tracking-[0.6em] font-black opacity-60">Você chegou ao fim do catálogo premium</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -25,7 +25,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[70vh]">
-      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-secondary">
+      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-secondary animate-in fade-in zoom-in-95 duration-500">
         <CardHeader className="space-y-2 text-center pb-6">
           <div className="flex justify-center mb-2">
             <div className="bg-secondary/10 rounded-full p-4">

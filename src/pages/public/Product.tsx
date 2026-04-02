@@ -7,6 +7,8 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
+import { ProductCard } from "@/components/public/ProductCard"
+
 export default function Product() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -17,43 +19,70 @@ export default function Product() {
   const [openSection, setOpenSection] = useState<string | null>("description");
   const [activeImage, setActiveImage] = useState<string>(product?.image || "");
   
+  // [x] Fase 1: Atualização do `mockProducts.ts` (12 itens)
+  // [x] Fase 2: Refatoração do Infinite Scroll em `Product.tsx`
+  // [x] Fase 3: Implementação do Infinite Scroll em `ProductsList.tsx`
+  // [x] Fase 4: Validação final e polimento visual
+  
   // Infinite Scroll State
   const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     if (product) {
       // Começar com produtos da mesma categoria (excluindo o atual)
-      const initialRecommendations = mockProducts.filter(p => p.category === product.category && p.id !== product.id);
-      setDisplayProducts(initialRecommendations.slice(0, 4));
-      setHasMore(initialRecommendations.length > 4 || mockProducts.length > initialRecommendations.length + 1);
+      const recommendations = mockProducts.filter(p => p.category === product.category && p.id !== product.id);
+      
+      // Se não houver da mesma categoria, pegar outros aleatórios
+      if (recommendations.length === 0) {
+        const others = mockProducts.filter(p => p.id !== product.id);
+        setDisplayProducts(others.slice(0, 5));
+        setHasMore(others.length > 5);
+      } else {
+        setDisplayProducts(recommendations.slice(0, 5));
+        // Se houver menos de 5 da mesma categoria, ainda podemos ter mais do catálogo global
+        setHasMore(recommendations.length > 5 || mockProducts.length > (recommendations.length + 1));
+      }
+
       window.scrollTo(0, 0);
       setSelectedSize("");
       setActiveImage(product.image);
     }
   }, [product, id]);
 
-  const lastProductElementRef = useCallback((node: HTMLDivElement) => {
+  const lastProductElementRef = useCallback((node: HTMLElement | null) => {
+    if (isLoading) return;
     if (observer.current) observer.current.disconnect();
+    
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         loadMore();
       }
     });
+    
     if (node) observer.current.observe(node);
-  }, [hasMore, displayProducts]);
+  }, [hasMore, displayProducts.length, isLoading]);
 
   const loadMore = () => {
-    const currentIds = displayProducts.map(p => p.id);
-    const available = mockProducts.filter(p => !currentIds.includes(p.id) && p.id !== product?.id);
+    if (isLoading || !hasMore) return;
     
-    if (available.length > 0) {
-      setDisplayProducts(prev => [...prev, ...available.slice(0, 4)]);
-      setHasMore(available.length > 4);
-    } else {
-      setHasMore(false);
-    }
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      const currentIds = displayProducts.map(p => p.id);
+      const available = mockProducts.filter(p => !currentIds.includes(p.id) && p.id !== product?.id);
+      
+      if (available.length > 0) {
+        const nextBatch = available.slice(0, 5);
+        setDisplayProducts(prev => [...prev, ...nextBatch]);
+        setHasMore(available.length > 5);
+      } else {
+        setHasMore(false);
+      }
+      setIsLoading(false);
+    }, 600);
   };
 
   if (!product) {
@@ -114,18 +143,23 @@ export default function Product() {
           <div className="lg:col-span-7 flex flex-col items-center space-y-4">
             <div className="w-full max-w-[400px] space-y-4">
               <div className="bg-muted/5 rounded-lg overflow-hidden border border-muted w-full aspect-square flex items-center justify-center relative group">
-                <img src={activeImage} alt={product.name} className="object-contain w-full h-full p-4 transition-transform duration-700 hover:scale-105" />
+                <img 
+                  key={activeImage}
+                  src={activeImage} 
+                  alt={product.name} 
+                  className="object-contain w-full h-full p-4 transition-all duration-500 animate-in fade-in" 
+                />
                 
                 {/* Navigation Arrows */}
                 <button 
                   onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-md text-foreground transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-md text-foreground transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 active:scale-90"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-md text-foreground transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 hover:bg-white rounded-full shadow-md text-foreground transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 active:scale-90"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -138,7 +172,7 @@ export default function Product() {
                     key={idx}
                     onClick={() => setActiveImage(img)}
                     className={cn(
-                      "w-16 h-16 lg:w-20 lg:h-20 rounded-sm overflow-hidden border-2 transition-all flex-shrink-0",
+                      "w-16 h-16 lg:w-20 lg:h-20 rounded-sm overflow-hidden border-2 transition-all flex-shrink-0 hover:scale-105 active:scale-95",
                       activeImage === img ? "border-primary opacity-100 shadow-sm" : "border-transparent opacity-50 hover:opacity-100"
                     )}
                   >
@@ -153,7 +187,7 @@ export default function Product() {
           <div className="lg:col-span-5 flex flex-col pt-4">
             <div className="mb-8">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mb-2">{product.category}</p>
-              <h1 className="text-4xl font-bold text-foreground leading-tight tracking-tight mb-4">{product.name}</h1>
+              <h1 className="text-4xl font-bold text-foreground leading-tight tracking-tight mb-4 text-left">{product.name}</h1>
               
               <div className="flex items-center gap-3">
                 <p className="text-3xl font-light text-foreground">
@@ -216,7 +250,7 @@ export default function Product() {
                   {openSection === "description" ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
                 <div className={cn("overflow-hidden transition-all duration-300", openSection === "description" ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0")}>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-roboto">
+                  <p className="text-sm text-muted-foreground leading-relaxed font-roboto text-left">
                     {product.longDescription}
                   </p>
                 </div>
@@ -234,12 +268,12 @@ export default function Product() {
                 <div className={cn("overflow-hidden transition-all duration-300", openSection === "care" ? "max-h-96 opacity-100 mt-4 px-1" : "max-h-0 opacity-0")}>
                   <div className="space-y-4">
                     <div>
-                      <p className="text-[10px] font-extrabold uppercase text-foreground mb-1">Composição:</p>
-                      <p className="text-sm text-muted-foreground">{product.material}</p>
+                      <p className="text-[10px] font-extrabold uppercase text-foreground mb-1 text-left">Composição:</p>
+                      <p className="text-sm text-muted-foreground text-left">{product.material}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-extrabold uppercase text-foreground mb-2">Como cuidar:</p>
-                      <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-4">
+                      <p className="text-[10px] font-extrabold uppercase text-foreground mb-2 text-left">Como cuidar:</p>
+                      <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-4 text-left">
                         {product.care?.map((c, i) => <li key={i}>{c}</li>)}
                       </ul>
                     </div>
@@ -260,14 +294,14 @@ export default function Product() {
                    <div className="grid grid-cols-2 gap-4">
                       <div className="flex items-start gap-2">
                         <Truck className="w-4 h-4 mt-0.5 text-primary" />
-                        <div className="space-y-1">
+                        <div className="space-y-1 text-left">
                           <p className="text-[10px] font-bold uppercase">Frete Grátis</p>
                           <p className="text-[10px] text-muted-foreground">Em pedidos acima de R$ 250.</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <RefreshCw className="w-4 h-4 mt-0.5 text-primary" />
-                        <div className="space-y-1">
+                        <div className="space-y-1 text-left">
                           <p className="text-[10px] font-bold uppercase">Troca Grátis</p>
                           <p className="text-[10px] text-muted-foreground">Até 30 dias após a compra.</p>
                         </div>
@@ -292,35 +326,29 @@ export default function Product() {
         <div className="pt-20 border-t">
           <h2 className="text-2xl font-bold uppercase tracking-tighter mb-10 text-center">Continuar Comprando</h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 px-4">
             {displayProducts.map((p, idx) => (
-              <div 
+              <ProductCard 
                 key={p.id} 
-                className="group cursor-pointer"
-                ref={idx === displayProducts.length - 1 ? lastProductElementRef : null}
-                onClick={() => navigate(`/product/${p.id}`)}
-              >
-                <div className="bg-muted/20 aspect-[3/4] overflow-hidden mb-3 border border-transparent group-hover:border-muted transition-all">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-105" />
-                </div>
-                <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1 tracking-widest">{p.category}</p>
-                <h3 className="text-sm font-semibold mb-1 line-clamp-1">{p.name}</h3>
-                <p className="text-sm font-bold text-foreground">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(p.price)}
-                </p>
-              </div>
+                product={p} 
+                innerRef={idx === displayProducts.length - 1 ? lastProductElementRef : undefined}
+                animationDelay={`${idx * 100}ms`}
+              />
             ))}
           </div>
 
-          {hasMore && (
-            <div className="flex justify-center py-12">
-               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          {(isLoading || hasMore) && (
+            <div className="flex justify-center py-16">
+               <div className="flex flex-col items-center gap-4">
+                 <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground animate-pulse">Carregando mais Estilo</p>
+               </div>
             </div>
           )}
 
-          {!hasMore && (
-            <div className="py-16 text-center">
-              <p className="text-muted-foreground text-xs uppercase tracking-[0.3em] font-bold">Fim do Catálogo</p>
+          {!hasMore && !isLoading && (
+            <div className="py-20 text-center border-t border-dashed mt-16">
+              <p className="text-muted-foreground text-xs uppercase tracking-[0.5em] font-black opacity-40">Fim do Catálogo</p>
             </div>
           )}
         </div>

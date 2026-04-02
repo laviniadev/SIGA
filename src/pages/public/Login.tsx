@@ -27,7 +27,7 @@ export default function Login() {
 
   return (
     <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[70vh]">
-      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary">
+      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary animate-in fade-in zoom-in-95 duration-500">
         <CardHeader className="space-y-2 text-center pb-6">
            <div className="flex justify-center mb-2">
               <div className="bg-primary/10 rounded-full p-4">
@@ -50,7 +50,7 @@ export default function Login() {
                 id="email" 
                 type="text" 
                 placeholder="E-mail ou Usuário" 
-                className="h-12 border-muted-foreground/30 focus:border-primary"
+                className="h-12 border-muted-foreground/30 focus:border-primary transition-all duration-300 focus:shadow-md"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -66,7 +66,7 @@ export default function Login() {
                  id="password" 
                  type="password" 
                  placeholder="••••••••" 
-                 className="h-12 border-muted-foreground/30 focus:border-primary"
+                 className="h-12 border-muted-foreground/30 focus:border-primary transition-all duration-300 focus:shadow-md"
                  value={password}
                  onChange={(e) => setPassword(e.target.value)}
                />

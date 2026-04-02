@@ -31,19 +31,30 @@ export default function Cart() {
       ) : (
         <div className="flex flex-col md:flex-row gap-8">
           <div className="w-full md:w-2/3 space-y-4">
-            {cartItems.map((item) => (
-              <div key={`${item.id}-${item.selectedSize}`} className="flex flex-col sm:flex-row items-start gap-4 border py-4 bg-card rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-32 h-32 bg-muted rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border">
-                  <img src={item.image} alt={item.name} className="object-cover w-full h-full" />
+            {cartItems.map((item, idx) => (
+              <div 
+                key={`${item.id}-${item.selectedSize}`} 
+                className={cn(
+                  "flex flex-col sm:flex-row items-start gap-4 border py-4 bg-card rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 animate-in fade-in slide-in-from-left-5",
+                  `delay-[${idx * 100}ms]`
+                )}
+              >
+                <div className="w-32 h-32 bg-muted rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border group/img">
+                  <img src={item.image} alt={item.name} className="object-cover w-full h-full group-hover/img:scale-110 transition-transform duration-500" />
                 </div>
                 
                 <div className="flex flex-1 flex-col w-full h-full justify-between">
                   <div>
                     <div className="flex justify-between items-start mb-1">
-                       <h3 className="font-bold text-lg hover:text-primary transition-colors">
+                       <h3 className="font-bold text-lg hover:text-primary transition-all active:scale-[0.98] origin-left">
                          <Link to={`/product/${item.id}`}>{item.name}</Link>
                        </h3>
-                       <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive h-8 w-8" onClick={() => removeFromCart(item.id, item.selectedSize)}>
+                       <Button 
+                         variant="ghost" 
+                         size="icon" 
+                         className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 transition-colors active:scale-90" 
+                         onClick={() => removeFromCart(item.id, item.selectedSize)}
+                       >
                          <Trash2 className="h-4 w-4" />
                        </Button>
                     </div>
@@ -58,9 +69,9 @@ export default function Cart() {
                               key={s}
                               onClick={() => updateSize(item.id, item.selectedSize, s)}
                               className={cn(
-                                "text-[10px] h-6 w-8 rounded font-bold border transition-all",
+                                "text-[10px] h-6 w-8 rounded font-bold border transition-all active:scale-90",
                                 item.selectedSize === s 
-                                  ? "bg-primary text-primary-foreground border-primary" 
+                                  ? "bg-primary text-primary-foreground border-primary shadow-sm" 
                                   : "border-muted-foreground/30 hover:border-primary text-muted-foreground"
                               )}
                             >
@@ -72,13 +83,13 @@ export default function Cart() {
                   </div>
                   
                   <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-1 bg-muted/40 rounded-full px-2 py-1 border">
-                      <Button variant="ghost" size="sm" className="h-6 w-6 rounded-full px-0 hover:bg-background" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}>-</Button>
-                      <span className="w-6 text-center text-xs font-bold">{item.quantity}</span>
-                      <Button variant="ghost" size="sm" className="h-6 w-6 rounded-full px-0 hover:bg-background" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}>+</Button>
+                    <div className="flex items-center space-x-1 bg-muted/40 rounded-full px-2 py-1 border overflow-hidden">
+                      <Button variant="ghost" size="sm" className="h-6 w-6 rounded-full px-0 hover:bg-background active:scale-75 transition-transform" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}>-</Button>
+                      <span className="w-8 text-center text-xs font-bold tabular-nums">{item.quantity}</span>
+                      <Button variant="ghost" size="sm" className="h-6 w-6 rounded-full px-0 hover:bg-background active:scale-75 transition-transform" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}>+</Button>
                     </div>
                     
-                    <span className="font-extrabold text-lg text-foreground">
+                    <span className="font-extrabold text-lg text-foreground tabular-nums">
                       {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)}
                     </span>
                   </div>

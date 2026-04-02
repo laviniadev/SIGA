@@ -26,28 +26,28 @@ export function AdminLayout() {
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
             <Link
               to="/admin/dashboard"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
             </Link>
             <Link
               to="/admin/products"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <Package className="h-4 w-4" />
               Produtos
             </Link>
             <Link
               to="/admin/clients"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <Users className="h-4 w-4" />
               Clientes
             </Link>
             <Link
               to="/admin/orders"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <ShoppingCart className="h-4 w-4" />
               Pedidos
@@ -57,7 +57,7 @@ export function AdminLayout() {
         <div className="mt-auto p-4 border-t">
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-destructive transition-all hover:bg-destructive/10 cursor-pointer"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-destructive transition-all hover:bg-destructive/10 active:scale-95 cursor-pointer font-bold text-xs"
           >
             <LogOut className="h-4 w-4" />
             Sair

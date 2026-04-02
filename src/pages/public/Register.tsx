@@ -6,11 +6,11 @@ import { Link, useNavigate } from "react-router-dom"
 import { UserPlus } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
-import { useAuthStore } from "@/stores/useAuthStore"
+// useAuthStore removed because it was unused
 
 export default function Register() {
   const navigate = useNavigate()
-  const login = useAuthStore(state => state.login)
+  // login removed because it was unused
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,7 +45,7 @@ export default function Register() {
 
   return (
     <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[70vh]">
-      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary">
+      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary animate-in fade-in zoom-in-95 duration-500">
         <CardHeader className="space-y-2 text-center pb-6">
            <div className="flex justify-center mb-2">
               <div className="bg-primary/10 rounded-full p-4">
