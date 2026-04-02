@@ -1,7 +1,18 @@
-import { Outlet, Link } from "react-router-dom"
+import { Outlet, Link, useNavigate } from "react-router-dom"
 import { LayoutDashboard, Package, Users, ShoppingCart, LogOut } from "lucide-react"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { toast } from "sonner"
 
 export function AdminLayout() {
+  const navigate = useNavigate();
+  const logout = useAuthStore(state => state.logout);
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Sessão administrativa encerrada.");
+    navigate("/admin/login");
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col md:flex-row bg-muted/40">
       {/* Sidebar */}
@@ -15,28 +26,28 @@ export function AdminLayout() {
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
             <Link
               to="/admin/dashboard"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
             </Link>
             <Link
               to="/admin/products"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <Package className="h-4 w-4" />
               Produtos
             </Link>
             <Link
               to="/admin/clients"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <Users className="h-4 w-4" />
               Clientes
             </Link>
             <Link
               to="/admin/orders"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-all hover:text-primary hover:bg-primary/5 hover:translate-x-1 active:scale-95"
             >
               <ShoppingCart className="h-4 w-4" />
               Pedidos
@@ -44,13 +55,13 @@ export function AdminLayout() {
           </nav>
         </div>
         <div className="mt-auto p-4 border-t">
-          <Link
-            to="/admin/login"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-destructive transition-all hover:bg-destructive/10"
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-destructive transition-all hover:bg-destructive/10 active:scale-95 cursor-pointer font-bold text-xs"
           >
             <LogOut className="h-4 w-4" />
             Sair
-          </Link>
+          </button>
         </div>
       </aside>
 

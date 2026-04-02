@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 // Layouts
 import { PublicLayout } from "@/layouts/PublicLayout"
 import { AdminLayout } from "@/layouts/AdminLayout"
+import { ProtectedRoute } from "@/components/ProtectedRoute"
 
 // Public Pages
 import Home from "@/pages/public/Home"
@@ -13,6 +14,7 @@ import Checkout from "@/pages/public/Checkout"
 import Login from "@/pages/public/Login"
 import Register from "@/pages/public/Register"
 import CustomerArea from "@/pages/public/CustomerArea"
+import ForgotPassword from "@/pages/public/ForgotPassword"
 
 // Admin Pages
 import AdminLogin from "@/pages/admin/Login"
@@ -34,20 +36,27 @@ export function AppRoutes() {
         <Route path="checkout" element={<Checkout />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="customer" element={<CustomerArea />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        
+        {/* Rota Protegida de Cliente */}
+        <Route element={<ProtectedRoute allowedRoles={["customer", "admin"]} />}>
+          <Route path="customer" element={<CustomerArea />} />
+        </Route>
       </Route>
 
       {/* Rota Exclusiva de Login Admin */}
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* Rotas Administrativas */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="products" element={<AdminProducts />} />
-        <Route path="products/new" element={<ProductForm />} />
-        <Route path="products/edit" element={<ProductForm />} />
-        <Route path="clients" element={<AdminClients />} />
-        <Route path="orders" element={<AdminOrders />} />
+      {/* Rotas Administrativas Protegidas */}
+      <Route element={<ProtectedRoute allowedRoles={["admin"]} redirectTo="/admin/login" />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="products/new" element={<ProductForm />} />
+          <Route path="products/edit" element={<ProductForm />} />
+          <Route path="clients" element={<AdminClients />} />
+          <Route path="orders" element={<AdminOrders />} />
+        </Route>
       </Route>
     </Routes>
   )

@@ -1,40 +1,86 @@
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
-import { ShoppingCart, Filter } from "lucide-react"
+import { Filter } from "lucide-react"
+import { mockProducts } from "@/data/mockProducts"
+import { useState, useRef, useCallback } from "react"
+import { ProductCard } from "@/components/public/ProductCard"
 
 export default function ProductsList() {
+  const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>(mockProducts.slice(0, 5));
+  const [hasMore, setHasMore] = useState(mockProducts.length > 5);
+  const [isLoading, setIsLoading] = useState(false);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastProductElementRef = useCallback((node: HTMLElement | null) => {
+    if (isLoading) return;
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMore();
+      }
+    });
+
+    if (node) observer.current.observe(node);
+  }, [hasMore, isLoading, displayProducts.length]);
+
+  const loadMore = () => {
+    if (isLoading || !hasMore) return;
+    
+    setIsLoading(true);
+    // Delay suave para feedback visual
+    setTimeout(() => {
+      const currentLength = displayProducts.length;
+      const nextBatch = mockProducts.slice(currentLength, currentLength + 5);
+      
+      if (nextBatch.length > 0) {
+        setDisplayProducts(prev => [...prev, ...nextBatch]);
+        setHasMore(currentLength + nextBatch.length < mockProducts.length);
+      } else {
+        setHasMore(false);
+      }
+      setIsLoading(false);
+    }, 600);
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Todos os Produtos</h1>
-        <Button variant="outline" className="flex items-center gap-2">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter text-foreground mb-2 text-left">Coleção Completa</h1>
+          <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold text-left">Explorar {mockProducts.length} itens exclusivos</p>
+        </div>
+        <Button variant="outline" className="flex items-center gap-2 border-2 px-8 py-6 rounded-none font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
           <Filter className="w-4 h-4" /> Filtros
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
-          <Card key={id} className="overflow-hidden hover:shadow-xl transition-shadow border-muted">
-            <div className="aspect-square bg-muted/30 flex items-center justify-center p-6 relative">
-              <div className="w-full h-full bg-muted rounded-md flex items-center justify-center border border-dashed text-muted-foreground">
-                Imagem Produto {id}
-              </div>
-            </div>
-            <CardContent className="p-4">
-              <Link to={`/product/${id}`} className="hover:text-primary transition-colors">
-                <h3 className="font-semibold text-lg mb-2">Produto {id}</h3>
-              </Link>
-              <div className="flex items-center justify-between mt-4">
-                <p className="font-bold text-foreground text-xl">R$ {(89.9 * id).toFixed(2).replace('.', ',')}</p>
-                <Button size="icon" className="bg-success hover:bg-green-500 rounded-full h-10 w-10">
-                  <ShoppingCart className="h-5 w-5 text-white" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        {displayProducts.map((product, index) => (
+          <ProductCard 
+            key={product.id} 
+            product={product} 
+            innerRef={index === displayProducts.length - 1 ? lastProductElementRef : undefined}
+            animationDelay={`${(index % 5) * 100}ms`}
+          />
         ))}
       </div>
+
+      {(isLoading || hasMore) && (
+        <div className="flex justify-center py-24">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Explorando o Catálogo...</p>
+          </div>
+        </div>
+      )}
+
+      {!hasMore && !isLoading && (
+        <div className="py-24 text-center">
+          <div className="inline-block px-12 py-4 border-2 border-muted">
+            <p className="text-muted-foreground text-[10px] uppercase tracking-[0.6em] font-black opacity-60">Você chegou ao fim do catálogo premium</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

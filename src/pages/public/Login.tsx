@@ -4,19 +4,30 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import { LogIn } from "lucide-react"
+import { useAuthStore } from "@/stores/useAuthStore"
+import { useState } from "react"
+import { toast } from "sonner"
 
 export default function Login() {
   const navigate = useNavigate();
+  const login = useAuthStore(state => state.login);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Lógica visual: Redireciona para a área do cliente ao clicar
-    navigate("/customer");
+    const success = login(email, password);
+    if (success) {
+      toast.success("Login realizado com sucesso!");
+      navigate("/customer");
+    } else {
+      toast.error("Credenciais inválidas. Tente novamente.");
+    }
   };
 
   return (
     <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[70vh]">
-      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary">
+      <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary animate-in fade-in zoom-in-95 duration-500">
         <CardHeader className="space-y-2 text-center pb-6">
            <div className="flex justify-center mb-2">
               <div className="bg-primary/10 rounded-full p-4">
@@ -28,22 +39,37 @@ export default function Login() {
           </CardTitle>
           <CardDescription className="text-base text-muted-foreground">
             Insira suas credenciais para visualizar seus pedidos e perfil.
+            <br/><span className="text-xs text-primary/70">(Debug: dev / 123 | Cliente: cliente@siga.com / cliente123)</span>
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-semibold">E-mail</Label>
-              <Input id="email" type="email" placeholder="seu.email@exemplo.com" className="h-12 border-muted-foreground/30 focus:border-primary" />
+              <Input 
+                id="email" 
+                type="text" 
+                placeholder="E-mail ou Usuário" 
+                className="h-12 border-muted-foreground/30 focus:border-primary transition-all duration-300 focus:shadow-md"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
                <div className="flex items-center justify-between">
                  <Label htmlFor="password" className="text-sm font-semibold">Senha</Label>
-                 <a href="#" className="text-sm font-semibold text-secondary hover:text-purple-700 transition-colors">
+                 <Link to="/forgot-password" className="text-sm font-semibold text-secondary hover:text-purple-700 transition-colors">
                    Esqueceu a senha?
-                 </a>
+                 </Link>
                </div>
-               <Input id="password" type="password" placeholder="••••••••" className="h-12 border-muted-foreground/30 focus:border-primary" />
+               <Input 
+                 id="password" 
+                 type="password" 
+                 placeholder="••••••••" 
+                 className="h-12 border-muted-foreground/30 focus:border-primary transition-all duration-300 focus:shadow-md"
+                 value={password}
+                 onChange={(e) => setPassword(e.target.value)}
+               />
             </div>
             <Button type="submit" className="w-full h-12 text-base font-bold bg-primary hover:bg-orange-600 shadow-md">
               Entrar
