@@ -9,7 +9,7 @@ export default function CustomerArea() {
       {/* Premium Header Banner */}
       <div className="bg-zinc-950 text-white pt-16 pb-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-50 blur-3xl"></div>
-        <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center gap-8">
+        <div className="max-w-7xl mx-auto px-8 lg:px-12 relative z-10 flex flex-col md:flex-row items-center gap-8">
           <div className="h-32 w-32 rounded-full bg-gradient-to-tr from-primary to-secondary p-1 shadow-2xl">
             <div className="h-full w-full rounded-full bg-zinc-900 border-4 border-zinc-950 flex items-center justify-center">
               <span className="text-4xl font-black tracking-widest text-white">JO</span>
@@ -25,7 +25,7 @@ export default function CustomerArea() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 -mt-20 relative z-20">
+      <div className="max-w-7xl mx-auto px-8 lg:px-12 -mt-20 relative z-20">
         <div className="flex flex-col lg:flex-row gap-10">
           
           {/* THE SIDEBAR */}

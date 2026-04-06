@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Link, useNavigate } from "react-router-dom"
 import { LogIn } from "lucide-react"
 import { useAuthStore } from "@/stores/useAuthStore"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
 
 export default function Login() {
@@ -13,6 +13,10 @@ export default function Login() {
   const login = useAuthStore(state => state.login);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

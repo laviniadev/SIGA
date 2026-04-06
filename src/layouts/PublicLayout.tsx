@@ -22,7 +22,7 @@ export function PublicLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
-        <div className="container flex h-16 items-center mx-auto px-4 md:px-6">
+        <div className="max-w-7xl mx-auto px-8 lg:px-12 flex h-16 items-center">
           <Link to="/" className="mr-6 flex items-center transition-all active:scale-95 hover:opacity-80">
             <Logo className="text-2xl" />
           </Link>

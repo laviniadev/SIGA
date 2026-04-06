@@ -23,7 +23,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 max-w-4xl mx-auto drop-shadow-2xl">
             <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none mb-6 drop-shadow-lg">
-              SUA JORNADA COMEÇA<br />NA <span className="text-primary">SIGA</span> <span className="text-secondary uppercase tracking-tight">STORE</span>
+              SUA JORNADA COMEÇA NA <span className="text-primary">SIGA</span><span className="text-secondary uppercase tracking-tight">STORE</span>
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto font-medium tracking-tight mb-10 drop-shadow-md">
               Descubra os melhores produtos com qualidade impecável e design moderno. 
@@ -39,26 +39,28 @@ export default function Home() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-24 container mx-auto px-4 md:px-6">
-        <div className="flex justify-between items-end mb-16 px-4">
-          <div className="space-y-2">
-            <h2 className="text-4xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
-            <div className="h-1 w-20 bg-primary"></div>
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-8 lg:px-12">
+          <div className="flex justify-between items-end mb-16">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
+              <div className="h-1 w-20 bg-primary"></div>
+            </div>
+            <Link to="/products" className="text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 mb-1">
+               Ver Todos <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-          <Link to="/products" className="text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 mb-1">
-             Ver Todos <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-          {mockProducts.map((product, index) => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              animationDelay={`${index * 50}ms`}
-              compact={true}
-            />
-          ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            {mockProducts.map((product, index) => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                animationDelay={`${index * 50}ms`}
+                compact={true}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </div>
