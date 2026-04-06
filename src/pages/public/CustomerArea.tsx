@@ -66,70 +66,166 @@ export default function CustomerArea() {
               </Card>
             </div>
 
-            {/* Latest Order Hero */}
+            {/* Latest Orders Section */}
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-widest mb-6 px-2 text-primary">Acompanhe Seu Último Pedido</h2>
-              <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
-                <div className="flex flex-col lg:flex-row">
-                  {/* Order Image/Graphic */}
-                  <div className="bg-muted w-full lg:w-1/3 min-h-[300px] relative flex flex-col p-8 justify-between border-b lg:border-b-0 lg:border-r border-border">
-                    <div className="flex justify-between items-start">
-                      <span className="bg-zinc-950 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                        Em Trânsito
-                      </span>
-                      <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
-                        #ORD-4492
-                      </span>
+              <h2 className="text-2xl font-black uppercase tracking-widest mb-6 px-2 text-primary">Acompanhe Seus Últimos Pedidos</h2>
+              <div className="space-y-6">
+                {/* Order 1 - Em Trânsito */}
+                <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                  <div className="flex flex-col lg:flex-row">
+                    {/* Order Image/Graphic */}
+                    <div className="bg-muted w-full lg:w-1/3 min-h-[250px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                      <div className="flex justify-between items-start">
+                        <span className="bg-zinc-950 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                          Em Trânsito
+                        </span>
+                        <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                          #ORD-4492
+                        </span>
+                      </div>
+                      <div className="py-4 flex justify-center items-center">
+                         <div className="w-32 h-32 bg-background rounded-full shadow-2xl flex items-center justify-center relative -m-4 ring-8 ring-background/50">
+                            <Package className="h-12 w-12 text-primary" />
+                         </div>
+                      </div>
+                      <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        Previsão: 10 de Abril
+                      </p>
                     </div>
-                    <div className="py-8 flex justify-center items-center">
-                       <div className="w-40 h-40 bg-background rounded-full shadow-2xl flex items-center justify-center relative -m-4 ring-8 ring-background/50">
-                          <Package className="h-16 w-16 text-primary" />
-                       </div>
-                    </div>
-                    <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                      Previsão: 10 de Abril
-                    </p>
-                  </div>
-                  
-                  {/* Order Details */}
-                  <div className="p-8 lg:p-12 flex-1 flex flex-col justify-center">
-                    <h3 className="text-3xl font-black tracking-tighter uppercase mb-4">Tênis Urban Style Blue</h3>
                     
-                    <div className="space-y-6 mt-4">
-                      {/* Tracking Line */}
-                      <div className="relative">
-                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
-                        <div className="space-y-6 relative">
-                          <div className="flex items-start gap-4">
-                            <div className="mt-1 h-6 w-6 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-4 border-background"></div>
-                            <div>
-                              <p className="font-bold text-foreground">Pedido Confirmado</p>
-                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">01 abr 2026, 14:32</p>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-4">
-                            <div className="mt-1 h-6 w-6 rounded-full bg-primary shadow-[0_0_15px_rgba(245,158,11,0.5)] z-10 border-4 border-background animate-pulse"></div>
-                            <div>
-                              <p className="font-bold text-foreground">Em trânsito para sua cidade</p>
-                              <p className="text-xs mb-2 text-muted-foreground font-medium uppercase tracking-wider">03 abr 2026, 09:15</p>
-                              <div className="flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 w-fit px-3 py-1.5 rounded-full">
-                                <MapPin className="h-3 w-3" /> Centro de Distribuição - SP
+                    {/* Order Details */}
+                    <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center">
+                      <h3 className="text-2xl font-black tracking-tighter uppercase mb-3">Tênis Urban Style Blue</h3>
+                      
+                      <div className="space-y-4 mt-2">
+                        {/* Tracking Line */}
+                        <div className="relative">
+                          <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                          <div className="space-y-4 relative">
+                            <div className="flex items-start gap-4">
+                              <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background"></div>
+                              <div>
+                                <p className="font-bold text-foreground text-sm">Pedido Confirmado</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">01 abr 2026, 14:32</p>
                               </div>
                             </div>
-                          </div>
-                          <div className="flex items-start gap-4">
-                            <div className="mt-1 h-6 w-6 rounded-full bg-muted z-10 border-4 border-background"></div>
-                            <div>
-                              <p className="font-bold text-muted-foreground">Saiu para entrega</p>
-                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Previsto</p>
+                            <div className="flex items-start gap-4">
+                              <div className="mt-1 h-5 w-5 rounded-full bg-primary shadow-[0_0_15px_rgba(245,158,11,0.5)] z-10 border-3 border-background animate-pulse"></div>
+                              <div>
+                                <p className="font-bold text-foreground text-sm">Em trânsito para sua cidade</p>
+                                <p className="text-xs mb-1 text-muted-foreground font-medium uppercase tracking-wider">03 abr 2026, 09:15</p>
+                                <div className="flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 w-fit px-2 py-1 rounded-full">
+                                  <MapPin className="h-3 w-3" /> Centro de Distribuição - SP
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-4">
+                              <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
+                              <div>
+                                <p className="font-bold text-muted-foreground text-sm">Saiu para entrega</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Previsto</p>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+
+                {/* Order 2 - Confirmado */}
+                <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                  <div className="flex flex-col lg:flex-row">
+                    {/* Order Image/Graphic */}
+                    <div className="bg-muted w-full lg:w-1/3 min-h-[250px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                      <div className="flex justify-between items-start">
+                        <span className="bg-success text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                          Confirmado
+                        </span>
+                        <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                          #ORD-4491
+                        </span>
+                      </div>
+                      <div className="py-4 flex justify-center items-center">
+                         <div className="w-32 h-32 bg-background rounded-full shadow-2xl flex items-center justify-center relative -m-4 ring-8 ring-background/50">
+                            <Package className="h-12 w-12 text-success" />
+                         </div>
+                      </div>
+                      <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        Processando
+                      </p>
+                    </div>
+                    
+                    {/* Order Details */}
+                    <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center">
+                      <h3 className="text-2xl font-black tracking-tighter uppercase mb-3">Moletom Premium Preto</h3>
+                      
+                      <div className="space-y-4 mt-2">
+                        {/* Tracking Line */}
+                        <div className="relative">
+                          <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                          <div className="space-y-4 relative">
+                            <div className="flex items-start gap-4">
+                              <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background animate-pulse"></div>
+                              <div>
+                                <p className="font-bold text-foreground text-sm">Pedido Confirmado</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">05 abr 2026, 16:45</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start gap-4">
+                              <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
+                              <div>
+                                <p className="font-bold text-muted-foreground text-sm">Preparando para envio</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Em breve</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Order 3 - Entregue */}
+                <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                  <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)] items-center relative">
+                    <div className="bg-primary/5 border border-primary/10 rounded-3xl p-5 text-center">
+                      <span className="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        Entregue
+                      </span>
+                      <div className="mt-5 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_20px_40px_rgba(15,23,42,0.12)] mx-auto">
+                        <CheckCircle2 className="h-10 w-10 text-primary" />
+                      </div>
+                      <p className="mt-5 text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold">Entrega</p>
+                      <p className="text-sm font-black uppercase tracking-tight text-foreground">02 abr 2026</p>
+                    </div>
+
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div>
+                          <h3 className="text-2xl font-black tracking-tight uppercase">Camiseta Básica Branca</h3>
+                          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-1">#ORD-4490</p>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-3">
+                        <div className="rounded-3xl bg-muted/80 p-3">
+                          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Confirmado</p>
+                          <p className="font-semibold text-sm text-foreground">30 mar 2026, 11:20</p>
+                        </div>
+                        <div className="rounded-3xl bg-muted/80 p-3 border border-success/20">
+                          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Entregue</p>
+                          <p className="font-semibold text-sm text-foreground">02 abr 2026, 14:15</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <span className="absolute bottom-4 right-4 text-xs uppercase tracking-[0.25em] text-success font-black">
+                      Concluído
+                    </span>
+                  </div>
+                </Card>
+              </div>
             </div>
           </div>
         )
@@ -375,7 +471,7 @@ export default function CustomerArea() {
                     onClick={() => setActiveSection(section.id)}
                     className={`flex items-center justify-between w-full p-4 rounded-xl font-bold hover:scale-[1.02] active:scale-95 transition-all group ${
                       isActive 
-                        ? 'bg-zinc-950 text-white shadow-lg' 
+                        ? 'bg-neutral-950 text-white shadow-lg' 
                         : 'hover:bg-muted text-foreground font-semibold'
                     }`}
                   >
