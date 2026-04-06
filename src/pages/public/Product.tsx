@@ -23,7 +23,6 @@ export default function Product() {
   const [zoomVisible, setZoomVisible] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 }); // percentage 0-100
   const imageContainerRef = useRef<HTMLDivElement>(null);
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const ZOOM_SIZE = 300; // popup size in px
   const ZOOM_FACTOR = 3; // magnification
   
@@ -95,7 +94,7 @@ export default function Product() {
 
   if (!product) {
     return (
-      <div className="container mx-auto px-4 py-32 text-center">
+      <div className="container mx-auto px-4 md:px-6 py-32 text-center">
         <h2 className="text-2xl font-bold mb-4">Produto não encontrado</h2>
         <Button onClick={() => navigate("/products")}>Voltar para a Loja</Button>
       </div>
@@ -139,7 +138,7 @@ export default function Product() {
 
   return (
     <div className="bg-background min-h-screen font-sans">
-      <div className="container mx-auto px-4 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 md:px-6 py-6">
         <Link to="/products" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary mb-6 transition-colors">
           <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
         </Link>
@@ -152,20 +151,15 @@ export default function Product() {
             <div className="w-full max-w-[400px] space-y-4 relative">
               <div className="bg-muted/5 rounded-lg overflow-hidden border border-muted w-full aspect-square flex items-center justify-center relative group"
               ref={imageContainerRef}
+              onMouseEnter={() => setZoomVisible(true)}
               onMouseMove={(e: ReactMouseEvent<HTMLDivElement>) => {
                 const rect = imageContainerRef.current?.getBoundingClientRect();
                 if (!rect) return;
                 const x = ((e.clientX - rect.left) / rect.width) * 100;
                 const y = ((e.clientY - rect.top) / rect.height) * 100;
                 setZoomPos({ x: Math.min(100, Math.max(0, x)), y: Math.min(100, Math.max(0, y)) });
-
-                // Reset timer on each move
-                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                setZoomVisible(false);
-                hoverTimerRef.current = setTimeout(() => setZoomVisible(true), 1000);
               }}
               onMouseLeave={() => {
-                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
                 setZoomVisible(false);
               }}
             >

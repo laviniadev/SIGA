@@ -2,6 +2,7 @@ import { Outlet, Link, useNavigate } from "react-router-dom"
 import { LayoutDashboard, Package, Users, ShoppingCart, LogOut } from "lucide-react"
 import { useAuthStore } from "@/stores/useAuthStore"
 import { toast } from "sonner"
+import { LogoutModal } from "@/components/ui/LogoutModal"
 
 export function AdminLayout() {
   const navigate = useNavigate();
@@ -55,13 +56,14 @@ export function AdminLayout() {
           </nav>
         </div>
         <div className="mt-auto p-4 border-t">
-          <button
-            onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-destructive transition-all hover:bg-destructive/10 active:scale-95 cursor-pointer font-bold text-xs"
-          >
-            <LogOut className="h-4 w-4" />
-            Sair
-          </button>
+          <LogoutModal onConfirm={handleLogout}>
+            <button
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-destructive transition-all hover:bg-destructive/10 active:scale-95 cursor-pointer font-bold text-xs"
+            >
+              <LogOut className="h-4 w-4" />
+              Sair
+            </button>
+          </LogoutModal>
         </div>
       </aside>
 

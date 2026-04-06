@@ -44,7 +44,7 @@ export default function Register() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[70vh]">
+    <div className="container mx-auto px-4 md:px-6 py-16 flex items-center justify-center min-h-[70vh]">
       <Card className="w-full max-w-md shadow-xl border-t-4 border-t-primary animate-in fade-in zoom-in-95 duration-500">
         <CardHeader className="space-y-2 text-center pb-6">
            <div className="flex justify-center mb-2">
