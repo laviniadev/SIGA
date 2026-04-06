@@ -43,7 +43,7 @@ export default function ProductsList() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 md:px-6 py-8">
       <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
         <div>
           <h1 className="text-4xl font-black tracking-tighter text-foreground mb-2 text-left">Coleção Completa</h1>

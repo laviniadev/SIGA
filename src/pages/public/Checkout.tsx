@@ -16,7 +16,7 @@ export default function Checkout() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="container mx-auto px-4 md:px-6 py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <h1 className="text-3xl font-extrabold tracking-tight text-foreground mb-8 text-center text-primary uppercase tracking-widest">Finalizar Compra</h1>
       
       <div className="flex flex-col md:flex-row gap-8">

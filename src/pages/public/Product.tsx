@@ -3,7 +3,7 @@ import { Star, StarHalf, ArrowLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, 
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { mockProducts } from "@/data/mockProducts"
 import { useCartStore } from "@/stores/useCartStore"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, type MouseEvent as ReactMouseEvent } from "react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
@@ -18,6 +18,13 @@ export default function Product() {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [openSection, setOpenSection] = useState<string | null>("description");
   const [activeImage, setActiveImage] = useState<string>(product?.image || "");
+
+  // Zoom lens state
+  const [zoomVisible, setZoomVisible] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 }); // percentage 0-100
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const ZOOM_SIZE = 300; // popup size in px
+  const ZOOM_FACTOR = 3; // magnification
   
   // [x] Fase 1: Atualização do `mockProducts.ts` (12 itens)
   // [x] Fase 2: Refatoração do Infinite Scroll em `Product.tsx`
@@ -87,7 +94,7 @@ export default function Product() {
 
   if (!product) {
     return (
-      <div className="container mx-auto px-4 py-32 text-center">
+      <div className="container mx-auto px-4 md:px-6 py-32 text-center">
         <h2 className="text-2xl font-bold mb-4">Produto não encontrado</h2>
         <Button onClick={() => navigate("/products")}>Voltar para a Loja</Button>
       </div>
@@ -131,7 +138,7 @@ export default function Product() {
 
   return (
     <div className="bg-background min-h-screen font-sans">
-      <div className="container mx-auto px-4 py-6 max-w-7xl">
+      <div className="container mx-auto px-4 md:px-6 py-6">
         <Link to="/products" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary mb-6 transition-colors">
           <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
         </Link>
@@ -141,14 +148,40 @@ export default function Product() {
           
           {/* Photos Column (7 cols) */}
           <div className="lg:col-span-7 flex flex-col items-center space-y-4">
-            <div className="w-full max-w-[400px] space-y-4">
-              <div className="bg-muted/5 rounded-lg overflow-hidden border border-muted w-full aspect-square flex items-center justify-center relative group">
+            <div className="w-full max-w-[400px] space-y-4 relative">
+              <div className="bg-muted/5 rounded-lg overflow-hidden border border-muted w-full aspect-square flex items-center justify-center relative group"
+              ref={imageContainerRef}
+              onMouseEnter={() => setZoomVisible(true)}
+              onMouseMove={(e: ReactMouseEvent<HTMLDivElement>) => {
+                const rect = imageContainerRef.current?.getBoundingClientRect();
+                if (!rect) return;
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                setZoomPos({ x: Math.min(100, Math.max(0, x)), y: Math.min(100, Math.max(0, y)) });
+              }}
+              onMouseLeave={() => {
+                setZoomVisible(false);
+              }}
+            >
                 <img 
                   key={activeImage}
                   src={activeImage} 
                   alt={product.name} 
                   className="object-contain w-full h-full p-4 transition-all duration-500 animate-in fade-in" 
                 />
+
+                {/* Zoom Lens Crosshair Indicator */}
+                {zoomVisible && (
+                  <div
+                    className="absolute pointer-events-none border-2 border-primary/60 rounded-sm shadow-lg"
+                    style={{
+                      width: 80,
+                      height: 80,
+                      left: `calc(${zoomPos.x}% - 40px)`,
+                      top: `calc(${zoomPos.y}% - 40px)`,
+                    }}
+                  />
+                )}
                 
                 {/* Navigation Arrows */}
                 <button 
@@ -164,6 +197,21 @@ export default function Product() {
                   <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
+
+              {/* Zoom Popup Panel — appears to the right of the image on lg screens */}
+              {zoomVisible && (
+                <div
+                  className="hidden lg:block absolute left-[calc(100%+12px)] top-0 z-50 border border-border shadow-2xl rounded-lg overflow-hidden bg-background"
+                  style={{
+                    width: ZOOM_SIZE,
+                    height: ZOOM_SIZE,
+                    backgroundImage: `url(${activeImage})`,
+                    backgroundSize: `${ZOOM_FACTOR * 100}%`,
+                    backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              )}
               
               {/* Thumbnails */}
               <div className="flex justify-center lg:justify-start gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-muted-foreground/20">

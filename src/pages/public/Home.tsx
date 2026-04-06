@@ -20,7 +20,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         </div>
         
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 max-w-4xl mx-auto drop-shadow-2xl">
             <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none mb-6 drop-shadow-lg">
               SUA JORNADA COMEÇA<br />NA <span className="text-primary">SIGA</span> <span className="text-secondary uppercase tracking-tight">STORE</span>
@@ -39,7 +39,7 @@ export default function Home() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-24 container mx-auto px-4 max-w-7xl">
+      <section className="py-24 container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-end mb-16 px-4">
           <div className="space-y-2">
             <h2 className="text-4xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>

@@ -1,99 +1,189 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Package, User, Settings, CreditCard, ShoppingBag } from "lucide-react"
+import { Package, User, Settings, CreditCard, ShoppingBag, MapPin, Heart, ChevronRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export default function CustomerArea() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <h1 className="text-3xl font-extrabold tracking-tight text-foreground mb-8 uppercase tracking-widest">Minha Conta</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <aside className="space-y-4">
-          <nav className="flex flex-col space-y-2 bg-card border rounded-xl p-4 shadow-sm sticky top-24">
-            <Link to="/customer" className="flex items-center gap-3 bg-primary text-primary-foreground p-3 rounded-lg font-bold shadow-md active:scale-95 transition-all">
-              <User className="h-5 w-5" /> Perfil & Início
-            </Link>
-            <Link to="/customer/orders" className="flex items-center gap-3 hover:bg-muted/50 p-3 rounded-lg text-muted-foreground hover:text-foreground hover:translate-x-1 active:scale-95 transition-all font-medium">
-              <Package className="h-5 w-5" /> Histórico de Pedidos
-            </Link>
-            <Link to="/customer/cards" className="flex items-center gap-3 hover:bg-muted/50 p-3 rounded-lg text-muted-foreground hover:text-foreground hover:translate-x-1 active:scale-95 transition-all font-medium">
-              <CreditCard className="h-5 w-5" /> Carteira de Cartões
-            </Link>
-            <Link to="/customer/settings" className="flex items-center gap-3 hover:bg-muted/50 p-3 rounded-lg text-muted-foreground hover:text-foreground hover:translate-x-1 active:scale-95 transition-all font-medium">
-              <Settings className="h-5 w-5" /> Configurações
-            </Link>
-          </nav>
-        </aside>
+    <div className="min-h-screen bg-muted/20 pb-20">
+      {/* Premium Header Banner */}
+      <div className="bg-zinc-950 text-white pt-16 pb-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-50 blur-3xl"></div>
+        <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center gap-8">
+          <div className="h-32 w-32 rounded-full bg-gradient-to-tr from-primary to-secondary p-1 shadow-2xl">
+            <div className="h-full w-full rounded-full bg-zinc-900 border-4 border-zinc-950 flex items-center justify-center">
+              <span className="text-4xl font-black tracking-widest text-white">JO</span>
+            </div>
+          </div>
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">João Oliveira</h1>
+            <p className="text-zinc-400 font-medium tracking-widest uppercase text-sm mt-3 flex items-center justify-center md:justify-start gap-2">
+              <span className="h-2 w-2 rounded-full bg-success animate-pulse"></span>
+              Siga VIP Member
+            </p>
+          </div>
+        </div>
+      </div>
 
-        <div className="md:col-span-3 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="col-span-1 md:col-span-2 shadow-sm hover:shadow-md transition-all duration-300 border-muted/20">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">Olá, João Oliveira!</CardTitle>
-                <CardDescription className="text-xs">Estes são os detalhes da sua conta SIGA.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center space-x-6">
-                  <div className="h-20 w-20 rounded-full bg-secondary text-primary-foreground flex items-center justify-center font-black text-2xl shadow-xl ring-4 ring-secondary/20">
-                    JO
+      <div className="container mx-auto px-4 md:px-6 -mt-20 relative z-20">
+        <div className="flex flex-col lg:flex-row gap-10">
+          
+          {/* THE SIDEBAR */}
+          <aside className="w-full lg:w-[280px] flex-shrink-0">
+            <nav className="flex flex-col space-y-3 bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-2xl z-30">
+              <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4 px-2">Sua Conta</h3>
+              
+              <Link to="/customer" className="flex items-center justify-between bg-zinc-950 text-white p-4 rounded-xl font-bold shadow-lg hover:scale-[1.02] active:scale-95 transition-all group">
+                <div className="flex items-center gap-4">
+                  <User className="h-5 w-5 text-primary" /> 
+                  <span className="uppercase tracking-widest text-sm">Visão Geral</span>
+                </div>
+                <ChevronRight className="h-4 w-4 opacity-50 group-hover:translate-x-1 group-hover:opacity-100 transition-all" />
+              </Link>
+              
+              <Link to="/customer/orders" className="flex items-center justify-between hover:bg-muted p-4 rounded-xl text-foreground font-semibold hover:scale-[1.02] active:scale-95 transition-all group">
+                <div className="flex items-center gap-4">
+                  <Package className="h-5 w-5 opacity-50 group-hover:opacity-100 transition-opacity" /> 
+                  <span className="uppercase tracking-widest text-sm">Meus Pedidos</span>
+                </div>
+                <ChevronRight className="h-4 w-4 opacity-0 group-hover:translate-x-1 group-hover:opacity-100 transition-all" />
+              </Link>
+              
+              <Link to="/customer/cards" className="flex items-center justify-between hover:bg-muted p-4 rounded-xl text-foreground font-semibold hover:scale-[1.02] active:scale-95 transition-all group">
+                <div className="flex items-center gap-4">
+                  <CreditCard className="h-5 w-5 opacity-50 group-hover:opacity-100 transition-opacity" /> 
+                  <span className="uppercase tracking-widest text-sm">Pagamentos</span>
+                </div>
+                <ChevronRight className="h-4 w-4 opacity-0 group-hover:translate-x-1 group-hover:opacity-100 transition-all" />
+              </Link>
+
+              <Link to="/customer/settings" className="flex items-center justify-between hover:bg-muted p-4 rounded-xl text-foreground font-semibold hover:scale-[1.02] active:scale-95 transition-all group">
+                <div className="flex items-center gap-4">
+                  <Settings className="h-5 w-5 opacity-50 group-hover:opacity-100 transition-opacity" /> 
+                  <span className="uppercase tracking-widest text-sm">Configurar</span>
+                </div>
+                <ChevronRight className="h-4 w-4 opacity-0 group-hover:translate-x-1 group-hover:opacity-100 transition-all" />
+              </Link>
+            </nav>
+          </aside>
+
+          {/* MAIN CONTENT AREA */}
+          <div className="w-full flex-1 space-y-10">
+            
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="border-none shadow-xl bg-background rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500">
+                <CardContent className="p-8 flex flex-col justify-between h-full relative">
+                  <div className="absolute -right-4 -top-4 opacity-5">
+                    <ShoppingBag className="h-48 w-48" />
                   </div>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">Pontos Siga</p>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground uppercase tracking-tight">João Oliveira</h3>
-                    <p className="text-sm text-muted-foreground italic">Membro desde Abril 2026</p>
+                    <h4 className="text-5xl font-black tabular-nums tracking-tighter">1.250</h4>
+                    <p className="text-sm font-bold text-success mt-2">Válidos até dez/2026</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-none shadow-xl bg-background rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500">
+                <CardContent className="p-8 flex flex-col justify-between h-full relative">
+                  <div className="absolute -right-4 -top-4 opacity-5">
+                    <Package className="h-48 w-48" />
+                  </div>
+                  <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4">Pedidos Ativos</p>
+                  <div>
+                    <h4 className="text-5xl font-black tabular-nums tracking-tighter">2</h4>
+                    <p className="text-sm font-bold text-primary mt-2">1 em rota de entrega</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-none shadow-xl bg-zinc-950 text-white rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500 relative group cursor-pointer">
+                <CardContent className="p-8 flex flex-col justify-between h-full">
+                  <div className="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                    <Heart className="h-48 w-48" />
+                  </div>
+                  <p className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4 z-10">Wishlist</p>
+                  <div className="z-10">
+                    <h4 className="text-5xl font-black tabular-nums tracking-tighter text-white">14</h4>
+                    <p className="text-sm font-bold text-zinc-300 mt-2 flex items-center gap-2 group-hover:text-white transition-colors">
+                      Ver favoritos <ChevronRight className="h-4 w-4" />
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Latest Order Hero */}
+            <div>
+              <h2 className="text-2xl font-black uppercase tracking-widest mb-6 px-2">Acompanhe Seu Último Pedido</h2>
+              <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                <div className="flex flex-col lg:flex-row">
+                  {/* Order Image/Graphic */}
+                  <div className="bg-muted w-full lg:w-1/3 min-h-[300px] relative flex flex-col p-8 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-zinc-950 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        Em Trânsito
+                      </span>
+                      <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                        #ORD-4492
+                      </span>
+                    </div>
+                    <div className="py-8 flex justify-center items-center">
+                       <div className="w-40 h-40 bg-background rounded-full shadow-2xl flex items-center justify-center relative -m-4 ring-8 ring-background/50">
+                          <Package className="h-16 w-16 text-primary" />
+                       </div>
+                    </div>
+                    <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                      Previsão: 10 de Abril
+                    </p>
+                  </div>
+                  
+                  {/* Order Details */}
+                  <div className="p-8 lg:p-12 flex-1 flex flex-col justify-center">
+                    <h3 className="text-3xl font-black tracking-tighter uppercase mb-4">Tênis Urban Style Blue</h3>
+                    
+                    <div className="space-y-6 mt-4">
+                      {/* Tracking Line */}
+                      <div className="relative">
+                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                        <div className="space-y-6 relative">
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-6 w-6 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-4 border-background"></div>
+                            <div>
+                              <p className="font-bold text-foreground">Pedido Confirmado</p>
+                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">01 abr 2026, 14:32</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-6 w-6 rounded-full bg-primary shadow-[0_0_15px_rgba(245,158,11,0.5)] z-10 border-4 border-background animate-pulse"></div>
+                            <div>
+                              <p className="font-bold text-foreground">Em trânsito para sua cidade</p>
+                              <p className="text-xs mb-2 text-muted-foreground font-medium uppercase tracking-wider">03 abr 2026, 09:15</p>
+                              <div className="flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 w-fit px-3 py-1.5 rounded-full">
+                                <MapPin className="h-3 w-3" /> Centro de Distribuição - SP
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-6 w-6 rounded-full bg-muted z-10 border-4 border-background"></div>
+                            <div>
+                              <p className="font-bold text-muted-foreground">Saiu para entrega</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Button className="w-full sm:w-auto mt-10 shadow-xl rounded-xl h-14 uppercase font-black tracking-widest active:scale-95 transition-all text-sm">
+                      Detalhes do Pedido
+                    </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-primary text-primary-foreground border-none shadow-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <ShoppingBag className="h-24 w-24" />
-              </div>
-              <CardHeader className="pb-2">
-                 <CardTitle className="text-white text-xs font-black uppercase tracking-widest flex items-center">
-                    Meus Pontos
-                 </CardTitle>
-              </CardHeader>
-              <CardContent>
-                 <div className="text-5xl font-black tracking-tighter tabular-nums">1.250</div>
-                 <p className="text-[10px] uppercase font-bold opacity-80 mt-2 tracking-widest">
-                   Válidos até Dez 2026
-                 </p>
-              </CardContent>
-            </Card>
+              </Card>
+            </div>
+            
           </div>
-
-          <Card className="shadow-lg border-muted/20 overflow-hidden">
-            <CardHeader className="flex flex-row flex-wrap items-center justify-between border-b pb-4 mb-0 bg-muted/5">
-               <div>
-                  <CardTitle className="text-lg font-bold">Último Pedido Realizado</CardTitle>
-                  <CardDescription className="text-[10px] uppercase font-bold tracking-widest text-secondary">Referência: #ORD-4492</CardDescription>
-               </div>
-               <Button variant="outline" asChild className="mt-2 text-[10px] font-black uppercase tracking-widest border-2 hover:bg-primary hover:text-white transition-all active:scale-95 md:mt-0">
-                  <Link to="/customer/orders text-xs">Exibir Tudo</Link>
-               </Button>
-            </CardHeader>
-            <CardContent className="pt-6">
-               <div className="flex flex-col md:flex-row items-center gap-8">
-                 <div className="w-full md:w-32 h-32 bg-muted rounded-xl flex items-center justify-center border-2 border-dashed group hover:border-primary transition-all">
-                    <Package className="h-8 w-8 text-muted-foreground group-hover:scale-125 transition-transform" />
-                 </div>
-                 <div className="flex-1 space-y-3 text-center md:text-left">
-                   <h4 className="font-bold text-2xl tracking-tighter hover:text-primary transition-colors cursor-default">Tênis Urban Style Blue</h4>
-                   <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                     <span className="text-[10px] font-black text-white bg-success px-4 py-1 rounded-full uppercase tracking-widest shadow-sm">
-                       Entregue
-                     </span>
-                     <span className="text-[10px] font-bold text-muted-foreground bg-muted px-4 py-1 rounded-full uppercase tracking-widest">
-                       01/04/2026
-                     </span>
-                   </div>
-                   <p className="text-sm font-bold text-foreground italic">Total da compra: R$ 299,90</p>
-                 </div>
-               </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>

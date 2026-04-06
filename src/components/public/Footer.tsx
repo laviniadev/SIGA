@@ -37,7 +37,7 @@ export const Footer = () => {
 
   return (
     <footer className="bg-[#111111] text-white pt-20 pb-8 border-t border-white/5 font-inter">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16 mb-16 items-start">
           
           {/* Logo & Sobre */}

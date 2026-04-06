@@ -6,6 +6,7 @@ import { toast } from "sonner"
 
 import { Footer } from "@/components/public/Footer"
 import { Logo } from "@/components/public/Logo"
+import { LogoutModal } from "@/components/ui/LogoutModal"
 
 export function PublicLayout() {
   const navigate = useNavigate();
@@ -55,13 +56,14 @@ export function PublicLayout() {
                   </div>
                   <span className="hidden md:inline text-xs font-bold uppercase tracking-wider">{user?.name.split(' ')[0]}</span>
                 </Link>
-                <button 
-                  onClick={handleLogout}
-                  className="text-muted-foreground hover:text-destructive transition-all active:scale-90 cursor-pointer p-1"
-                  title="Sair"
-                >
-                  <LogOut className="h-5 w-5" />
-                </button>
+                <LogoutModal onConfirm={handleLogout}>
+                  <button 
+                    className="text-muted-foreground hover:text-destructive transition-all active:scale-90 cursor-pointer p-1 outline-none"
+                    title="Sair"
+                  >
+                    <LogOut className="h-5 w-5 pointer-events-none" />
+                  </button>
+                </LogoutModal>
               </div>
             ) : (
               <Link to="/login" className="text-muted-foreground hover:text-primary transition-all active:scale-90 p-1">
