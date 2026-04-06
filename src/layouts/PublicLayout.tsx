@@ -74,7 +74,7 @@ export function PublicLayout() {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 pb-32">
         <Outlet />
       </main>
 
