@@ -14,28 +14,28 @@ export default function Cart() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 min-h-[70vh]">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-8 min-h-[70vh]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         
         {cartItems.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center justify-center text-center bg-card rounded-2xl border shadow-sm px-4 py-20 w-full max-w-md mx-auto">
-            <div className="bg-muted p-6 rounded-full mb-6">
-              <ShoppingBag className="h-12 w-12 text-muted-foreground" />
+          <div className="col-span-full flex flex-col items-center justify-center text-center bg-card rounded-xl md:rounded-2xl border shadow-sm px-4 py-12 md:py-20 w-full max-w-md mx-auto">
+            <div className="bg-muted p-4 md:p-6 rounded-full mb-4 md:mb-6">
+              <ShoppingBag className="h-8 w-8 md:h-12 md:w-12 text-muted-foreground" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Seu carrinho está vazio</h2>
-            <p className="text-muted-foreground mb-8 max-w-xs">Parece que você ainda não escolheu seus produtos favoritos.</p>
-            <Button asChild size="lg" className="rounded-full px-8">
+            <h2 className="text-lg md:text-2xl font-bold mb-2">Seu carrinho está vazio</h2>
+            <p className="text-muted-foreground mb-6 md:mb-8 max-w-xs text-sm md:text-base">Parece que você ainda não escolheu seus produtos favoritos.</p>
+            <Button asChild size="lg" className="rounded-full px-6 md:px-8 h-10 md:h-12 text-xs md:text-sm">
               <Link to="/products">Explorar Produtos</Link>
             </Button>
           </div>
         ) : (
           <>
-            <div className="md:col-span-2 space-y-4">
+            <div className="md:col-span-2 space-y-3 md:space-y-4">
               {cartItems.map((item, idx) => (
               <div 
                 key={`${item.id}-${item.selectedSize}`} 
                 className={cn(
-                  "flex flex-col sm:flex-row items-start gap-4 border py-4 bg-card rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 animate-in fade-in slide-in-from-left-5",
+                  "flex flex-col sm:flex-row items-start gap-3 md:gap-4 border py-3 md:py-4 bg-card rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm hover:shadow-md transition-all duration-300 animate-in fade-in slide-in-from-left-5",
                   `delay-[${idx * 100}ms]`
                 )}
               >

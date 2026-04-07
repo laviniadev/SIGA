@@ -16,11 +16,11 @@ export default function Checkout() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-8 lg:px-12 py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <h1 className="col-span-full text-center text-3xl font-extrabold tracking-tight text-foreground mb-4 text-primary uppercase tracking-widest">Finalizar Compra</h1>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <h1 className="col-span-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground mb-2 md:mb-4 text-primary uppercase tracking-widest">Finalizar Compra</h1>
         
-        <div className="md:col-span-2 space-y-6">
+        <div className="md:col-span-2 space-y-4 md:space-y-6">
           <Card className="shadow-lg border-muted/20">
             <CardHeader className="bg-muted/5 border-b">
               <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">1. Identificação Pessoal</CardTitle>

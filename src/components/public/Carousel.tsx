@@ -44,7 +44,7 @@ export default function Carousel({ items, autoPlay = true, autoPlayInterval = 50
 
 
   return (
-    <div className="relative h-[300px] md:h-[380px] overflow-hidden rounded-2xl group">
+    <div className="relative h-[200px] sm:h-[250px] md:h-[300px] lg:h-[380px] overflow-hidden rounded-xl sm:rounded-2xl group">
       {/* Slides */}
       {items.map((item, index) => (
         <div
@@ -61,16 +61,16 @@ export default function Carousel({ items, autoPlay = true, autoPlayInterval = 50
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
           {index === currentIndex && (
-            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
-              <h3 className="text-3xl md:text-5xl font-black tracking-tight mb-3">
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:p-8 lg:p-12 text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h3 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl font-black tracking-tight mb-2 md:mb-3">
                 {item.title}
               </h3>
-              <p className="text-sm md:text-lg text-white/90 mb-6 max-w-2xl">
+              <p className="text-[10px] sm:text-xs md:text-lg text-white/90 mb-3 md:mb-6 max-w-xs sm:max-w-xl lg:max-w-2xl line-clamp-2 sm:line-clamp-none">
                 {item.subtitle}
               </p>
               <Button
-                size="lg"
-                className="bg-primary hover:bg-orange-600 text-white font-black uppercase tracking-widest rounded-full px-8"
+                size="sm"
+                className="bg-primary hover:bg-orange-600 text-white font-black uppercase tracking-widest rounded-full px-4 md:px-8 text-[10px] md:text-sm h-8 md:h-10 lg:h-12"
                 onClick={() => window.location.href = item.ctaLink}
               >
                 {item.cta}
@@ -83,19 +83,19 @@ export default function Carousel({ items, autoPlay = true, autoPlayInterval = 50
       {/* Navigation Buttons */}
       <button
         onClick={goToPrevious}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100"
       >
-        <ChevronLeft className="h-6 w-6" />
+        <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6" />
       </button>
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100"
       >
-        <ChevronRight className="h-6 w-6" />
+        <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6" />
       </button>
 
       {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-1 sm:gap-2">
         {items.map((_, index) => (
           <button
             key={index}
