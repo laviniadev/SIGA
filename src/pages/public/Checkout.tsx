@@ -16,17 +16,17 @@ export default function Checkout() {
   };
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <h1 className="text-3xl font-extrabold tracking-tight text-foreground mb-8 text-center text-primary uppercase tracking-widest">Finalizar Compra</h1>
-      
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="w-full md:w-2/3 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <h1 className="col-span-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground mb-2 md:mb-4 text-primary uppercase tracking-widest">Finalizar Compra</h1>
+        
+        <div className="md:col-span-2 space-y-4 md:space-y-6">
           <Card className="shadow-lg border-muted/20">
             <CardHeader className="bg-muted/5 border-b">
               <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">1. Identificação Pessoal</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2 group">
                   <Label htmlFor="nome" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Nome Completo</Label>
                   <Input id="nome" placeholder="Ex: João da Silva" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
@@ -52,27 +52,27 @@ export default function Checkout() {
               <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">2. Endereço de Entrega</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="col-span-1 space-y-2 group">
                   <Label htmlFor="cep" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">CEP</Label>
                   <Input id="cep" placeholder="00000-000" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                 </div>
-                <div className="col-span-2 space-y-2 group">
+                <div className="col-span-1 sm:col-span-2 space-y-2 group">
                    <Label htmlFor="endereco" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Logradouro</Label>
                    <Input id="endereco" placeholder="Ex: Rua das Flores" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
-                 <div className="space-y-2 group">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                 <div className="col-span-1 space-y-2 group">
                     <Label htmlFor="numero" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Número</Label>
                     <Input id="numero" placeholder="123" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                  </div>
-                 <div className="col-span-2 space-y-2 group">
+                 <div className="col-span-1 sm:col-span-2 space-y-2 group">
                     <Label htmlFor="complemento" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Complemento</Label>
                     <Input id="complemento" placeholder="Apto, Sala, Bloco..." className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
                  </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                  <div className="space-y-2 group">
                    <Label htmlFor="cidade" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Cidade</Label>
                    <Input id="cidade" placeholder="Ex: São Paulo" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
@@ -90,7 +90,7 @@ export default function Checkout() {
                <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">3. Método de Pagamento</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="border-2 border-primary rounded-xl p-6 cursor-pointer hover:bg-primary/5 transition-all flex flex-col items-center justify-center space-y-2 text-primary font-black bg-primary/5 shadow-inner scale-105">
                    <span className="text-lg">PIX</span>
                    <span className="text-[10px] font-black text-success uppercase animate-pulse">Menor Preço (-5% OFF)</span>
@@ -108,7 +108,7 @@ export default function Checkout() {
           </Card>
         </div>
         
-        <div className="w-full md:w-1/3">
+        <div className="md:col-span-1">
            <div className="bg-card p-8 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-6 sticky top-24 transform transition-transform hover:shadow-primary/5">
              <h3 className="font-black text-xl border-b pb-4 uppercase tracking-tighter">Resumo Final</h3>
              <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
