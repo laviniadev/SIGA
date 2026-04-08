@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Truck, Calculator, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
-import { calculateFreight, FreightResponse } from "@/lib/freight";
+import { calculateFreight } from '../../lib/freight';
+import type { FreightResponse, FreightError } from '../../lib/freight';
 import { cn } from "@/lib/utils";
 
 interface FreightCalculatorProps {
