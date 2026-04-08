@@ -36,7 +36,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#111111] text-white pt-20 pb-8 border-t border-white/5 font-inter">
+    <footer className="w-full bg-[#111111] text-white pt-20 pb-8 border-t border-white/5 font-inter relative left-0">
       <div className="max-w-7xl mx-auto px-8 lg:px-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16 mb-16 items-start">
           
