@@ -3,15 +3,20 @@ import { Trash2, ShoppingBag } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/stores/useCartStore"
 import { cn } from "@/lib/utils"
+import { useState } from "react"
+import { FreightCalculator } from "@/components/public/FreightCalculator"
 
 export default function Cart() {
   const { cartItems, cartTotal, updateQuantity, removeFromCart, updateSize, cartCount } = useCartStore();
+  const [shippingValue, setShippingValue] = useState<number | null>(null);
 
   const getSizesForCategory = (category: string) => {
     if (category === "Roupas") return ["P", "M", "G", "GG"];
     if (category === "Calçados") return ["38", "39", "40", "41", "42"];
     return ["Único"];
   };
+
+  const totalWeight = cartItems.reduce((acc, item) => acc + (item.weight || 0.5) * item.quantity, 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-8 min-h-[70vh]">
@@ -110,13 +115,31 @@ export default function Cart() {
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Entrega</span>
-                  <span className="text-success font-bold">Grátis</span>
+                  <span className={cn(
+                    "font-bold transition-all duration-500",
+                    shippingValue === 0 || cartTotal() > 250 ? "text-success" : "text-foreground"
+                  )}>
+                    {cartTotal() > 250 || shippingValue === 0 
+                      ? "Grátis" 
+                      : shippingValue !== null 
+                        ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingValue)
+                        : "--"
+                    }
+                  </span>
                 </div>
                 
                 <div className="pt-4 border-t flex justify-between font-extrabold text-xl text-foreground">
                   <span>Total</span>
-                  <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal())}</span>
+                  <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal() + (cartTotal() > 250 ? 0 : (shippingValue || 0)))}</span>
                 </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-dashed">
+                <FreightCalculator 
+                  weight={totalWeight} 
+                  onCalculate={(val) => setShippingValue(val)}
+                  className="bg-muted/30 border-none shadow-none"
+                />
               </div>
               
               <Button size="lg" className="w-full bg-primary hover:bg-orange-600 h-14 shadow-xl rounded-full text-lg mt-8 group" asChild>

@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 import { ProductCard } from "@/components/public/ProductCard"
+import { FreightCalculator } from "@/components/public/FreightCalculator"
 
 export default function Product() {
   const { id } = useParams<{ id: string }>();
@@ -340,22 +341,26 @@ export default function Product() {
                   Envio e Devoluções
                   {openSection === "shipping" ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
-                <div className={cn("overflow-hidden transition-all duration-300", openSection === "shipping" ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0")}>
-                   <div className="grid grid-cols-2 gap-4">
-                      <div className="flex items-start gap-2">
-                        <Truck className="w-4 h-4 mt-0.5 text-primary" />
-                        <div className="space-y-1 text-left">
-                          <p className="text-[10px] font-bold uppercase">Frete Grátis</p>
-                          <p className="text-[10px] text-muted-foreground">Em pedidos acima de R$ 250.</p>
+                <div className={cn("overflow-hidden transition-all duration-300", openSection === "shipping" ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0")}>
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-start gap-2">
+                          <Truck className="w-4 h-4 mt-0.5 text-primary" />
+                          <div className="space-y-1 text-left">
+                            <p className="text-[10px] font-bold uppercase">Frete Grátis</p>
+                            <p className="text-[10px] text-muted-foreground">Em pedidos acima de R$ 250.</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <RefreshCw className="w-4 h-4 mt-0.5 text-primary" />
-                        <div className="space-y-1 text-left">
-                          <p className="text-[10px] font-bold uppercase">Troca Grátis</p>
-                          <p className="text-[10px] text-muted-foreground">Até 30 dias após a compra.</p>
+                        <div className="flex items-start gap-2">
+                          <RefreshCw className="w-4 h-4 mt-0.5 text-primary" />
+                          <div className="space-y-1 text-left">
+                            <p className="text-[10px] font-bold uppercase">Troca Grátis</p>
+                            <p className="text-[10px] text-muted-foreground">Até 30 dias após a compra.</p>
+                          </div>
                         </div>
-                      </div>
+                     </div>
+
+                     <FreightCalculator weight={product.weight || 0.5} className="mt-4 border-dashed bg-muted/20" />
                    </div>
                 </div>
               </div>

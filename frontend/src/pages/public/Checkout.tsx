@@ -6,10 +6,49 @@ import { CheckCircle } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/stores/useCartStore"
 import { toast } from "sonner"
+import { useState, useMemo } from "react"
+import { calculateFreight } from "@/lib/freight"
+import { Loader2, Calculator } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export default function Checkout() {
   const { cartItems, cartTotal, clearCart } = useCartStore();
-  const total = cartTotal();
+  const totalItems = cartTotal();
+  const [cep, setCep] = useState("");
+  const [shippingValue, setShippingValue] = useState<number | null>(null);
+  const [loadingFreight, setLoadingFreight] = useState(false);
+
+  const totalWeight = useMemo(() => 
+    cartItems.reduce((acc, item) => acc + (item.weight || 0.5) * item.quantity, 0), 
+    [cartItems]
+  );
+
+  const finalShipping = useMemo(() => {
+    if (totalItems > 250) return 0;
+    return shippingValue || 0;
+  }, [totalItems, shippingValue]);
+
+  const grandTotal = (totalItems + finalShipping) * 0.95;
+
+  const handleCalculateFreight = async () => {
+    const cleanCep = cep.replace(/\D/g, "");
+    if (cleanCep.length < 8) {
+      toast.error("Por favor, digite um CEP válido.");
+      return;
+    }
+
+    setLoadingFreight(true);
+    try {
+      const result = await calculateFreight(cleanCep, totalWeight);
+      setShippingValue(result.valor);
+      toast.success(`Frete calculado: ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(result.valor)}`);
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao calcular frete.");
+    } finally {
+      setLoadingFreight(false);
+    }
+  };
+
   const handleConfirm = () => {
      toast.success("Pedido realizado com sucesso!");
      clearCart();
@@ -55,7 +94,25 @@ export default function Checkout() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="col-span-1 space-y-2 group">
                   <Label htmlFor="cep" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">CEP</Label>
-                  <Input id="cep" placeholder="00000-000" className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" />
+                  <div className="flex gap-2">
+                    <Input 
+                      id="cep" 
+                      placeholder="00000-000" 
+                      className="h-11 border-muted-foreground/20 focus:border-primary transition-all duration-300 focus:shadow-md" 
+                      value={cep}
+                      onChange={(e) => setCep(e.target.value)}
+                      maxLength={9}
+                    />
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="h-11 px-3 border-muted-foreground/20 hover:border-primary hover:text-primary transition-all"
+                      onClick={handleCalculateFreight}
+                      disabled={loadingFreight || !cep}
+                    >
+                      {loadingFreight ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calculator className="h-4 w-4" />}
+                    </Button>
+                  </div>
                 </div>
                 <div className="col-span-1 sm:col-span-2 space-y-2 group">
                    <Label htmlFor="endereco" className="text-xs font-bold uppercase tracking-tighter text-muted-foreground group-focus-within:text-primary transition-colors">Logradouro</Label>
@@ -131,22 +188,27 @@ export default function Checkout() {
              <div className="space-y-3 pt-6 border-t font-medium text-sm text-muted-foreground">
                 <div className="flex justify-between">
                    <span>Subtotal</span>
-                   <span className="tabular-nums">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+                   <span className="tabular-nums">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalItems)}</span>
                 </div>
                 <div className="flex justify-between items-center text-success font-black group">
                    <span>Desconto Especial (PIX)</span>
-                   <span className="tabular-nums group-hover:scale-110 transition-transform">- {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.05)}</span>
+                   <span className="tabular-nums group-hover:scale-110 transition-transform">- {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format((totalItems + finalShipping) * 0.05)}</span>
                 </div>
                 <div className="flex justify-between">
                    <span>Taxa de Entrega</span>
-                   <span className="text-success font-black uppercase text-[10px] tracking-widest">Grátis</span>
+                   <span className={cn(
+                     "font-black uppercase text-[10px] tracking-widest transition-colors",
+                     finalShipping === 0 ? "text-success" : "text-foreground"
+                   )}>
+                     {totalItems > 250 || (shippingValue === 0) ? "Grátis" : shippingValue ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingValue) : "--"}
+                   </span>
                 </div>
              </div>
              
              <div className="pt-6 border-t-2 flex flex-col items-end gap-1">
                 <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Total a pagar agora</span>
                 <span className="text-4xl font-black text-primary tabular-nums tracking-tighter drop-shadow-sm">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total * 0.95)}
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(grandTotal)}
                 </span>
              </div>
              
