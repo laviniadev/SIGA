@@ -21,7 +21,7 @@ export function PublicLayout() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background overflow-x-hidden">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
+      <header className="fixed top-0 left-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
         <div className="max-w-7xl mx-auto px-8 lg:px-12 flex h-16 items-center">
           <Link to="/" className="mr-6 flex items-center transition-all active:scale-95 hover:opacity-80">
             <Logo className="text-2xl" />
@@ -74,7 +74,7 @@ export function PublicLayout() {
         </div>
       </header>
 
-      <main className="flex-1 pb-32">
+      <main className="flex-1 pt-16 pb-32">
         <Outlet />
       </main>
 
