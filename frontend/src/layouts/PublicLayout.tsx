@@ -48,6 +48,14 @@ export function PublicLayout() {
                 Início
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
               </Link>
+              <Link to="/offers" className="transition-all hover:text-primary relative group">
+                Ofertas
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+              </Link>
+              <Link to="/trends" className="transition-all hover:text-primary relative group">
+                Tendências
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+              </Link>
               <Link to="/products" className="transition-all hover:text-primary relative group">
                 Produtos
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
@@ -123,10 +131,12 @@ export function PublicLayout() {
           <div className="flex flex-col space-y-7">
             <div className="space-y-2">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/50 border-b border-primary/5 pb-1.5">Navegação</p>
-              <div className="flex flex-col space-y-2">
-                <Link to="/" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Início</Link>
-                <Link to="/products" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Produtos</Link>
-              </div>
+                <div className="flex flex-col space-y-4">
+                  <Link to="/" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Início</Link>
+                  <Link to="/offers" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Ofertas</Link>
+                  <Link to="/trends" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Tendências</Link>
+                  <Link to="/products" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Produtos</Link>
+                </div>
             </div>
 
             <div className="space-y-2 pt-4 border-t border-zinc-50">

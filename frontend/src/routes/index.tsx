@@ -15,6 +15,8 @@ import Login from "@/pages/public/Login"
 import Register from "@/pages/public/Register"
 import CustomerArea from "@/pages/public/CustomerArea"
 import ForgotPassword from "@/pages/public/ForgotPassword"
+import Offers from "@/pages/public/Offers"
+import Trends from "@/pages/public/Trends"
 
 // Admin Pages
 import AdminLogin from "@/pages/admin/Login"
@@ -37,6 +39,8 @@ export function AppRoutes() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="offers" element={<Offers />} />
+        <Route path="trends" element={<Trends />} />
         
         {/* Rota Protegida de Cliente */}
         <Route element={<ProtectedRoute allowedRoles={["customer", "admin"]} />}>
