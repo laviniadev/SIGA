@@ -6,7 +6,7 @@ import { CheckCircle, MapPin } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/stores/useCartStore"
 import { toast } from "sonner"
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import { calculateFreight, getAddressByCep } from "@/lib/freight"
 import { Loader2, Calculator } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -30,6 +30,126 @@ export default function Checkout() {
   const [telefone, setTelefone] = useState("");
   const [numero, setNumero] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const commonDomains = ["gmail.com", "outlook.com", "hotmail.com", "yahoo.com.br", "icloud.com", "live.com"];
+
+  // Calcula sugestão de e-mail
+  const getEmailSuggestion = (value: string) => {
+    if (!value.includes("@")) return null;
+    const [local, domain] = value.split("@");
+    if (!domain) return "gmail.com"; // Sugestão padrão ao digitar apenas @
+    
+    const suggestion = commonDomains.find(d => d.startsWith(domain.toLowerCase()));
+    if (suggestion && suggestion !== domain.toLowerCase()) return suggestion;
+    return null;
+  };
+
+  // Verifica se um campo está inválido para exibição visual
+  const isFieldInvalid = (name: string, value: string) => {
+    if (!touched[name]) return false;
+    const feedback = getFieldFeedback(name, value);
+    return feedback && !feedback.includes("validado") && !feedback.includes("formato correto") && !feedback.includes("preenchido") && !feedback.includes("pronto");
+  };
+
+  // Algoritmo de Validação de CPF
+  const isValidCPF = (cpf: string) => {
+    cpf = cpf.replace(/\D/g, "");
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    
+    let sum = 0;
+    let rest;
+    
+    for (let i = 1; i <= 9; i++) sum = sum + parseInt(cpf.substring(i-1, i)) * (11 - i);
+    rest = (sum * 10) % 11;
+    if ((rest === 10) || (rest === 11)) rest = 0;
+    if (rest !== parseInt(cpf.substring(9, 10))) return false;
+    
+    sum = 0;
+    for (let i = 1; i <= 10; i++) sum = sum + parseInt(cpf.substring(i-1, i)) * (12 - i);
+    rest = (sum * 10) % 11;
+    if ((rest === 10) || (rest === 11)) rest = 0;
+    if (rest !== parseInt(cpf.substring(10, 11))) return false;
+    
+    return true;
+  };
+
+  // Validação em Tempo Real
+  const getFieldFeedback = (name: string, value: string) => {
+    if (!value) return null;
+    
+    switch (name) {
+      case "nome":
+        const nameParts = value.trim().split(/\s+/).filter(part => part.length >= 2);
+        if (nameParts.length < 2) return "Digite nome e sobrenome (ex: João Silva)";
+        return "Nome completo validado";
+      case "cpf":
+        const cleanCpf = value.replace(/\D/g, "");
+        if (cleanCpf.length < 11) return `Faltam ${11 - cleanCpf.length} dígitos no CPF`;
+        if (cleanCpf.length === 11) {
+          return isValidCPF(cleanCpf) ? "CPF válido e verificado" : "CPF inválido";
+        }
+        return "CPF inválido";
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return !emailRegex.test(value) ? "Digite um e-mail válido (ex@ex.com)" : "E-mail validado";
+      case "telefone":
+        const cleanTel = value.replace(/\D/g, "");
+        if (cleanTel.length < 10) return "Digite DDD + Número (mínimo 10 dígitos)";
+        return "Telefone em formato válido";
+      case "cep":
+        const cleanCep = value.replace(/\D/g, "");
+        if (cleanCep.length < 8) return `Faltam ${8 - cleanCep.length} dígitos no CEP`;
+        return cleanCep.length === 8 ? "CEP pronto para consulta" : "CEP incompleto";
+      case "numero":
+        return value.trim().length === 0 ? "O número é obrigatório" : "Número preenchido";
+      default:
+        return null;
+    }
+  };
+
+  const ValidationTooltip = ({ field, value }: { field: string; value: string }) => {
+    const feedback = getFieldFeedback(field, value);
+    const [visible, setVisible] = useState(false);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+      if (focusedField === field && feedback) {
+        setVisible(true);
+        
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        
+        timeoutRef.current = setTimeout(() => {
+          setVisible(false);
+        }, 3000);
+      } else {
+        setVisible(false);
+      }
+
+      return () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      };
+    }, [value, focusedField, feedback]);
+
+    if (!visible || !feedback) return null;
+
+    const isValid = feedback.includes("válido") || feedback.includes("ok") || feedback.includes("validado");
+
+    return (
+      <div className="absolute -top-7 left-2 z-50 animate-in fade-in slide-in-from-bottom-1 duration-200">
+        <div className={cn(
+          "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm border",
+          isValid 
+            ? "bg-gray-100 text-gray-500 border-gray-200" 
+            : "bg-gray-100 text-gray-600 border-gray-200"
+        )}>
+          {feedback}
+        </div>
+        <div className="absolute -bottom-1 left-3 w-2 h-2 bg-gray-100 border-r border-b border-gray-200 transform rotate-45"></div>
+      </div>
+    );
+  };
 
   // Máscaras de Entrada
   const maskCPF = (value: string) => {
@@ -145,48 +265,108 @@ export default function Checkout() {
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2 group">
-                  <Label htmlFor="nome" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", errors.nome ? "text-destructive" : "text-muted-foreground")}>Nome Completo</Label>
+                <div className="space-y-2 group relative">
+                  <Label htmlFor="nome" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", (errors.nome || isFieldInvalid("nome", nome)) ? "text-destructive" : "text-muted-foreground")}>Nome Completo</Label>
+                  <ValidationTooltip field="nome" value={nome} />
                   <Input
                     id="nome"
                     placeholder="Ex: João da Silva"
-                    className={cn("h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", errors.nome && "border-destructive focus:border-destructive")}
+                    className={cn(
+                      "h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", 
+                      (errors.nome || isFieldInvalid("nome", nome)) && "border-destructive focus:border-destructive shadow-[0_0_0_1px_rgba(220,38,38,0.1)]"
+                    )}
                     value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+                    onFocus={() => setFocusedField("nome")}
+                    onBlur={() => {
+                      setFocusedField(null);
+                      setTouched(prev => ({ ...prev, nome: true }));
+                    }}
+                    onChange={(e) => {
+                      setNome(e.target.value);
+                      if (!touched.nome) setTouched(prev => ({ ...prev, nome: true }));
+                    }}
                   />
                   {errors.nome && <p className="text-[10px] font-bold text-destructive uppercase px-1">{errors.nome}</p>}
                 </div>
-                <div className="space-y-2 group">
-                  <Label htmlFor="cpf" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", errors.cpf ? "text-destructive" : "text-muted-foreground")}>CPF</Label>
+                <div className="space-y-2 group relative">
+                  <Label htmlFor="cpf" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", (errors.cpf || isFieldInvalid("cpf", cpf)) ? "text-destructive" : "text-muted-foreground")}>CPF</Label>
+                  <ValidationTooltip field="cpf" value={cpf} />
                   <Input
                     id="cpf"
                     placeholder="000.000.000-00"
-                    className={cn("h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", errors.cpf && "border-destructive focus:border-destructive")}
+                    className={cn(
+                      "h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", 
+                      (errors.cpf || isFieldInvalid("cpf", cpf)) && "border-destructive focus:border-destructive shadow-[0_0_0_1px_rgba(220,38,38,0.1)]"
+                    )}
                     value={cpf}
-                    onChange={(e) => setCpf(maskCPF(e.target.value))}
+                    onFocus={() => setFocusedField("cpf")}
+                    onBlur={() => {
+                      setFocusedField(null);
+                      setTouched(prev => ({ ...prev, cpf: true }));
+                    }}
+                    onChange={(e) => {
+                      setCpf(maskCPF(e.target.value));
+                      if (e.target.value.length > 5) setTouched(prev => ({ ...prev, cpf: true }));
+                    }}
                   />
                   {errors.cpf && <p className="text-[10px] font-bold text-destructive uppercase px-1">{errors.cpf}</p>}
                 </div>
               </div>
-              <div className="space-y-2 group">
-                <Label htmlFor="email" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", errors.email ? "text-destructive" : "text-muted-foreground")}>E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seuemail@exemplo.com"
-                  className={cn("h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", errors.email && "border-destructive focus:border-destructive")}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+              <div className="space-y-2 group relative">
+                <Label htmlFor="email" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", (errors.email || isFieldInvalid("email", email)) ? "text-destructive" : "text-muted-foreground")}>E-mail</Label>
+                <ValidationTooltip field="email" value={email} />
+                <div className="relative">
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="seuemail@exemplo.com"
+                    className={cn(
+                      "h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", 
+                      (errors.email || isFieldInvalid("email", email)) && "border-destructive focus:border-destructive shadow-[0_0_0_1px_rgba(220,38,38,0.1)]"
+                    )}
+                    value={email}
+                    onFocus={() => setFocusedField("email")}
+                    onBlur={() => {
+                      setFocusedField(null);
+                      setTouched(prev => ({ ...prev, email: true }));
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const suggestion = getEmailSuggestion(email);
+                        if (suggestion) {
+                          e.preventDefault();
+                          const [local] = email.split("@");
+                          setEmail(`${local}@${suggestion}`);
+                          toast.info(`E-mail completado para ${suggestion}`, { duration: 2000 });
+                        }
+                      }
+                    }}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  {email.includes("@") && getEmailSuggestion(email) && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground/40 pointer-events-none uppercase">
+                      Enter p/ @{getEmailSuggestion(email)}
+                    </span>
+                  )}
+                </div>
                 {errors.email && <p className="text-[10px] font-bold text-destructive uppercase px-1">{errors.email}</p>}
               </div>
-              <div className="space-y-2 group">
-                <Label htmlFor="telefone" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", errors.telefone ? "text-destructive" : "text-muted-foreground")}>WhatsApp</Label>
+              <div className="space-y-2 group relative">
+                <Label htmlFor="telefone" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", (errors.telefone || isFieldInvalid("telefone", telefone)) ? "text-destructive" : "text-muted-foreground")}>Número de Celular</Label>
+                <ValidationTooltip field="telefone" value={telefone} />
                 <Input
                   id="telefone"
                   placeholder="(11) 98765-4321"
-                  className={cn("h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", errors.telefone && "border-destructive focus:border-destructive")}
+                  className={cn(
+                    "h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", 
+                    (errors.telefone || isFieldInvalid("telefone", telefone)) && "border-destructive focus:border-destructive shadow-[0_0_0_1px_rgba(220,38,38,0.1)]"
+                  )}
                   value={telefone}
+                  onFocus={() => setFocusedField("telefone")}
+                  onBlur={() => {
+                    setFocusedField(null);
+                    setTouched(prev => ({ ...prev, telefone: true }));
+                  }}
                   onChange={(e) => setTelefone(maskPhone(e.target.value))}
                 />
                 {errors.telefone && <p className="text-[10px] font-bold text-destructive uppercase px-1">{errors.telefone}</p>}
@@ -200,19 +380,28 @@ export default function Checkout() {
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="col-span-1 space-y-2 group">
-                  <Label htmlFor="cep" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", errors.cep ? "text-destructive" : "text-muted-foreground")}>CEP</Label>
+                <div className="col-span-1 space-y-2 group relative">
+                  <Label htmlFor="cep" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", (errors.cep || isFieldInvalid("cep", cep)) ? "text-destructive" : "text-muted-foreground")}>CEP</Label>
+                  <ValidationTooltip field="cep" value={cep} />
                   <div className="relative">
                     <Input
                       id="cep"
                       placeholder="00000-000"
-                      className={cn("h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl pr-10", errors.cep && "border-destructive focus:border-destructive")}
+                      className={cn(
+                        "h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl pr-10", 
+                        (errors.cep || isFieldInvalid("cep", cep)) && "border-destructive focus:border-destructive"
+                      )}
                       value={cep}
+                      onFocus={() => setFocusedField("cep")}
+                      onBlur={() => {
+                        setFocusedField(null);
+                        setTouched(prev => ({ ...prev, cep: true }));
+                      }}
                       onChange={(e) => setCep(maskCEP(e.target.value))}
                       maxLength={9}
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      {loadingFreight ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : <MapPin className={cn("h-4 w-4", errors.cep ? "text-destructive" : "text-muted-foreground/40")} />}
+                      {loadingFreight ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : <MapPin className={cn("h-4 w-4", (errors.cep || isFieldInvalid("cep", cep)) ? "text-destructive" : "text-muted-foreground/40")} />}
                     </div>
                   </div>
                   {errors.cep && <p className="text-[10px] font-bold text-destructive uppercase px-1">{errors.cep}</p>}
@@ -229,13 +418,22 @@ export default function Checkout() {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="col-span-1 space-y-2 group">
-                  <Label htmlFor="numero" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", errors.numero ? "text-destructive" : "text-muted-foreground")}>Número</Label>
+                <div className="col-span-1 space-y-2 group relative">
+                  <Label htmlFor="numero" className={cn("text-xs font-bold uppercase tracking-tighter transition-colors", (errors.numero || isFieldInvalid("numero", numero)) ? "text-destructive" : "text-muted-foreground")}>Número</Label>
+                  <ValidationTooltip field="numero" value={numero} />
                   <Input
                     id="numero"
                     placeholder="Ex: 123"
-                    className={cn("h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", errors.numero && "border-destructive")}
+                    className={cn(
+                      "h-11 border-muted-foreground/20 focus:border-primary transition-all rounded-xl", 
+                      (errors.numero || isFieldInvalid("numero", numero)) && "border-destructive focus:border-destructive shadow-[0_0_0_1px_rgba(220,38,38,0.1)]"
+                    )}
                     value={numero}
+                    onFocus={() => setFocusedField("numero")}
+                    onBlur={() => {
+                      setFocusedField(null);
+                      setTouched(prev => ({ ...prev, numero: true }));
+                    }}
                     onChange={(e) => setNumero(e.target.value)}
                   />
                   {errors.numero && <p className="text-[10px] font-bold text-destructive uppercase px-1">{errors.numero}</p>}
