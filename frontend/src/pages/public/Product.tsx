@@ -379,7 +379,7 @@ export default function Product() {
 
         {/* Continue Shopping Section - Infinite Scroll */}
         <div className="pt-20 border-t">
-          <h2 className="text-2xl font-bold uppercase tracking-tighter mb-10 text-center">Continuar Comprando</h2>
+          <h2 className="text-2xl font-black tracking-tighter uppercase mb-10 text-center">Continuar Comprando</h2>
           
           <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 px-4">
             {displayProducts.map((p, idx) => (
@@ -402,7 +402,7 @@ export default function Product() {
           )}
 
           {!hasMore && !isLoading && (
-            <div className="py-20 text-center border-t border-dashed mt-16">
+            <div className="py-10 text-center border-t border-dashed mt-8">
               <p className="text-muted-foreground text-xs uppercase tracking-[0.5em] font-black opacity-40">Fim do Catálogo</p>
             </div>
           )}

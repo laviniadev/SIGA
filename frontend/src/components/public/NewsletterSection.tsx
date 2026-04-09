@@ -40,7 +40,7 @@ export default function NewsletterSection() {
               </div>
             </div>
 
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight mb-2 md:mb-4">
+            <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 md:mb-4">
               Receba as Melhores Ofertas
             </h2>
             <p className="text-white/90 text-sm md:text-lg mb-6 md:mb-8 font-medium">
@@ -70,48 +70,6 @@ export default function NewsletterSection() {
           </div>
         </div>
 
-        {/* Trust Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 mt-12 md:mt-20">
-          <div className="text-center space-y-2 md:space-y-3">
-            <div className="flex justify-center">
-              <div className="h-12 md:h-16 w-12 md:w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Heart className="h-6 md:h-8 w-6 md:w-8 text-primary" />
-              </div>
-            </div>
-            <h3 className="font-bold text-sm md:text-lg">100% Autenticidade</h3>
-            <p className="text-muted-foreground text-xs md:text-sm">
-              Todos os produtos são genuínos e verificados
-            </p>
-          </div>
-
-          <div className="text-center space-y-2 md:space-y-3">
-            <div className="flex justify-center">
-              <div className="h-12 md:h-16 w-12 md:w-16 rounded-full bg-secondary/10 flex items-center justify-center">
-                <svg className="h-6 md:h-8 w-6 md:w-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-            </div>
-            <h3 className="font-bold text-sm md:text-lg">Compra Segura</h3>
-            <p className="text-muted-foreground text-xs md:text-sm">
-              Transações protegidas com os melhores gateways
-            </p>
-          </div>
-
-          <div className="text-center space-y-2 md:space-y-3">
-            <div className="flex justify-center">
-              <div className="h-12 md:h-16 w-12 md:w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <svg className="h-6 md:h-8 w-6 md:w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-            </div>
-            <h3 className="font-bold text-sm md:text-lg">Entrega Rápida</h3>
-            <p className="text-muted-foreground text-xs md:text-sm">
-              Enviamos seus pedidos em até 2 dias úteis
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   )

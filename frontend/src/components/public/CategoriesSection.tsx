@@ -26,7 +26,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
             <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             <span className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-primary">Navegue por Categoria</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter uppercase">Categorias em Destaque</h2>
+          <h2 className="text-2xl font-black tracking-tighter uppercase">Categorias em Destaque</h2>
           <div className="h-1 w-20 bg-primary"></div>
         </div>
 

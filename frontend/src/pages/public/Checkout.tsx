@@ -256,7 +256,7 @@ export default function Checkout() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        <h1 className="col-span-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground mb-2 md:mb-4 text-primary uppercase tracking-widest">Finalizar Compra</h1>
+        <h1 className="col-span-full text-center text-2xl font-black tracking-tighter uppercase text-primary mb-2 md:mb-4">Finalizar Compra</h1>
 
         <div className="md:col-span-2 space-y-4 md:space-y-6">
           <Card className="shadow-lg border-muted/20">
@@ -504,7 +504,7 @@ export default function Checkout() {
 
         <div className="md:col-span-1">
           <div className="bg-card p-8 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-6 sticky top-24 transform transition-transform hover:shadow-primary/5">
-            <h3 className="font-black text-xl border-b pb-4 uppercase tracking-tighter">Resumo Final</h3>
+            <h3 className="text-2xl font-black tracking-tighter uppercase border-b pb-4">Resumo Final</h3>
             <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
               {cartItems.map((item) => (
                 <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between items-start gap-4 animate-in fade-in slide-in-from-right-4 duration-500">

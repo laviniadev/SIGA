@@ -32,7 +32,7 @@ export default function ForgotPassword() {
               <KeyRound className="h-8 w-8 text-secondary" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-extrabold tracking-tight text-foreground">
+          <CardTitle className="text-2xl font-black tracking-tighter uppercase text-foreground">
             Recuperar Senha
           </CardTitle>
           <CardDescription className="text-base text-muted-foreground">

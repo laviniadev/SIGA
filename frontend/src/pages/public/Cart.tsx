@@ -27,7 +27,7 @@ export default function Cart() {
             <div className="bg-muted p-4 md:p-6 rounded-full mb-4 md:mb-6">
               <ShoppingBag className="h-8 w-8 md:h-12 md:w-12 text-muted-foreground" />
             </div>
-            <h2 className="text-lg md:text-2xl font-bold mb-2">Seu carrinho está vazio</h2>
+            <h2 className="text-2xl font-black tracking-tighter uppercase mb-2">Seu carrinho está vazio</h2>
             <p className="text-muted-foreground mb-6 md:mb-8 max-w-xs text-sm md:text-base">Parece que você ainda não escolheu seus produtos favoritos.</p>
             <Button asChild size="lg" className="rounded-full px-6 md:px-8 h-10 md:h-12 text-xs md:text-sm">
               <Link to="/products">Explorar Produtos</Link>
@@ -106,7 +106,7 @@ export default function Cart() {
           {/* Resumo */}
           <div className="md:col-span-1">
             <div className="bg-card p-6 rounded-2xl border shadow-lg sticky top-24">
-              <h3 className="font-bold text-xl mb-6">Resumo da Compra</h3>
+              <h3 className="text-2xl font-black tracking-tighter uppercase mb-6">Resumo da Compra</h3>
               
               <div className="space-y-4 text-sm">
                 <div className="flex justify-between text-muted-foreground">

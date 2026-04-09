@@ -5,15 +5,16 @@ import { mockProducts } from "@/data/mockProducts"
 import { ProductCard } from "@/components/public/ProductCard"
 import Carousel from "@/components/public/Carousel"
 import TrendsSection from "@/components/public/TrendsSection"
-import InsightsSection from "@/components/public/InsightsSection"
 import CategoriesSection from "@/components/public/CategoriesSection"
 import NewsletterSection from "@/components/public/NewsletterSection"
+import { TrustBar } from "@/components/public/TrustBar"
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
     <div className="bg-background min-h-screen">
+      <TrustBar />
       {/* Hero Carousel Section */}
       <section className="relative w-full overflow-hidden bg-zinc-950">
         <Carousel
@@ -56,7 +57,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0 mb-10 md:mb-16">
             <div className="space-y-2">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
+              <h2 className="text-2xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
               <div className="h-1 w-20 bg-primary"></div>
             </div>
             <Link to="/products" className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
@@ -107,39 +108,6 @@ export default function Home() {
             count: 89,
             icon: "zap",
             color: "#D62828"
-          }
-        ]}
-      />
-
-      {/* Insights Section */}
-      <InsightsSection
-        posts={[
-          {
-            id: "1",
-            title: "Guia Completo: Como Escolher a Roupa Perfeita",
-            excerpt: "Descubra dicas essenciais para montar um guarda-roupa versátil e cheio de estilo",
-            image: "/images/banners/banner-1.jpg",
-            author: "Maria Silva",
-            date: "15 Mar 2024",
-            category: "Moda"
-          },
-          {
-            id: "2",
-            title: "Tendências de Calçados para 2024",
-            excerpt: "Conheça os modelos de sapatos que vão dominar as ruas este ano",
-            image: "/images/banners/banner-2.jpg",
-            author: "João Santos",
-            date: "12 Mar 2024",
-            category: "Calçados"
-          },
-          {
-            id: "3",
-            title: "Acessórios que Transformam Qualquer Outfit",
-            excerpt: "Aprenda a usar acessórios para elevar seu look do básico ao extraordinário",
-            image: "/images/carousel/carousel-1.jpg",
-            author: "Ana Costa",
-            date: "10 Mar 2024",
-            category: "Acessórios"
           }
         ]}
       />

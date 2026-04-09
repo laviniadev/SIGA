@@ -52,7 +52,7 @@ export default function Register() {
                  <UserPlus className="h-8 w-8 text-primary" />
               </div>
            </div>
-          <CardTitle className="text-3xl font-extrabold tracking-tight text-foreground">
+          <CardTitle className="text-2xl font-black tracking-tighter uppercase text-foreground">
             Criar Conta
           </CardTitle>
           <CardDescription className="text-base text-muted-foreground">

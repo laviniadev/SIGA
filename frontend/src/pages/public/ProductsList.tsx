@@ -47,7 +47,7 @@ export default function ProductsList() {
       <div className="max-w-7xl mx-auto px-8 lg:px-12">
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
           <div>
-            <h1 className="text-4xl font-black tracking-tighter text-foreground mb-2 text-left">Coleção Completa</h1>
+            <h1 className="text-2xl font-black tracking-tighter uppercase text-foreground mb-2 text-left">Coleção Completa</h1>
             <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold text-left">Explorar {mockProducts.length} itens exclusivos</p>
           </div>
           <Button variant="outline" className="flex items-center gap-2 border-2 px-8 py-6 rounded-none font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">
@@ -67,7 +67,7 @@ export default function ProductsList() {
         </div>
 
         {(isLoading || hasMore) && (
-          <div className="flex justify-center py-24">
+          <div className="flex justify-center py-10">
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
               <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Explorando o Catálogo...</p>
@@ -76,7 +76,7 @@ export default function ProductsList() {
         )}
 
         {!hasMore && !isLoading && (
-          <div className="py-24 text-center">
+          <div className="py-10 text-center">
             <div className="inline-block px-12 py-4 border-2 border-muted">
               <p className="text-muted-foreground text-[10px] uppercase tracking-[0.6em] font-black opacity-60">Você chegou ao fim do catálogo premium</p>
             </div>
