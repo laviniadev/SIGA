@@ -85,32 +85,42 @@ class FreightHandler(http.server.BaseHTTPRequestHandler):
                 cep_origem_clean = ''.join(filter(str.isdigit, str(cep_origem)))
                 cep_destino_clean = ''.join(filter(str.isdigit, str(cep_destino)))
 
-                if len(cep_origem_clean) < 2 or len(cep_destino_clean) < 2:
+                if len(cep_origem_clean) != 8 or len(cep_destino_clean) != 8:
                     self._set_headers(400)
-                    self.wfile.write(json.dumps({"error": "CEP fornecido é inválido ou muito curto"}).encode())
+                    self.wfile.write(json.dumps({"error": "CEP deve conter 8 dígitos"}).encode())
                     return
 
-                # Lógica de cálculo (Simulação)
-                # Pega os 2 primeiros dígitos para simular "regiões"
-                regiao_origem = int(cep_origem_clean[:2])
-                regiao_destino = int(cep_destino_clean[:2])
-                distancia_simulada = abs(regiao_origem - regiao_destino) * 10
+                # Cálculo Estilo Correios (Fixo por Região, desconsiderando peso)
+                # O primeiro dígito do CEP define a região fiscal do Brasil
+                regiao_origem = int(cep_origem_clean[0])
+                regiao_destino = int(cep_destino_clean[0])
                 
-                # Se for a mesma região, distância mínima de 10km
-                if distancia_simulada == 0:
-                    distancia_simulada = 10
-
-                valor_total = BASE_FIXA + (distancia_simulada * 0.5) + (peso * PESO_PRECO_KG)
-                prazo_estimado = 2 + (distancia_simulada // 50)
+                # Definição de Zona e Preço Fixo
+                if regiao_origem == regiao_destino:
+                    # Mesma Região (Local/Estadual)
+                    distancia_km = 50 
+                    valor_total = 19.90
+                    prazo_estimado = 3
+                elif abs(regiao_origem - regiao_destino) <= 2:
+                    # Regiões Limítrofes (Nacional 1)
+                    distancia_km = 450
+                    valor_total = 34.50
+                    prazo_estimado = 6
+                else:
+                    # Regiões Distantes (Nacional 2/3)
+                    distancia_km = 1200
+                    valor_total = 49.90
+                    prazo_estimado = 10
 
                 response = {
                     "valor": round(valor_total, 2),
-                    "prazo_dias": int(max(1, prazo_estimado)),
+                    "prazo_dias": int(prazo_estimado),
+                    "servico": "SIGA Flat Rate (Correios Style)",
                     "detalhes": {
-                        "origem": str(cep_origem),
-                        "destino": str(cep_destino),
-                        "peso_informado": peso,
-                        "distancia_estimada_km": distancia_simulada
+                        "origem_regiao": regiao_origem,
+                        "destino_regiao": regiao_destino,
+                        "taxa_fixa": valor_total,
+                        "distancia_referencia_km": distancia_km
                     }
                 }
 
