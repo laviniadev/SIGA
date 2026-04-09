@@ -1,7 +1,8 @@
 import { Outlet, Link, useNavigate } from "react-router-dom"
-import { ShoppingBag, User, LogOut } from "lucide-react"
+import { ShoppingBag, User, LogOut, Menu, X } from "lucide-react"
 import { useCartStore } from "@/stores/useCartStore"
 import { useAuthStore } from "@/stores/useAuthStore"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
 
 import { Footer } from "@/components/public/Footer"
@@ -12,6 +13,21 @@ export function PublicLayout() {
   const navigate = useNavigate();
   const cartCount = useCartStore((state) => state.cartCount());
   const { isAuthenticated, logout, user } = useAuthStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Close menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [navigate]);
+
+  // Block scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isMenuOpen]);
 
   const handleLogout = () => {
     logout();
@@ -27,7 +43,7 @@ export function PublicLayout() {
             <Logo className="text-2xl" />
           </Link>
           <div className="mx-6 flex flex-1 items-center justify-center space-x-4">
-            <nav className="flex items-center space-x-6 text-sm font-black uppercase tracking-[0.2em]">
+            <nav className="hidden md:flex items-center space-x-6 text-sm font-black uppercase tracking-[0.2em]">
               <Link to="/" className="transition-all hover:text-primary relative group">
                 Início
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
@@ -49,7 +65,7 @@ export function PublicLayout() {
             </Link>
             
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-4">
                 <Link to="/customer" className="text-muted-foreground hover:text-primary flex items-center gap-2 transition-all active:scale-90 group">
                   <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
                     <User className="h-5 w-5" />
@@ -66,13 +82,85 @@ export function PublicLayout() {
                 </LogoutModal>
               </div>
             ) : (
-              <Link to="/login" className="text-muted-foreground hover:text-primary transition-all active:scale-90 p-1">
+              <Link to="/login" className="hidden md:flex text-muted-foreground hover:text-primary transition-all active:scale-90 p-1">
                 <User className="h-6 w-6" />
               </Link>
             )}
+
+            {/* Hamburger Button */}
+            <button 
+              className="md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+            </button>
           </div>
         </div>
+
       </header>
+
+      {/* Mobile Menu - Refeito do Zero FORA do Header */}
+      <div className={`fixed inset-0 z-[100] md:hidden transition-all duration-300 ${isMenuOpen ? "visible" : "invisible"}`}>
+        {/* Overlay Escuro com Fade */}
+        <div 
+          className={`absolute inset-0 bg-zinc-950/40 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0"}`} 
+          onClick={() => setIsMenuOpen(false)}
+        />
+        
+        {/* Gaveta Branca Sólida com Slide */}
+        <nav className={`absolute right-0 top-0 h-full w-[240px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out p-6 ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+          {/* Header da Gaveta com Logo */}
+          <div className="flex items-center justify-between mb-8 pt-2">
+            <Logo className="text-lg" />
+            <button 
+              onClick={() => setIsMenuOpen(false)}
+              className="p-1.5 text-zinc-400 hover:text-zinc-950 transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="flex flex-col space-y-7">
+            <div className="space-y-2">
+              <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/50 border-b border-primary/5 pb-1.5">Navegação</p>
+              <div className="flex flex-col space-y-2">
+                <Link to="/" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Início</Link>
+                <Link to="/products" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Produtos</Link>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-4 border-t border-zinc-50">
+              <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/50 border-b border-primary/5 pb-1.5">Conta</p>
+              <div className="flex flex-col space-y-2">
+                {isAuthenticated ? (
+                  <>
+                    <Link to="/customer" className="flex items-center gap-3 text-[13px] font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">
+                      <div className="h-7 w-7 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600"><User className="h-3.5 w-3.5" /></div>
+                      Minha Área
+                    </Link>
+                    <button onClick={handleLogout} className="flex items-center gap-3 text-[13px] font-black uppercase tracking-tighter text-destructive hover:opacity-80 transition-opacity text-left py-1">
+                      <div className="h-7 w-7 rounded-full bg-destructive/5 flex items-center justify-center"><LogOut className="h-3.5 w-3.5" /></div>
+                      Sair
+                    </button>
+                  </>
+                ) : (
+                  <Link to="/login" className="flex items-center gap-3 text-[13px] font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">
+                    <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-primary"><User className="h-3.5 w-3.5" /></div>
+                    Acessar Conta
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Rodapé da Gaveta */}
+          <div className="mt-auto pt-8 border-t border-zinc-50">
+             <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 text-center">
+               SIGASTORE © 2026
+             </p>
+          </div>
+        </nav>
+      </div>
 
       <main className="flex-1 pt-16 min-h-screen">
         <Outlet />

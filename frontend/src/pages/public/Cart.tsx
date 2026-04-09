@@ -106,7 +106,7 @@ export default function Cart() {
           {/* Resumo */}
           <div className="md:col-span-1">
             <div className="bg-card p-6 rounded-2xl border shadow-lg sticky top-24">
-              <h3 className="text-2xl font-black tracking-tighter uppercase mb-6">Resumo da Compra</h3>
+              <h3 className="text-lg md:text-2xl font-black tracking-tighter uppercase border-b pb-4">Resumo da Compra</h3>
               
               <div className="space-y-4 text-sm">
                 <div className="flex justify-between text-muted-foreground">

@@ -236,7 +236,7 @@ export default function CustomerArea() {
         return (
           <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
             <div>
-              <h2 className="text-2xl font-black tracking-tighter uppercase mb-2 text-primary">Meus Pedidos</h2>
+                <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-6 drop-shadow-md">Meus Pedidos</h1>
               <p className="text-secondary text-sm font-medium uppercase tracking-widest">Acompanhe todos os seus pedidos</p>
             </div>
 
@@ -283,7 +283,7 @@ export default function CustomerArea() {
           <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-black tracking-tighter uppercase mb-2 text-primary">Pagamentos</h2>
+                <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-6 drop-shadow-md">Formas de Pagamento</h1>
                 <p className="text-secondary text-sm font-medium uppercase tracking-widest">Gerencie seus cartões de crédito</p>
               </div>
               <Button className="flex items-center gap-2 bg-primary hover:bg-orange-600 h-12 px-6 font-bold uppercase tracking-widest rounded-lg">

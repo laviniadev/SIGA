@@ -47,7 +47,7 @@ export default function ProductsList() {
       <div className="max-w-7xl mx-auto px-8 lg:px-12">
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
           <div>
-            <h1 className="text-2xl font-black tracking-tighter uppercase text-foreground mb-2 text-left">Coleção Completa</h1>
+            <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase text-foreground mb-2 text-left">Coleção Completa</h1>
             <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold text-left">Explorar {mockProducts.length} itens exclusivos</p>
           </div>
           <Button variant="outline" className="flex items-center gap-2 border-2 px-8 py-6 rounded-none font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-all">

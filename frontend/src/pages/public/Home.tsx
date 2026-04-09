@@ -57,7 +57,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0 mb-10 md:mb-16">
             <div className="space-y-2">
-              <h2 className="text-2xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
+              <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
               <div className="h-1 w-20 bg-primary"></div>
             </div>
             <Link to="/products" className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">

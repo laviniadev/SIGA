@@ -52,7 +52,7 @@ export default function Carousel({
 
   return (
     <div className={`relative overflow-hidden w-full max-w-full group ${
-      isHero ? 'h-[65vh] md:h-[60vh]' : 'h-[200px] sm:h-[250px] md:h-[300px] lg:h-[380px] rounded-xl sm:rounded-2xl'
+      isHero ? 'h-[45vh] md:h-[60vh]' : 'h-[200px] sm:h-[250px] md:h-[300px] lg:h-[380px] rounded-xl sm:rounded-2xl'
     }`}>
       {/* Slides */}
       {items.map((item, index) => (

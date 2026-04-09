@@ -33,7 +33,7 @@ export default function TrendsSection() {
           {/* Ofertas Section */}
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b-2 border-primary/20 pb-4">
-              <h2 className="text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
+              <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
                 <span className="text-primary">●</span> Ofertas
               </h2>
               <button className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Ver Tudo</button>
@@ -57,7 +57,7 @@ export default function TrendsSection() {
           {/* Tendências Section */}
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b-2 border-secondary/20 pb-4">
-              <h2 className="text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
+              <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
                 <span className="text-secondary">●</span> Tendências
               </h2>
               <button className="text-[10px] font-black uppercase tracking-widest text-secondary hover:underline">Explorar</button>
