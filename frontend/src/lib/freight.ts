@@ -23,17 +23,42 @@ export interface FreightError {
 const API_URL = "http://localhost:8000/calculate";
 const DEFAULT_ORIGIN = "01001000";
 
+export interface Address {
+  logradouro: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+  error?: boolean;
+}
+
+/**
+ * Busca o endereço completo a partir do CEP usando a API ViaCEP.
+ */
+export async function getAddressByCep(cep: string): Promise<Address> {
+  const cleanCep = cep.replace(/\D/g, "");
+  if (cleanCep.length !== 8) throw new Error("CEP inválido");
+
+  const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+  const data = await response.json();
+
+  if (data.erro) {
+    throw new Error("CEP não encontrado");
+  }
+
+  return {
+    logradouro: data.logradouro,
+    bairro: data.bairro,
+    localidade: data.localidade,
+    uf: data.uf
+  };
+}
+
 /**
  * Realiza o cálculo de frete chamando o backend.
- * 
- * @param cepDestino CEP de destino do cliente
- * @param peso Peso total da carga em kg
- * @param cepOrigem CEP de origem (opcional, usa o padrão da loja)
- * @returns Promessa com o resultado do frete
  */
 export async function calculateFreight(
   cepDestino: string,
-  peso: number,
+  peso: number = 1, // Peso padrão, agora ignorado pelo backend
   cepOrigem: string = DEFAULT_ORIGIN
 ): Promise<FreightResponse> {
   // Limpar CEP (remover hifen, espaços, etc)
