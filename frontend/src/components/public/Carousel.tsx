@@ -85,11 +85,7 @@ export default function Carousel({
                 {isHero ? (
                   <>
                     <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black tracking-tighter leading-[1.1] mb-3 md:mb-5 drop-shadow-2xl uppercase">
-                      {item.title.includes('SIGASTORE') ? (
-                        <>
-                          SUA JORNADA COMEÇA NA <span className="text-primary font-black">SIGA</span><span className="text-secondary tracking-tight font-black">STORE</span>
-                        </>
-                      ) : item.title}
+                      {item.title}
                     </h1>
                     <p className="text-white/90 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-lg mx-auto font-medium tracking-tight mb-5 md:mb-8 drop-shadow-md whitespace-pre-line">
                       {item.subtitle}

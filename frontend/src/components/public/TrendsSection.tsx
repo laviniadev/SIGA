@@ -1,4 +1,4 @@
-import { TrendingUp } from 'lucide-react'
+import { TrendingUp, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface TrendItem {
@@ -27,17 +27,22 @@ export default function TrendsSection() {
   ];
 
   return (
-    <section className="py-10 md:py-16 bg-background">
+    <section className="py-6 md:py-10 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           
           {/* Ofertas Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b-2 border-primary/20 pb-4">
-              <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
-                <span className="text-primary">●</span> Ofertas
-              </h2>
-              <Link to="/offers" className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Ver Tudo</Link>
+          <div className="space-y-8">
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
+                  Ofertas
+                </h2>
+                <div className="h-1 w-16 bg-primary"></div>
+              </div>
+              <Link to="/offers" className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all flex items-center gap-2 whitespace-nowrap group">
+                Ver Tudo <ChevronRight className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
             
             <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">
@@ -60,12 +65,17 @@ export default function TrendsSection() {
           </div>
 
           {/* Tendências Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b-2 border-secondary/20 pb-4">
-              <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
-                <span className="text-secondary">●</span> Tendências
-              </h2>
-              <Link to="/trends" className="text-[10px] font-black uppercase tracking-widest text-secondary hover:underline">Explorar</Link>
+          <div className="space-y-8">
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2 text-foreground">
+                   Tendências
+                </h2>
+                <div className="h-1 w-16 bg-secondary"></div>
+              </div>
+              <Link to="/trends" className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all flex items-center gap-2 whitespace-nowrap group">
+                Ver Tudo <ChevronRight className="h-4 w-4 text-secondary transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
 
             <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">

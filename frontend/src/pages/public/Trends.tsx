@@ -45,36 +45,49 @@ export default function Trends() {
   };
 
   return (
-    <div className="py-8 min-h-screen">
+    <div className="py-12 md:py-16 min-h-screen">
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-secondary font-black uppercase tracking-widest text-[10px]">
               <TrendingUp className="h-3 w-3" />
               Especial Curadoria
             </div>
-            <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase text-foreground text-left leading-tight">Tendências Urbanas</h1>
+            <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase text-foreground leading-tight">Tendências Urbanas</h1>
             <div className="h-1 w-20 bg-secondary"></div>
           </div>
-          <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold">
-            {allTrends.length} itens em alta na temporada
+          
+          <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-[0.2em] font-black text-right">
+            Explorando <span className="text-secondary">{allTrends.length}</span> itens em alta na temporada
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-h-[600px]">
           {displayProducts.map((product, index) => (
             <ProductCard 
               key={product.id} 
               product={product} 
               innerRef={index === displayProducts.length - 1 ? lastProductElementRef : undefined}
-              animationDelay={`${(index % 5) * 100}ms`}
+              animationDelay={`${(index % 5) * 50}ms`}
+              compact={true}
             />
           ))}
         </div>
 
         {(isLoading || hasMore) && (
-          <div className="flex justify-center py-12">
-            <div className="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
+          <div className="flex justify-center py-20">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Explorando Estilos...</p>
+            </div>
+          </div>
+        )}
+
+        {!hasMore && !isLoading && (
+          <div className="py-20 text-center">
+            <div className="inline-block px-12 py-6 border-2 border-muted bg-muted/10">
+              <p className="text-muted-foreground text-[10px] uppercase tracking-[0.6em] font-black opacity-60">Fim das tendências globais</p>
+            </div>
           </div>
         )}
       </div>

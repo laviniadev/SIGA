@@ -1,4 +1,4 @@
-import { ArrowRight, Calendar, User } from 'lucide-react'
+import { ChevronRight, Calendar, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface BlogPost {
@@ -25,7 +25,7 @@ export default function InsightsSection({ posts }: InsightsSectionProps) {
             <div className="h-1 w-20 bg-secondary"></div>
           </div>
           <Button variant="ghost" className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-secondary p-0 h-auto">
-            Ver Todos <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 ml-2" />
+            Ver Todos <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 ml-2" />
           </Button>
         </div>
 
@@ -72,7 +72,7 @@ export default function InsightsSection({ posts }: InsightsSectionProps) {
                   className="w-full text-secondary font-bold uppercase tracking-widest text-[10px] sm:text-xs group/btn p-2 h-auto"
                 >
                   Ler Artigo
-                  <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                  <ChevronRight className="h-2.5 w-2.5 sm:h-3 sm:w-3 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                 </Button>
               </div>
             </div>

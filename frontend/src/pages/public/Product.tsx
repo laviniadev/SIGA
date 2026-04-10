@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Star, StarHalf, ArrowLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react"
+import { Star, StarHalf, ChevronLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, RefreshCw, ChevronRight } from "lucide-react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { mockProducts } from "@/data/mockProducts"
 import { useCartStore } from "@/stores/useCartStore"
@@ -143,7 +143,7 @@ export default function Product() {
     <div className="bg-background min-h-screen font-sans">
       <div className="max-w-7xl mx-auto px-8 lg:px-12 py-6">
         <Link to="/products" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary mb-6 transition-colors">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
+          <ChevronLeft className="mr-2 h-4 w-4" /> Voltar
         </Link>
 
         {/* Main Product Info Section */}
