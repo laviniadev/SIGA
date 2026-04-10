@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 
 interface CarouselItem {
   id: string
@@ -52,7 +51,7 @@ export default function Carousel({
 
   return (
     <div className={`relative overflow-hidden w-full max-w-full group ${
-      isHero ? 'h-[65vh] md:h-[60vh]' : 'h-[200px] sm:h-[250px] md:h-[300px] lg:h-[380px] rounded-xl sm:rounded-2xl'
+      isHero ? 'h-[45vh] md:h-[60vh]' : 'h-[200px] sm:h-[250px] md:h-[300px] lg:h-[380px] rounded-xl sm:rounded-2xl'
     }`}>
       {/* Slides */}
       {items.map((item, index) => (
@@ -85,11 +84,7 @@ export default function Carousel({
                 {isHero ? (
                   <>
                     <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black tracking-tighter leading-[1.1] mb-3 md:mb-5 drop-shadow-2xl uppercase">
-                      {item.title.includes('SIGASTORE') ? (
-                        <>
-                          SUA JORNADA COMEÇA NA <span className="text-primary font-black">SIGA</span><span className="text-secondary tracking-tight font-black">STORE</span>
-                        </>
-                      ) : item.title}
+                      {item.title}
                     </h1>
                     <p className="text-white/90 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-lg mx-auto font-medium tracking-tight mb-5 md:mb-8 drop-shadow-md whitespace-pre-line">
                       {item.subtitle}

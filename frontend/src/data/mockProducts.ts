@@ -9,6 +9,7 @@ export interface Product {
   category: string;
   material: string;
   care: string[];
+  weight?: number; // Peso em kg
 }
 
 export const mockProducts: Product[] = [
@@ -26,7 +27,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Roupas",
     material: "100% Algodão Egípcio",
-    care: ["Lavar à máquina max. 30ºC", "Não utilizar alvejante", "Passar máximo 110ºC", "Não limpar a seco"]
+    care: ["Lavar à máquina max. 30ºC", "Não utilizar alvejante", "Passar máximo 110ºC", "Não limpar a seco"],
+    weight: 0.3
   },
   {
     id: "2",
@@ -42,7 +44,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Calçados",
     material: "Mesh respirável e solado de borracha vulcanizada",
-    care: ["Limpar com pano úmido", "Não lavar à máquina", "Secar à sombra"]
+    care: ["Limpar com pano úmido", "Não lavar à máquina", "Secar à sombra"],
+    weight: 1.2
   },
   {
     id: "3",
@@ -58,7 +61,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Acessórios",
     material: "Poliéster 600D reforçado",
-    care: ["Lavar à mão", "Não utilizar secadora"]
+    care: ["Lavar à mão", "Não utilizar secadora"],
+    weight: 0.8
   },
   {
     id: "4",
@@ -74,7 +78,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Acessórios",
     material: "Aço inoxidável e Vidro Mineral",
-    care: ["Limpar com flanela seca"]
+    care: ["Limpar com flanela seca"],
+    weight: 0.2
   },
   {
     id: "5",
@@ -90,7 +95,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Roupas",
     material: "Nylon Ripstop",
-    care: ["Lavar em ciclo delicado", "Não passar"]
+    care: ["Lavar em ciclo delicado", "Não passar"],
+    weight: 0.4
   },
   {
     id: "6",
@@ -106,7 +112,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Acessórios",
     material: "Lentes de Policarbonato e Armação de Metal",
-    care: ["Usar estojo rígido", "Limpar com lenço de microfibra"]
+    care: ["Usar estojo rígido", "Limpar com lenço de microfibra"],
+    weight: 0.1
   },
   {
     id: "7",
@@ -122,7 +129,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Roupas",
     material: "100% Couro de Cordeiro",
-    care: ["Limpeza profissional em couro", "Evitar exposição excessiva ao sol"]
+    care: ["Limpeza profissional em couro", "Evitar exposição excessiva ao sol"],
+    weight: 1.5
   },
   {
     id: "8",
@@ -138,7 +146,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Roupas",
     material: "98% Algodão, 2% Elastano",
-    care: ["Lavar do avesso", "Lavar com cores similares", "Não secar na máquina"]
+    care: ["Lavar do avesso", "Lavar com cores similares", "Não secar na máquina"],
+    weight: 0.6
   },
   {
     id: "9",
@@ -154,7 +163,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Calçados",
     material: "Couro Sintético Premium",
-    care: ["Limpar com espuma específica", "Não mergulhar em água"]
+    care: ["Limpar com espuma específica", "Não mergulhar em água"],
+    weight: 1.4
   },
   {
     id: "10",
@@ -170,7 +180,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Acessórios",
     material: "Aço Inoxidável 316L",
-    care: ["Limpar com pano seco", "Resistente a respingos (3 ATM)"]
+    care: ["Limpar com pano seco", "Resistente a respingos (3 ATM)"],
+    weight: 0.3
   },
   {
     id: "11",
@@ -186,7 +197,8 @@ export const mockProducts: Product[] = [
     ],
     category: "Acessórios",
     material: "Couro Texturizado",
-    care: ["Hidratar o couro periodicamente", "Guardar em saco de feltro"]
+    care: ["Hidratar o couro periodicamente", "Guardar em saco de feltro"],
+    weight: 1.0
   },
   {
     id: "12",
@@ -202,6 +214,7 @@ export const mockProducts: Product[] = [
     ],
     category: "Acessórios",
     material: "Couro Bovino Legítimo",
-    care: ["Não molhar", "Armazenar enrolado ou pendurado"]
+    care: ["Não molhar", "Armazenar enrolado ou pendurado"],
+    weight: 0.2
   }
 ];

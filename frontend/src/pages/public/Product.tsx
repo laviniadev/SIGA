@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Star, StarHalf, ArrowLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react"
+import { Star, StarHalf, ChevronLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, RefreshCw, ChevronRight } from "lucide-react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { mockProducts } from "@/data/mockProducts"
 import { useCartStore } from "@/stores/useCartStore"
@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 import { ProductCard } from "@/components/public/ProductCard"
+import { FreightCalculator } from "@/components/public/FreightCalculator"
 
 export default function Product() {
   const { id } = useParams<{ id: string }>();
@@ -142,7 +143,7 @@ export default function Product() {
     <div className="bg-background min-h-screen font-sans">
       <div className="max-w-7xl mx-auto px-8 lg:px-12 py-6">
         <Link to="/products" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary mb-6 transition-colors">
-          <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
+          <ChevronLeft className="mr-2 h-4 w-4" /> Voltar
         </Link>
 
         {/* Main Product Info Section */}
@@ -340,22 +341,26 @@ export default function Product() {
                   Envio e Devoluções
                   {openSection === "shipping" ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
-                <div className={cn("overflow-hidden transition-all duration-300", openSection === "shipping" ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0")}>
-                   <div className="grid grid-cols-2 gap-4">
-                      <div className="flex items-start gap-2">
-                        <Truck className="w-4 h-4 mt-0.5 text-primary" />
-                        <div className="space-y-1 text-left">
-                          <p className="text-[10px] font-bold uppercase">Frete Grátis</p>
-                          <p className="text-[10px] text-muted-foreground">Em pedidos acima de R$ 250.</p>
+                <div className={cn("overflow-hidden transition-all duration-300", openSection === "shipping" ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0")}>
+                   <div className="space-y-6">
+                     <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-start gap-2">
+                          <Truck className="w-4 h-4 mt-0.5 text-primary" />
+                          <div className="space-y-1 text-left">
+                            <p className="text-[10px] font-bold uppercase">Frete Grátis</p>
+                            <p className="text-[10px] text-muted-foreground">Em pedidos acima de R$ 250.</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <RefreshCw className="w-4 h-4 mt-0.5 text-primary" />
-                        <div className="space-y-1 text-left">
-                          <p className="text-[10px] font-bold uppercase">Troca Grátis</p>
-                          <p className="text-[10px] text-muted-foreground">Até 30 dias após a compra.</p>
+                        <div className="flex items-start gap-2">
+                          <RefreshCw className="w-4 h-4 mt-0.5 text-primary" />
+                          <div className="space-y-1 text-left">
+                            <p className="text-[10px] font-bold uppercase">Troca Grátis</p>
+                            <p className="text-[10px] text-muted-foreground">Até 30 dias após a compra.</p>
+                          </div>
                         </div>
-                      </div>
+                     </div>
+
+                     <FreightCalculator weight={product.weight || 0.5} className="mt-4 border-dashed bg-muted/20" />
                    </div>
                 </div>
               </div>
@@ -374,7 +379,7 @@ export default function Product() {
 
         {/* Continue Shopping Section - Infinite Scroll */}
         <div className="pt-20 border-t">
-          <h2 className="text-2xl font-bold uppercase tracking-tighter mb-10 text-center">Continuar Comprando</h2>
+          <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-8 md:mb-10 text-center">Continuar Comprando</h2>
           
           <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 px-4">
             {displayProducts.map((p, idx) => (
@@ -397,7 +402,7 @@ export default function Product() {
           )}
 
           {!hasMore && !isLoading && (
-            <div className="py-20 text-center border-t border-dashed mt-16">
+            <div className="py-10 text-center border-t border-dashed mt-8">
               <p className="text-muted-foreground text-xs uppercase tracking-[0.5em] font-black opacity-40">Fim do Catálogo</p>
             </div>
           )}

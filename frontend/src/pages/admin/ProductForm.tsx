@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowLeft, Save } from "lucide-react"
+import { ChevronLeft, Save } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 export default function ProductForm() {
@@ -12,7 +12,7 @@ export default function ProductForm() {
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full hover:bg-primary/10 hover:text-primary transition-all active:scale-90 shadow-sm">
-          <ArrowLeft className="h-5 w-5" />
+          <ChevronLeft className="h-5 w-5" />
         </Button>
         <h2 className="text-3xl font-extrabold tracking-tight text-primary uppercase text-shadow-sm">Cadastro de Produto</h2>
       </div>

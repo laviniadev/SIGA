@@ -1,4 +1,5 @@
-import { TrendingUp } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface TrendItem {
   id: string
@@ -8,40 +9,45 @@ interface TrendItem {
   tag: string
 }
 
-interface TrendsProps {
-  items: TrendItem[]
-}
-
 export default function TrendsSection() {
   const offers = [
-    { id: 1, tag: "OFERTA RELÂMPAGO", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" },
-    { id: 2, tag: "80% OFF", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" },
-    { id: 3, tag: "50% OFF", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" },
+    { id: 4, tag: "OFERTA RELÂMPAGO", image: "/products/watch-1.jpg" },
+    { id: 3, tag: "80% OFF", image: "/products/backpack-1.jpg" },
+    { id: 2, tag: "50% OFF", image: "/products/sneaker-1.jpg" },
   ];
 
   const trends = [
-    { id: 1, tag: "#EstiloUrbano", image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=400&q=80" },
-    { id: 2, tag: "#Minimalista", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80" },
-    { id: 3, tag: "#Premium", image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=400&q=80" },
+    { id: 2, tag: "#EstiloUrbano", image: "/products/sneaker-2.jpg" },
+    { id: 9, tag: "#Minimalista", image: "/products/hightop-1.jpg" },
+    { id: 7, tag: "#Premium", image: "/products/leather-1.jpg" },
   ];
 
   return (
-    <section className="py-10 md:py-16 bg-background">
+    <section className="py-6 md:py-10 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           
           {/* Ofertas Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b-2 border-primary/20 pb-4">
-              <h2 className="text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
-                <span className="text-primary">●</span> Ofertas
-              </h2>
-              <button className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Ver Tudo</button>
+          <div className="space-y-8">
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
+                  Ofertas
+                </h2>
+                <div className="h-1 w-16 bg-primary"></div>
+              </div>
+              <Link to="/offers" className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all flex items-center gap-2 whitespace-nowrap group">
+                Ver Tudo <ChevronRight className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
             
             <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {offers.map((item) => (
-                <div key={item.id} className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-xl transition-all duration-500">
+                <Link 
+                  key={item.id} 
+                  to={`/product/${item.id}`}
+                  className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
+                >
                   <img src={item.image} alt="Oferta" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                   <div className="absolute inset-x-0 bottom-0 p-2 sm:p-4">
@@ -49,23 +55,32 @@ export default function TrendsSection() {
                       <span className="block skew-x-12 text-[8px] sm:text-[10px] md:text-xs font-black italic">{item.tag}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
 
           {/* Tendências Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between border-b-2 border-secondary/20 pb-4">
-              <h2 className="text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
-                <span className="text-secondary">●</span> Tendências
-              </h2>
-              <button className="text-[10px] font-black uppercase tracking-widest text-secondary hover:underline">Explorar</button>
+          <div className="space-y-8">
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2 text-foreground">
+                   Tendências
+                </h2>
+                <div className="h-1 w-16 bg-secondary"></div>
+              </div>
+              <Link to="/trends" className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-all flex items-center gap-2 whitespace-nowrap group">
+                Ver Tudo <ChevronRight className="h-4 w-4 text-secondary transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
 
             <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">
               {trends.map((item) => (
-                <div key={item.id} className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-xl transition-all duration-500">
+                <Link 
+                  key={item.id} 
+                  to={`/product/${item.id}`}
+                  className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-muted shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
+                >
                   <img src={item.image} alt="Tendência" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-40 group-hover:opacity-70 transition-opacity" />
                   <div className="absolute inset-x-0 bottom-0 p-2 sm:p-4">
@@ -73,7 +88,7 @@ export default function TrendsSection() {
                       <span className="block text-[8px] sm:text-[10px] md:text-xs font-black italic tracking-tight">{item.tag}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

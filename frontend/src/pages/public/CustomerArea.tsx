@@ -68,7 +68,7 @@ export default function CustomerArea() {
 
             {/* Latest Orders Section */}
             <div>
-              <h2 className="text-2xl font-black uppercase tracking-widest mb-6 px-2 text-primary">Acompanhe Seus Últimos Pedidos</h2>
+              <h2 className="text-2xl font-black tracking-tighter uppercase mb-6 px-2 text-primary">Acompanhe Seus Últimos Pedidos</h2>
               <div className="space-y-6">
                 {/* Order 1 - Em Trânsito */}
                 <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
@@ -220,9 +220,11 @@ export default function CustomerArea() {
                       </div>
                     </div>
 
-                    <span className="absolute bottom-4 right-4 text-xs uppercase tracking-[0.25em] text-success font-black">
-                      Concluído
-                    </span>
+                    <div className="absolute top-4 right-6">
+                      <span className="bg-success/10 text-success border border-success/20 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                        Concluído
+                      </span>
+                    </div>
                   </div>
                 </Card>
               </div>
@@ -234,7 +236,7 @@ export default function CustomerArea() {
         return (
           <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
             <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter mb-2 text-primary">Meus Pedidos</h2>
+                <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-6 drop-shadow-md">Meus Pedidos</h1>
               <p className="text-secondary text-sm font-medium uppercase tracking-widest">Acompanhe todos os seus pedidos</p>
             </div>
 
@@ -281,7 +283,7 @@ export default function CustomerArea() {
           <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-3xl font-black uppercase tracking-tighter mb-2 text-primary">Pagamentos</h2>
+                <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-6 drop-shadow-md">Formas de Pagamento</h1>
                 <p className="text-secondary text-sm font-medium uppercase tracking-widest">Gerencie seus cartões de crédito</p>
               </div>
               <Button className="flex items-center gap-2 bg-primary hover:bg-orange-600 h-12 px-6 font-bold uppercase tracking-widest rounded-lg">
@@ -345,7 +347,7 @@ export default function CustomerArea() {
         return (
           <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
             <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter mb-2 text-primary">Configurações</h2>
+              <h2 className="text-2xl font-black tracking-tighter uppercase mb-2 text-primary">Configurações</h2>
               <p className="text-secondary text-sm font-medium uppercase tracking-widest">Gerencie suas preferências e segurança</p>
             </div>
 
@@ -432,7 +434,7 @@ export default function CustomerArea() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/20">
+    <div className="min-h-screen bg-muted/20 pb-24">
       {/* Hero Section - Full Width */}
       <div className="bg-zinc-950 text-white pt-16 pb-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-50 blur-3xl"></div>

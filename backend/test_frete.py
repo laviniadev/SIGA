@@ -16,13 +16,13 @@ def test_frete():
     try:
         with urllib.request.urlopen(req) as response:
             res_body = response.read().decode('utf-8')
-            print("\n✅ Resposta do Servidor:")
+            print("\n[OK] Resposta do Servidor:")
             print(json.dumps(json.loads(res_body), indent=4))
     except urllib.error.URLError as e:
-        print(f"\n❌ Erro ao conectar: {e}")
+        print(f"\n[ERRO] Erro ao conectar: {e}")
         print("Certifique-se de que o 'frete_service.py' está rodando no terminal.")
     except Exception as e:
-        print(f"\n❌ Erro inesperado: {e}")
+        print(f"\n[ERRO] Erro inesperado: {e}")
 
 if __name__ == "__main__":
     test_frete()

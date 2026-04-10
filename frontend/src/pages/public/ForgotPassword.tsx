@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Link } from "react-router-dom"
-import { KeyRound, ArrowLeft } from "lucide-react"
+import { KeyRound, ChevronLeft } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -32,7 +32,7 @@ export default function ForgotPassword() {
               <KeyRound className="h-8 w-8 text-secondary" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-extrabold tracking-tight text-foreground">
+          <CardTitle className="text-2xl font-black tracking-tighter uppercase text-foreground">
             Recuperar Senha
           </CardTitle>
           <CardDescription className="text-base text-muted-foreground">
@@ -74,7 +74,7 @@ export default function ForgotPassword() {
         
         <CardFooter className="flex justify-center pt-2">
           <Link to="/login" className="flex items-center text-sm font-semibold text-primary hover:text-orange-600 transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ChevronLeft className="mr-2 h-4 w-4" />
             Voltar para o Login
           </Link>
         </CardFooter>
