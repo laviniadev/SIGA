@@ -1,4 +1,4 @@
-import { TrendingUp, ChevronRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface TrendItem {
@@ -7,10 +7,6 @@ interface TrendItem {
   category: string
   title: string
   tag: string
-}
-
-interface TrendsProps {
-  items: TrendItem[]
 }
 
 export default function TrendsSection() {

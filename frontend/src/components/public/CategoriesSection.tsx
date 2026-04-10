@@ -1,6 +1,6 @@
 import { Shirt, Footprints, Watch, Tag, Filter, ChevronDown, ChevronUp } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 
 interface Category {
@@ -18,7 +18,7 @@ interface CategoriesSectionProps {
 export default function CategoriesSection({ categories }: CategoriesSectionProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const iconMap: { [key: string]: JSX.Element } = {
+  const iconMap: { [key: string]: React.ReactNode } = {
     shirt: <Shirt className="h-full w-full" />,
     footprints: <Footprints className="h-full w-full" />,
     watch: <Watch className="h-full w-full" />,

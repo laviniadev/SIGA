@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { ChevronRight, Shirt, Footprints, Watch, Tag } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { ProductCard } from "@/components/public/ProductCard"
@@ -11,7 +10,6 @@ import NewsletterSection from "@/components/public/NewsletterSection"
 import { TrustBar } from "@/components/public/TrustBar"
 
 export default function Home() {
-  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState("Tudo");
 
   return (
