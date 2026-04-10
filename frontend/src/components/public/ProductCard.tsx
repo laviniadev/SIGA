@@ -98,7 +98,7 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
           <div className={compact ? "mb-2" : "mb-3"}>
             <span className={cn(
               "font-black text-white uppercase tracking-[0.2em] rounded-sm",
-              compact ? "text-[7px] px-1.5 py-0.5" : "text-[8px] px-2 py-1",
+              compact ? "text-[9px] px-2 py-0.5" : "text-[10px] px-2.5 py-1",
               getCategoryColor(product.category)
             )}>
               {product.category}
