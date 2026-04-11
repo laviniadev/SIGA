@@ -111,7 +111,7 @@ export default function NewsletterSection() {
                 Ofertas Exclusivas <br className="md:hidden" /> no seu E-mail
               </h2>
               <p className="text-zinc-600 text-xs md:text-sm lg:text-base font-medium max-w-md mx-auto lg:mx-0">
-                Fique por dentro das novidades e receba <span className="text-primary font-bold">10% OFF</span> na sua primeira compra.
+                Fique por dentro das novidades e receba <br /> <span className="text-primary font-bold">10% OFF</span> na sua primeira compra.
               </p>
             </div>
 
