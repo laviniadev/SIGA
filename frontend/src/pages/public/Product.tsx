@@ -104,6 +104,24 @@ export default function Product() {
     );
   }
 
+  // Promo and urgency logic to sync with Offers
+  const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
+  const isOffer = offerIds.includes(product.id);
+  const getDiscount = (price: number) => {
+    if (price > 500) return 40;
+    if (price > 200) return 30;
+    if (price > 100) return 20;
+    return 15;
+  };
+  const discount = isOffer ? getDiscount(product.price) : 0;
+  const originalPrice = product.price;
+  const currentPrice = isOffer ? originalPrice * (1 - discount / 100) : originalPrice;
+
+  const allOffers = mockProducts.filter(p => offerIds.includes(p.id));
+  const isLastUnits = allOffers.slice(0, 5).some(p => p.id === product.id);
+  const unitsLeftIndex = allOffers.slice(0, 5).findIndex(p => p.id === product.id);
+  const unitsLeft = isLastUnits ? 5 - unitsLeftIndex : null;
+
   const sizes = product.category === "Roupas" 
     ? ["P", "M", "G", "GG"] 
     : product.category === "Calçados" 
@@ -117,7 +135,8 @@ export default function Product() {
     }
     
     const sizeToApply = sizes.length === 1 ? sizes[0] : selectedSize;
-    addToCart(product, sizeToApply);
+    // apply currentPrice correctly so the cart has the discounted price
+    addToCart({ ...product, price: currentPrice }, sizeToApply);
     toast.success(`${product.name} (${sizeToApply}) adicionado ao carrinho!`);
   };
 
@@ -236,16 +255,29 @@ export default function Product() {
 
           {/* Details Column (5 cols) */}
           <div className="lg:col-span-5 flex flex-col pt-4">
-            <div className="mb-8">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mb-2">{product.category}</p>
-              <h1 className="text-4xl font-bold text-foreground leading-tight tracking-tight mb-4 text-left">{product.name}</h1>
+            <div className="mb-5">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mb-1">{product.category}</p>
+              <h1 className="text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-tight mb-3 text-left">{product.name}</h1>
               
               <div className="flex items-center gap-3">
-                <p className="text-3xl font-light text-foreground">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                </p>
-                <div className="h-4 w-[1px] bg-muted-foreground/30 mx-2"></div>
-                <div className="flex text-primary">
+                {isOffer ? (
+                  <div className="flex flex-col">
+                    <span className="text-muted-foreground text-sm font-medium line-through tabular-nums mb-1 text-left">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(originalPrice)}
+                    </span>
+                    <p className="text-3xl font-black text-orange-600 flex items-center gap-3">
+                       {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(currentPrice)}
+                       <span className="bg-orange-500 text-white px-2 py-0.5 rounded-md shadow transform -skew-x-6 text-xs inline-block ml-1">-{discount}% OFF</span>
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-3xl font-light text-foreground">
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(currentPrice)}
+                  </p>
+                )}
+                
+                <div className="h-4 w-[1px] bg-muted-foreground/30 mx-2 self-end mb-2"></div>
+                <div className="flex text-primary self-end mb-2.5">
                   <Star className="fill-current w-3.5 h-3.5" />
                   <Star className="fill-current w-3.5 h-3.5" />
                   <Star className="fill-current w-3.5 h-3.5" />
@@ -253,6 +285,14 @@ export default function Product() {
                   <StarHalf className="fill-current w-3.5 h-3.5" />
                 </div>
               </div>
+              
+              {isOffer && isLastUnits && (
+                 <div className="mt-4">
+                   <div className="inline-block bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded border border-red-500/20">
+                     🔥 CORRA! Restam apenas {unitsLeft} estoque!
+                   </div>
+                 </div>
+              )}
             </div>
 
             {/* Size Selection */}

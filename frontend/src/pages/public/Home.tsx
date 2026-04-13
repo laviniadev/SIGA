@@ -51,7 +51,7 @@ export default function Home() {
       </section>
 
       <TrendsSection />
-      
+
       {/* Featured Products */}
       <section className="py-6 md:py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
@@ -107,18 +107,39 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-h-[400px]">
             {mockProducts
               .filter(p => {
+                const isOffer = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"].includes(p.id);
                 if (activeFilter === "Tudo") return true;
-                if (activeFilter === "Promoções") return p.price < 150;
+                if (activeFilter === "Promoções") return isOffer;
                 return p.category === activeFilter;
               })
-              .map((product, index) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  animationDelay={`${index * 50}ms`}
-                  compact={true}
-                />
-              ))}
+              .map((product, index) => {
+                const isOffer = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"].includes(product.id);
+                let discount = 0;
+                if (isOffer) {
+                  if (product.price > 500) discount = 40;
+                  else if (product.price > 200) discount = 30;
+                  else if (product.price > 100) discount = 20;
+                  else discount = 15;
+                }
+
+                return (
+                  <div key={product.id} className="relative group">
+                    {isOffer && (
+                      <div className="absolute top-2 left-2 z-20">
+                        <div className="bg-orange-500 text-white px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md shadow-lg shadow-orange-500/40 transform -skew-x-6">
+                          <span className="block skew-x-6 text-[8px] sm:text-[10px] md:text-xs font-bold">-{discount}%</span>
+                        </div>
+                      </div>
+                    )}
+                    <ProductCard
+                      product={isOffer ? { ...product, price: product.price * (1 - discount / 100) } : product}
+                      originalPrice={isOffer ? product.price : undefined}
+                      animationDelay={`${index * 50}ms`}
+                      compact={true}
+                    />
+                  </div>
+                );
+              })}
           </div>
         </div>
       </section>

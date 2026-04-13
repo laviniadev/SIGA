@@ -92,8 +92,8 @@ export default function Offers() {
   // Products
   const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
   const allOffers = mockProducts.filter(p => offerIds.includes(p.id));
-  const flashDeals = allOffers.slice(0, 3);
-  const lastUnits = allOffers.slice(3, 6);
+  const flashDeals = allOffers.slice(5);
+  const lastUnits = allOffers.slice(0, 5);
 
   // Discount simulator
   const getDiscount = (price: number) => {
@@ -181,7 +181,7 @@ export default function Offers() {
         <section className="py-6 md:py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
             <div className="flex items-center gap-3 mb-2 md:mb-8">
-              <div className="bg-red-500 p-2 rounded-lg shadow-lg shadow-red-500/30 animate-pulse">
+              <div className="bg-red-500 p-2 rounded-lg shadow-lg shadow-red-500/30">
                 <Package className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
               </div>
               <div className="space-y-1">
@@ -192,7 +192,7 @@ export default function Offers() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
               {lastUnits.map((product, i) => {
-                const unitsLeft = 3 - i;
+                const unitsLeft = 5 - i;
                 const discount = getDiscount(product.price);
                 const originalPrice = (product.price / (1 - discount / 100)).toFixed(2);
 
@@ -213,10 +213,10 @@ export default function Offers() {
                       <h3 className="font-bold text-xs sm:text-sm uppercase tracking-tight text-foreground line-clamp-1 group-hover:text-orange-500 transition-colors">{product.name}</h3>
                       <div className="flex items-baseline gap-2 mt-1.5">
                         <span className="text-orange-500 font-extrabold text-sm sm:text-base tabular-nums">
-                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price * (1 - discount / 100))}
                         </span>
                         <span className="text-muted-foreground text-[9px] sm:text-[10px] line-through tabular-nums">
-                          R$ {originalPrice}
+                          R$ {product.price.toFixed(2)}
                         </span>
                       </div>
                       <div className="flex items-center gap-1 mt-2">
@@ -318,6 +318,8 @@ export default function Offers() {
             </div>
           </div>
         </section>
+
+
 
         {/* ═══════ Newsletter ═══════ */}
         <NewsletterSection />
