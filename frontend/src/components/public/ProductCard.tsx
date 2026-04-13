@@ -14,9 +14,10 @@ interface ProductCardProps {
   innerRef?: (node: HTMLElement | null) => void
   animationDelay?: string
   compact?: boolean
+  originalPrice?: number
 }
 
-export const ProductCard = ({ product, className, innerRef, animationDelay, compact }: ProductCardProps) => {
+export const ProductCard = ({ product, className, innerRef, animationDelay, compact, originalPrice }: ProductCardProps) => {
   const addToCart = useCartStore((state) => state.addToCart);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
 
@@ -98,7 +99,7 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
           <div className={compact ? "mb-2" : "mb-3"}>
             <span className={cn(
               "font-black text-white uppercase tracking-[0.2em] rounded-sm",
-              compact ? "text-[7px] px-1.5 py-0.5" : "text-[8px] px-2 py-1",
+              compact ? "text-[9px] px-2 py-0.5" : "text-[10px] px-2.5 py-1",
               getCategoryColor(product.category)
             )}>
               {product.category}
@@ -112,10 +113,20 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
               </h3>
             </Link>
 
-            <div className="flex items-center justify-between gap-2 border-t pt-3">
-              <p className="font-black text-foreground text-sm tabular-nums">
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-              </p>
+            <div className="flex items-center justify-between gap-2 border-t pt-3 min-h-[52px]">
+              <div className="flex flex-col justify-center">
+                {originalPrice && (
+                  <span className="text-muted-foreground text-[9px] line-through tabular-nums mb-0.5">
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(originalPrice)}
+                  </span>
+                )}
+                <p className={cn(
+                  "font-black tabular-nums",
+                  originalPrice ? "text-orange-500 text-sm" : "text-foreground text-sm"
+                )}>
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                </p>
+              </div>
 
               <Button
                 className="bg-success hover:bg-green-700 text-white rounded-none h-10 w-10 p-0 flex items-center justify-center ring-offset-background transition-all active:scale-95 shadow-md"

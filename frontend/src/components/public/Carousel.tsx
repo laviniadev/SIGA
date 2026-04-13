@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface CarouselItem {
   id: string
@@ -89,12 +90,12 @@ export default function Carousel({
                     <p className="text-white/90 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-lg mx-auto font-medium tracking-tight mb-5 md:mb-8 drop-shadow-md whitespace-pre-line">
                       {item.subtitle}
                     </p>
-                    <button 
-                      className="h-9 md:h-12 px-6 md:px-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest rounded-none shadow-2xl active:scale-95 transition-all bg-primary hover:bg-primary/90 text-white"
-                      onClick={() => window.location.href = item.ctaLink}
+                    <Link 
+                      to={item.ctaLink}
+                      className="inline-flex items-center justify-center h-9 md:h-12 px-6 md:px-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest rounded-none shadow-2xl active:scale-95 transition-all bg-primary hover:bg-primary/90 text-white"
                     >
                       {item.cta}
-                    </button>
+                    </Link>
                   </>
                 ) : (
                   <>
@@ -104,12 +105,12 @@ export default function Carousel({
                     <p className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-white/90 mb-2 md:mb-4 max-w-xs sm:max-w-lg lg:max-w-xl line-clamp-2 sm:line-clamp-none">
                       {item.subtitle}
                     </p>
-                    <button
-                      className="bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest rounded-full px-4 md:px-6 text-[8px] md:text-[10px] h-7 md:h-9 lg:h-10"
-                      onClick={() => window.location.href = item.ctaLink}
+                    <Link
+                      to={item.ctaLink}
+                      className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest rounded-full px-4 md:px-6 text-[8px] md:text-[10px] h-7 md:h-9 lg:h-10"
                     >
                       {item.cta}
-                    </button>
+                    </Link>
                   </>
                 )}
               </div>

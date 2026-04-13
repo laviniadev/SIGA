@@ -21,43 +21,43 @@ export default function CustomerArea() {
     switch (activeSection) {
       case 'overview':
         return (
-          <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="border-none shadow-xl bg-background rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500">
-                <CardContent className="p-8 flex flex-col justify-between h-full relative">
+              <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500">
+                <CardContent className="p-6 flex flex-col justify-between h-full relative">
                   <div className="absolute -right-4 -top-4 opacity-5">
                     <ShoppingBag className="h-48 w-48" />
                   </div>
-                  <p className="text-xs font-black uppercase tracking-widest text-secondary mb-4">Pontos Siga</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-4">Pontos Siga</p>
                   <div>
-                    <h4 className="text-5xl font-black tabular-nums tracking-tighter">1.250</h4>
+                    <h4 className="text-3xl font-bold tabular-nums tracking-tighter">1.250</h4>
                     <p className="text-sm font-bold text-success mt-2">Válidos até dez/2026</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-xl bg-background rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500">
-                <CardContent className="p-8 flex flex-col justify-between h-full relative">
+              <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500">
+                <CardContent className="p-6 flex flex-col justify-between h-full relative">
                   <div className="absolute -right-4 -top-4 opacity-5">
                     <Package className="h-48 w-48" />
                   </div>
-                  <p className="text-xs font-black uppercase tracking-widest text-secondary mb-4">Pedidos Ativos</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-4">Pedidos Ativos</p>
                   <div>
-                    <h4 className="text-5xl font-black tabular-nums tracking-tighter">2</h4>
+                    <h4 className="text-3xl font-bold tabular-nums tracking-tighter">2</h4>
                     <p className="text-sm font-bold text-primary mt-2">1 em rota de entrega</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-xl bg-zinc-950 text-white rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500 relative group cursor-pointer">
-                <CardContent className="p-8 flex flex-col justify-between h-full">
+              <Card className="border-none shadow-xl bg-zinc-950 text-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500 relative group cursor-pointer">
+                <CardContent className="p-6 flex flex-col justify-between h-full">
                   <div className="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
                     <Heart className="h-48 w-48" />
                   </div>
-                  <p className="text-xs font-black uppercase tracking-widest text-primary mb-4 z-10">Wishlist</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-primary mb-4 z-10">Wishlist</p>
                   <div className="z-10">
-                    <h4 className="text-5xl font-black tabular-nums tracking-tighter text-white">14</h4>
+                    <h4 className="text-3xl font-bold tabular-nums tracking-tighter text-white">14</h4>
                     <p className="text-sm font-bold text-zinc-300 mt-2 flex items-center gap-2 group-hover:text-white transition-colors">
                       Ver favoritos <ChevronRight className="h-4 w-4" />
                     </p>
@@ -68,35 +68,35 @@ export default function CustomerArea() {
 
             {/* Latest Orders Section */}
             <div>
-              <h2 className="text-2xl font-black tracking-tighter uppercase mb-6 px-2 text-primary">Acompanhe Seus Últimos Pedidos</h2>
+              <h2 className="text-2xl font-bold tracking-tighter uppercase mb-6 px-2">Acompanhe Seus Últimos Pedidos</h2>
               <div className="space-y-6">
                 {/* Order 1 - Em Trânsito */}
-                <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
                   <div className="flex flex-col lg:flex-row">
                     {/* Order Image/Graphic */}
-                    <div className="bg-muted w-full lg:w-1/3 min-h-[250px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="bg-muted w-full lg:w-1/3 min-h-[180px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
                       <div className="flex justify-between items-start">
-                        <span className="bg-zinc-950 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        <span className="bg-zinc-950 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
                           Em Trânsito
                         </span>
-                        <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                           #ORD-4492
                         </span>
                       </div>
                       <div className="py-4 flex justify-center items-center">
-                         <div className="w-32 h-32 bg-background rounded-full shadow-2xl flex items-center justify-center relative -m-4 ring-8 ring-background/50">
-                            <Package className="h-12 w-12 text-primary" />
-                         </div>
+                        <div className="w-24 h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
+                          <Package className="h-10 w-10 text-primary" />
+                        </div>
                       </div>
-                      <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                      <p className="text-center text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
                         Previsão: 10 de Abril
                       </p>
                     </div>
-                    
+
                     {/* Order Details */}
-                    <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center">
-                      <h3 className="text-2xl font-black tracking-tighter uppercase mb-3">Tênis Urban Style Blue</h3>
-                      
+                    <div className="p-4 md:p-5 flex-1 flex flex-col justify-center">
+                      <h3 className="text-lg font-bold tracking-tighter uppercase mb-2">Tênis Urban Style Blue</h3>
+
                       <div className="space-y-4 mt-2">
                         {/* Tracking Line */}
                         <div className="relative">
@@ -105,16 +105,16 @@ export default function CustomerArea() {
                             <div className="flex items-start gap-4">
                               <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background"></div>
                               <div>
-                                <p className="font-bold text-foreground text-sm">Pedido Confirmado</p>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">01 abr 2026, 14:32</p>
+                                <p className="font-semibold text-foreground text-sm">Pedido Confirmado</p>
+                                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">01 abr 2026, 14:32</p>
                               </div>
                             </div>
                             <div className="flex items-start gap-4">
                               <div className="mt-1 h-5 w-5 rounded-full bg-primary shadow-[0_0_15px_rgba(245,158,11,0.5)] z-10 border-3 border-background animate-pulse"></div>
                               <div>
-                                <p className="font-bold text-foreground text-sm">Em trânsito para sua cidade</p>
-                                <p className="text-xs mb-1 text-muted-foreground font-medium uppercase tracking-wider">03 abr 2026, 09:15</p>
-                                <div className="flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 w-fit px-2 py-1 rounded-full">
+                                <p className="font-semibold text-foreground text-sm">Em trânsito para sua cidade</p>
+                                <p className="text-[10px] mb-1 text-muted-foreground font-semibold uppercase tracking-widest">03 abr 2026, 09:15</p>
+                                <div className="flex items-center gap-2 text-xs font-semibold text-primary bg-primary/10 w-fit px-2 py-1 rounded-full">
                                   <MapPin className="h-3 w-3" /> Centro de Distribuição - SP
                                 </div>
                               </div>
@@ -122,7 +122,7 @@ export default function CustomerArea() {
                             <div className="flex items-start gap-4">
                               <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
                               <div>
-                                <p className="font-bold text-muted-foreground text-sm">Saiu para entrega</p>
+                                <p className="font-semibold text-muted-foreground text-sm">Saiu para entrega</p>
                                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Previsto</p>
                               </div>
                             </div>
@@ -134,32 +134,32 @@ export default function CustomerArea() {
                 </Card>
 
                 {/* Order 2 - Confirmado */}
-                <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
                   <div className="flex flex-col lg:flex-row">
                     {/* Order Image/Graphic */}
-                    <div className="bg-muted w-full lg:w-1/3 min-h-[250px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="bg-muted w-full lg:w-1/3 min-h-[180px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
                       <div className="flex justify-between items-start">
-                        <span className="bg-success text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        <span className="bg-success text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
                           Confirmado
                         </span>
-                        <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                           #ORD-4491
                         </span>
                       </div>
                       <div className="py-4 flex justify-center items-center">
-                         <div className="w-32 h-32 bg-background rounded-full shadow-2xl flex items-center justify-center relative -m-4 ring-8 ring-background/50">
-                            <Package className="h-12 w-12 text-success" />
-                         </div>
+                        <div className="w-24 h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
+                          <Package className="h-10 w-10 text-success" />
+                        </div>
                       </div>
-                      <p className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                      <p className="text-center text-xs font-semibold text-muted-foreground uppercase tracking-widest">
                         Processando
                       </p>
                     </div>
-                    
+
                     {/* Order Details */}
-                    <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center">
-                      <h3 className="text-2xl font-black tracking-tighter uppercase mb-3">Moletom Premium Preto</h3>
-                      
+                    <div className="p-4 md:p-5 flex-1 flex flex-col justify-center">
+                      <h3 className="text-lg font-bold tracking-tighter uppercase mb-2">Moletom Premium Preto</h3>
+
                       <div className="space-y-4 mt-2">
                         {/* Tracking Line */}
                         <div className="relative">
@@ -168,14 +168,14 @@ export default function CustomerArea() {
                             <div className="flex items-start gap-4">
                               <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background animate-pulse"></div>
                               <div>
-                                <p className="font-bold text-foreground text-sm">Pedido Confirmado</p>
+                                <p className="font-semibold text-foreground text-sm">Pedido Confirmado</p>
                                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">05 abr 2026, 16:45</p>
                               </div>
                             </div>
                             <div className="flex items-start gap-4">
                               <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
                               <div>
-                                <p className="font-bold text-muted-foreground text-sm">Preparando para envio</p>
+                                <p className="font-semibold text-muted-foreground text-sm">Preparando para envio</p>
                                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Em breve</p>
                               </div>
                             </div>
@@ -187,23 +187,23 @@ export default function CustomerArea() {
                 </Card>
 
                 {/* Order 3 - Entregue */}
-                <Card className="border-border/50 shadow-2xl rounded-3xl overflow-hidden bg-background">
+                <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
                   <div className="grid gap-4 lg:grid-cols-[260px_minmax(0,1fr)] items-center relative">
-                    <div className="bg-primary/5 border border-primary/10 rounded-3xl p-5 text-center">
-                      <span className="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    <div className="bg-primary/5 border border-primary/10 rounded-2xl p-3 text-center">
+                      <span className="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
                         Entregue
                       </span>
-                      <div className="mt-5 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_20px_40px_rgba(15,23,42,0.12)] mx-auto">
-                        <CheckCircle2 className="h-10 w-10 text-primary" />
+                      <div className="mt-4 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-xl mx-auto">
+                        <CheckCircle2 className="h-8 w-8 text-primary" />
                       </div>
-                      <p className="mt-5 text-xs uppercase tracking-[0.25em] text-muted-foreground font-semibold">Entrega</p>
-                      <p className="text-sm font-black uppercase tracking-tight text-foreground">02 abr 2026</p>
+                      <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-semibold">Entrega</p>
+                      <p className="text-sm font-bold uppercase tracking-tight text-foreground">02 abr 2026</p>
                     </div>
 
                     <div className="p-5">
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <div>
-                          <h3 className="text-2xl font-black tracking-tight uppercase">Camiseta Básica Branca</h3>
+                          <h3 className="text-lg font-bold tracking-tight uppercase">Camiseta Básica Branca</h3>
                           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-1">#ORD-4490</p>
                         </div>
                       </div>
@@ -221,7 +221,7 @@ export default function CustomerArea() {
                     </div>
 
                     <div className="absolute top-4 right-6">
-                      <span className="bg-success/10 text-success border border-success/20 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                      <span className="bg-success/10 text-success border border-success/20 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
                         Concluído
                       </span>
                     </div>
@@ -234,45 +234,100 @@ export default function CustomerArea() {
 
       case 'orders':
         return (
-          <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <div>
-                <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-6 drop-shadow-md">Meus Pedidos</h1>
+              <h2 className="text-2xl font-bold tracking-tighter uppercase mb-2">Meus Pedidos</h2>
               <p className="text-secondary text-sm font-medium uppercase tracking-widest">Acompanhe todos os seus pedidos</p>
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
-              <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden">
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-xl font-bold text-foreground mb-2">Tênis Urban Style Blue</h3>
-                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">#ORD-4492</p>
+            <div className="space-y-6">
+              {/* Order 1 - Em Trânsito */}
+              <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="bg-muted w-full lg:w-1/3 min-h-[180px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-zinc-950 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                        Em Trânsito
+                      </span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        #ORD-4492
+                      </span>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-                      <CheckCircle2 className="h-4 w-4 text-success" />
-                      <span className="text-xs font-bold text-success uppercase tracking-widest">Entregue</span>
+                    <div className="py-4 flex justify-center items-center">
+                      <div className="w-24 h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
+                        <Package className="h-10 w-10 text-primary" />
+                      </div>
+                    </div>
+                    <p className="text-center text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
+                      Previsão: 10 de Abril
+                    </p>
+                  </div>
+                  <div className="p-4 md:p-5 flex-1 flex flex-col justify-center">
+                    <h3 className="text-lg font-bold tracking-tighter uppercase mb-2">Tênis Urban Style Blue</h3>
+                    <div className="space-y-4 mt-2">
+                      <div className="relative">
+                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                        <div className="space-y-4 relative">
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background"></div>
+                            <div>
+                              <p className="font-semibold text-foreground text-sm">Pedido Confirmado</p>
+                              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">01 abr 2026, 14:32</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background animate-pulse"></div>
+                            <div>
+                              <p className="font-semibold text-foreground text-sm">Em trânsito para sua cidade</p>
+                              <p className="text-[10px] mb-1 text-muted-foreground font-semibold uppercase tracking-widest">03 abr 2026, 09:15</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">Entregue em 15 de abril de 2026</p>
-                  <div className="text-2xl font-bold text-foreground">R$ 189,90</div>
-                </CardContent>
+                </div>
               </Card>
 
-              <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden">
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-xl font-bold text-foreground mb-2">Moletom Premium Preto</h3>
-                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">#ORD-4491</p>
+              {/* Order 2 - Confirmado */}
+              <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="bg-muted w-full lg:w-1/3 min-h-[180px] relative flex flex-col p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-success text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                        Confirmado
+                      </span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        #ORD-4491
+                      </span>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-                      <Clock className="h-4 w-4 text-primary" />
-                      <span className="text-xs font-bold text-primary uppercase tracking-widest">Em Trânsito</span>
+                    <div className="py-4 flex justify-center items-center">
+                      <div className="w-24 h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
+                        <Package className="h-10 w-10 text-success" />
+                      </div>
+                    </div>
+                    <p className="text-center text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+                      Processando
+                    </p>
+                  </div>
+                  <div className="p-4 md:p-5 flex-1 flex flex-col justify-center">
+                    <h3 className="text-lg font-bold tracking-tighter uppercase mb-2">Moletom Premium Preto</h3>
+                    <div className="space-y-4 mt-2">
+                      <div className="relative">
+                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                        <div className="space-y-4 relative">
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background animate-pulse"></div>
+                            <div>
+                              <p className="font-semibold text-foreground text-sm">Pedido Confirmado</p>
+                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">05 abr 2026, 16:45</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">Previsão: 18 de abril de 2026</p>
-                  <div className="text-2xl font-bold text-foreground">R$ 249,90</div>
-                </CardContent>
+                </div>
               </Card>
             </div>
           </div>
@@ -280,61 +335,61 @@ export default function CustomerArea() {
 
       case 'cards':
         return (
-          <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase mb-6 drop-shadow-md">Formas de Pagamento</h1>
+                <h2 className="text-2xl font-bold tracking-tighter uppercase mb-2">Formas de Pagamento</h2>
                 <p className="text-secondary text-sm font-medium uppercase tracking-widest">Gerencie seus cartões de crédito</p>
               </div>
-              <Button className="flex items-center gap-2 bg-primary hover:bg-orange-600 h-12 px-6 font-bold uppercase tracking-widest rounded-lg">
-                <Plus className="h-4 w-4" /> Adicionar Cartão
+              <Button className="flex items-center gap-2 bg-primary hover:bg-orange-600 h-10 px-4 text-xs font-semibold uppercase tracking-widest rounded-lg">
+                <Plus className="h-3.5 w-3.5" /> Adicionar Cartão
               </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="border-2 border-primary shadow-lg bg-gradient-to-br from-primary to-orange-600 rounded-2xl overflow-hidden">
-                <CardContent className="p-8 text-white">
-                  <div className="flex justify-between items-start mb-12">
-                    <CreditCard className="h-8 w-8 opacity-80" />
-                    <span className="text-xs font-bold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">Padrão</span>
+              <Card className="border-2 border-primary shadow-lg bg-gradient-to-br from-primary to-orange-600 rounded-xl overflow-hidden">
+                <CardContent className="p-6 text-white">
+                  <div className="flex justify-between items-start mb-4">
+                    <CreditCard className="h-6 w-6 opacity-80" />
+                    <span className="text-[10px] font-semibold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">Padrão</span>
                   </div>
-                  <div className="mb-8">
-                    <p className="text-sm font-medium opacity-80 mb-2">Número do Cartão</p>
-                    <p className="text-2xl font-black tracking-wider">•••• •••• •••• 4829</p>
+                  <div className="mb-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest opacity-80 mb-1">Número do Cartão</p>
+                    <p className="text-xl font-bold tracking-wider">•••• •••• •••• 4829</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs font-medium opacity-80 mb-1">Nome</p>
-                      <p className="font-bold">João Oliveira</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest opacity-80 mb-1">Nome</p>
+                      <p className="text-[13px] font-semibold uppercase tracking-tight">João Oliveira</p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium opacity-80 mb-1">Validade</p>
-                      <p className="font-bold">12/26</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest opacity-80 mb-1">Validade</p>
+                      <p className="text-[13px] font-semibold uppercase tracking-tight">12/26</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 border-muted shadow-lg bg-background rounded-2xl overflow-hidden">
-                <CardContent className="p-8">
-                  <div className="flex justify-between items-start mb-12">
-                    <CreditCard className="h-8 w-8 text-primary" />
+              <Card className="border-2 border-muted shadow-lg bg-background rounded-xl overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <CreditCard className="h-6 w-6 text-primary" />
                   </div>
-                  <div className="mb-8">
-                    <p className="text-sm font-medium text-muted-foreground mb-2">Número do Cartão</p>
-                    <p className="text-2xl font-black tracking-wider text-foreground">•••• •••• •••• 1234</p>
+                  <div className="mb-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Número do Cartão</p>
+                    <p className="text-xl font-bold tracking-wider text-foreground">•••• •••• •••• 1234</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground mb-1">Nome</p>
-                      <p className="font-bold text-foreground">João Oliveira</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Nome</p>
+                      <p className="text-[13px] font-semibold uppercase tracking-tight text-foreground">João Oliveira</p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground mb-1">Validade</p>
-                      <p className="font-bold text-foreground">08/25</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Validade</p>
+                      <p className="text-[13px] font-semibold uppercase tracking-tight text-foreground">08/25</p>
                     </div>
                   </div>
-                  <button className="flex items-center gap-2 text-destructive hover:text-red-600 font-bold text-sm uppercase tracking-widest">
+                  <button className="flex items-center gap-2 text-destructive hover:text-red-600 font-semibold text-sm uppercase tracking-widest">
                     <Trash2 className="h-4 w-4" /> Remover
                   </button>
                 </CardContent>
@@ -345,57 +400,57 @@ export default function CustomerArea() {
 
       case 'settings':
         return (
-          <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <div>
-              <h2 className="text-2xl font-black tracking-tighter uppercase mb-2 text-primary">Configurações</h2>
+              <h2 className="text-2xl font-bold tracking-tighter uppercase mb-2">Configurações</h2>
               <p className="text-secondary text-sm font-medium uppercase tracking-widest">Gerencie suas preferências e segurança</p>
             </div>
 
             {/* Informações Pessoais */}
-            <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold text-primary mb-6 flex items-center gap-3">
-                  <User className="h-6 w-6 text-primary" />
+            <Card className="border-none shadow-xl bg-background rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold mb-6 flex items-center gap-3 text-foreground">
+                  <User className="h-5 w-5 text-muted-foreground" />
                   Informações Pessoais
                 </h3>
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-sm font-semibold">Nome Completo</Label>
-                      <Input id="name" value="João Oliveira" className="h-12 border-muted-foreground/30 focus:border-primary" />
+                      <Label htmlFor="name" className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Nome Completo</Label>
+                      <Input id="name" defaultValue="João Oliveira" className="h-10 border-muted-foreground/30 focus:border-primary text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm font-semibold">E-mail</Label>
-                      <Input id="email" type="email" value="joao@exemplo.com" className="h-12 border-muted-foreground/30 focus:border-primary" />
+                      <Label htmlFor="email" className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">E-mail</Label>
+                      <Input id="email" type="email" defaultValue="joao@exemplo.com" className="h-10 border-muted-foreground/30 focus:border-primary text-sm" />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-sm font-semibold">Telefone</Label>
-                      <Input id="phone" value="(11) 98765-4321" className="h-12 border-muted-foreground/30 focus:border-primary" />
+                      <Label htmlFor="phone" className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Telefone</Label>
+                      <Input id="phone" defaultValue="(11) 98765-4321" className="h-10 border-muted-foreground/30 focus:border-primary text-sm" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="birth" className="text-sm font-semibold">Data de Nascimento</Label>
-                      <Input id="birth" type="date" value="1995-05-15" className="h-12 border-muted-foreground/30 focus:border-primary" />
+                      <Label htmlFor="birth" className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Data de Nascimento</Label>
+                      <Input id="birth" type="date" defaultValue="1995-05-15" className="h-10 border-muted-foreground/30 focus:border-primary text-sm" />
                     </div>
                   </div>
-                  <Button className="bg-primary hover:bg-orange-600 font-bold uppercase tracking-widest">Salvar Alterações</Button>
+                  <Button className="bg-primary hover:bg-orange-600 h-10 px-6 text-xs font-semibold uppercase tracking-widest rounded-lg">Salvar Alterações</Button>
                 </div>
               </CardContent>
             </Card>
 
             {/* Segurança */}
-            <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold text-primary mb-6 flex items-center gap-3">
-                  <Lock className="h-6 w-6 text-primary" />
+            <Card className="border-none shadow-xl bg-background rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold mb-6 flex items-center gap-3 text-foreground">
+                  <Lock className="h-5 w-5 text-muted-foreground" />
                   Segurança
                 </h3>
                 <div className="space-y-4">
-                  <Button variant="outline" className="w-full h-12 font-bold uppercase tracking-widest border-2 border-muted-foreground/30">
+                  <Button variant="outline" className="w-full h-10 text-xs font-semibold uppercase tracking-widest border-2 border-muted-foreground/30 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
                     Alterar Senha
                   </Button>
-                  <Button variant="outline" className="w-full h-12 font-bold uppercase tracking-widest border-2 border-muted-foreground/30">
+                  <Button variant="outline" className="w-full h-10 text-xs font-semibold uppercase tracking-widest border-2 border-muted-foreground/30 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
                     Autenticação em Duas Etapas
                   </Button>
                 </div>
@@ -403,24 +458,24 @@ export default function CustomerArea() {
             </Card>
 
             {/* Notificações */}
-            <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold text-primary mb-6 flex items-center gap-3">
-                  <Bell className="h-6 w-6 text-primary" />
+            <Card className="border-none shadow-xl bg-background rounded-xl overflow-hidden">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold mb-6 flex items-center gap-3 text-foreground">
+                  <Bell className="h-5 w-5 text-muted-foreground" />
                   Preferências de Notificações
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                    <span className="font-semibold text-foreground">Notificações por E-mail</span>
-                    <input type="checkbox" defaultChecked className="h-5 w-5 cursor-pointer" />
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                    <span className="text-xs font-semibold text-foreground uppercase tracking-tight">Notificações por E-mail</span>
+                    <input type="checkbox" defaultChecked className="h-4 w-4 cursor-pointer accent-primary" />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                    <span className="font-semibold text-foreground">Notificações de Pedidos</span>
-                    <input type="checkbox" defaultChecked className="h-5 w-5 cursor-pointer" />
+                  <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                    <span className="text-xs font-semibold text-foreground uppercase tracking-tight">Notificações de Pedidos</span>
+                    <input type="checkbox" defaultChecked className="h-4 w-4 cursor-pointer accent-primary" />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                    <span className="font-semibold text-foreground">Ofertas Exclusivas</span>
-                    <input type="checkbox" className="h-5 w-5 cursor-pointer" />
+                  <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                    <span className="text-xs font-semibold text-foreground uppercase tracking-tight">Ofertas Exclusivas</span>
+                    <input type="checkbox" className="h-4 w-4 cursor-pointer accent-primary" />
                   </div>
                 </div>
               </CardContent>
@@ -436,18 +491,17 @@ export default function CustomerArea() {
   return (
     <div className="min-h-screen bg-muted/20 pb-24">
       {/* Hero Section - Full Width */}
-      <div className="bg-zinc-950 text-white pt-16 pb-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-50 blur-3xl"></div>
-        <div className="w-full max-w-7xl mx-auto px-8 lg:px-12 relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="h-32 w-32 rounded-full bg-gradient-to-tr from-primary to-secondary p-1 shadow-2xl">
-            <div className="h-full w-full rounded-full bg-zinc-900 border-4 border-zinc-950 flex items-center justify-center">
-              <span className="text-4xl font-black tracking-widest text-white">JO</span>
+      <div className="bg-gradient-to-b from-orange-50/80 via-white to-white text-foreground pt-10 pb-20 relative overflow-hidden">
+        <div className="w-full max-w-7xl mx-auto px-8 lg:px-12 relative z-10 flex flex-col md:flex-row items-center gap-6">
+          <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-primary to-secondary p-1 shadow-xl">
+            <div className="h-full w-full rounded-full bg-background border-4 border-white flex items-center justify-center">
+              <span className="text-2xl font-bold tracking-widest text-foreground">JO</span>
             </div>
           </div>
           <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">João Oliveira</h1>
-            <p className="text-zinc-400 font-medium tracking-widest uppercase text-sm mt-3 flex items-center justify-center md:justify-start gap-2">
-              <span className="h-2 w-2 rounded-full bg-success animate-pulse"></span>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tighter uppercase text-foreground">João Oliveira</h1>
+            <p className="text-muted-foreground font-semibold tracking-widest uppercase text-[10px] mt-2 flex items-center justify-center md:justify-start gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse"></span>
               Siga VIP Member
             </p>
           </div>
@@ -455,37 +509,35 @@ export default function CustomerArea() {
       </div>
 
       {/* Main Content with Overlapping Cards */}
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 -mt-20 relative z-20">
+      <div className="w-full max-w-7xl mx-auto px-8 lg:px-12 -mt-8 relative z-20">
         <div className="flex flex-col lg:flex-row gap-10">
-          
+
           {/* THE SIDEBAR */}
           <aside className="w-full lg:w-[280px] flex-shrink-0">
             <nav className="flex flex-col space-y-3 bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-2xl z-30">
-              <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-4 px-2">Sua Conta</h3>
-              
+              <h3 className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-4 px-2">Sua Conta</h3>
+
               {sections.map((section) => {
                 const Icon = section.icon
                 const isActive = activeSection === section.id
-                
+
                 return (
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`flex items-center justify-between w-full p-4 rounded-xl font-bold hover:scale-[1.02] active:scale-95 transition-all group ${
-                      isActive 
-                        ? 'bg-neutral-950 text-white shadow-lg' 
+                    className={`flex items-center justify-between w-full p-4 rounded-xl font-semibold hover:scale-[1.02] active:scale-95 transition-all group ${isActive
+                        ? 'bg-neutral-950 text-white shadow-lg'
                         : 'hover:bg-muted text-foreground font-semibold'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-4">
-                      <Icon className={`h-5 w-5 ${isActive ? 'text-primary' : 'opacity-50 group-hover:opacity-100'}`} /> 
-                      <span className="uppercase tracking-widest text-sm">{section.label}</span>
+                      <Icon className={`h-4 w-4 ${isActive ? 'text-primary' : 'opacity-50 group-hover:opacity-100'}`} />
+                      <span className="uppercase tracking-widest text-[11px] md:text-xs font-semibold">{section.label}</span>
                     </div>
-                    <ChevronRight className={`h-4 w-4 ${
-                      isActive 
-                        ? 'opacity-50 group-hover:translate-x-1 group-hover:opacity-100' 
+                    <ChevronRight className={`h-4 w-4 ${isActive
+                        ? 'opacity-50 group-hover:translate-x-1 group-hover:opacity-100'
                         : 'opacity-0 group-hover:translate-x-1 group-hover:opacity-100'
-                    } transition-all`} />
+                      } transition-all`} />
                   </button>
                 )
               })}

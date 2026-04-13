@@ -1,4 +1,4 @@
-import { Mail, Heart, ShieldCheck } from 'lucide-react'
+import { Mail, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useState, useRef, useEffect } from 'react'
@@ -15,7 +15,7 @@ export default function NewsletterSection() {
 
   const getEmailSuggestion = (value: string) => {
     if (!value.includes("@")) return null;
-    const [local, domain] = value.split("@");
+    const [, domain] = value.split("@");
     if (!domain) return "gmail.com";
 
     const suggestion = commonDomains.find(d => d.startsWith(domain.toLowerCase()));
@@ -23,7 +23,7 @@ export default function NewsletterSection() {
     return null;
   };
 
-  const getFieldFeedback = (name: string, value: string) => {
+  const getFieldFeedback = (_name: string, value: string) => {
     if (!value) return null;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return !emailRegex.test(value) ? "Digite um e-mail válido (ex@ex.com)" : "E-mail pronto p/ inscrição";
@@ -38,7 +38,7 @@ export default function NewsletterSection() {
   const ValidationTooltip = ({ field, value }: { field: string; value: string }) => {
     const feedback = getFieldFeedback(field, value);
     const [visible, setVisible] = useState(false);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
       if (focusedField === field && feedback) {
@@ -94,7 +94,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="pt-4 pb-12 md:pt-8 md:pb-20">
+    <section className="pt-2 pb-16 md:pt-4 md:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="relative overflow-hidden rounded-2xl bg-zinc-50 border border-zinc-200 p-6 md:p-8 lg:p-10">
           <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
@@ -108,10 +108,10 @@ export default function NewsletterSection() {
                 </div>
               </div>
               <h2 className="text-lg md:text-2xl font-black text-zinc-900 tracking-tighter uppercase mb-2">
-                Ofertas Exclusivas no seu E-mail
+                Ofertas Exclusivas <br className="md:hidden" /> no seu E-mail
               </h2>
               <p className="text-zinc-600 text-xs md:text-sm lg:text-base font-medium max-w-md mx-auto lg:mx-0">
-                Fique por dentro das novidades e receba <span className="text-primary font-bold">10% OFF</span> na sua primeira compra.
+                Fique por dentro das novidades e receba <br /> <span className="text-primary font-bold">10% OFF</span> na sua primeira compra.
               </p>
             </div>
 
@@ -143,12 +143,12 @@ export default function NewsletterSection() {
                     }}
                     onChange={(e) => setEmail(e.target.value)}
                     className={cn(
-                      "bg-white border-zinc-200 text-zinc-900 placeholder:text-zinc-400 focus:border-primary transition-all h-12 rounded-xl",
+                      "bg-white border-zinc-200 text-zinc-900 text-sm md:text-base placeholder:text-zinc-400 focus:border-primary transition-all h-12 rounded-xl",
                       isFieldInvalid("email", email) && "border-destructive focus:border-destructive shadow-[0_0_0_1px_rgba(220,38,38,0.1)]"
                     )}
                   />
                   {email.includes("@") && getEmailSuggestion(email) && (
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-muted-foreground/30 pointer-events-none uppercase">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[8px] md:text-[10px] font-black text-muted-foreground/30 pointer-events-none uppercase tracking-widest">
                       Enter p/ @{getEmailSuggestion(email)}
                     </span>
                   )}
@@ -156,13 +156,13 @@ export default function NewsletterSection() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest h-12 px-10 transition-all active:scale-95 shadow-lg shadow-primary/20 rounded-xl"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs md:text-sm font-black uppercase tracking-widest h-12 px-10 transition-all active:scale-95 shadow-lg shadow-primary/20 rounded-xl"
                 >
                   {isLoading ? '...' : 'Inscrever'}
                 </Button>
               </form>
-              <div className="flex items-center justify-center sm:justify-start gap-2 mt-4 text-zinc-400 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] opacity-60">
-                <ShieldCheck className="w-3 h-3 text-primary/50" />
+              <div className="flex items-center justify-center sm:justify-start gap-2 mt-4 text-zinc-400 text-[10px] md:text-xs font-black uppercase tracking-widest opacity-60">
+                <ShieldCheck className="w-3.5 h-3.5 text-primary/50" />
                 <span>Desinscreva-se quando quiser</span>
               </div>
             </div>

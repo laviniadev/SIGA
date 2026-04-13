@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom"
 import {
-  MapPin,
-  Phone,
-  Mail,
   ChevronRight
 } from "lucide-react"
 import { FaInstagram, FaFacebook, FaTwitter } from "react-icons/fa"
@@ -36,146 +33,72 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-[#111111] text-white pt-20 pb-8 border-t border-white/5 font-inter relative left-0">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16 mb-16 items-start">
-
-          {/* Logo & Sobre */}
-          <div className="flex flex-col items-start space-y-6">
+    <footer className="w-full bg-[#111111] text-white pt-8 pb-6 border-t border-white/5 font-inter relative left-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 lg:gap-6 mb-6 pb-6 border-b border-white/5">
+          
+          {/* Logo & Slogan */}
+          <div className="space-y-4 w-full lg:w-auto text-center lg:text-left flex flex-col items-center lg:items-start">
             <Link to="/" className="flex items-start transition-all active:scale-95 group leading-none">
-              <Logo className="text-3xl leading-none" />
+              <Logo className="text-2xl leading-none" />
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs font-medium tracking-tight">
-              Definindo o futuro do street style com exclusividade, tecnologia e durabilidade.
-              Sua jornada para o amanhã começa aqui.
+            <p className="text-gray-500 text-[11px] font-medium tracking-tight uppercase max-w-[280px]">
+              O amanhã do street style hoje. Exclusividade e essência urbana.
             </p>
-            <div className="flex items-center gap-3 pt-2">
-              <a href="#" className="h-10 w-10 flex items-center justify-center rounded-none bg-white/5 border border-white/5 hover:bg-white/10 group transition-all">
-                <FaInstagram className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-              <a href="#" className="h-10 w-10 flex items-center justify-center rounded-none bg-white/5 border border-white/5 hover:bg-white/10 group transition-all">
-                <FaFacebook className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-              <a href="#" className="h-10 w-10 flex items-center justify-center rounded-none bg-white/5 border border-white/5 hover:bg-white/10 group transition-all">
-                <FaTwitter className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-            </div>
           </div>
 
-          {/* Loja */}
-          <div className="flex flex-col items-start space-y-6 pt-1">
-            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-primary leading-none h-[1.875rem] flex items-center">Nossa Loja</h4>
-            <ul className="space-y-4 w-full">
-              <li>
-                <Link to="/products" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Coleção Completa
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?category=Roupas" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Roupas Premium
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?category=Calçados" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Lifestyle Sneakers
-                </Link>
-              </li>
-              <li>
-                <Link to="/products?category=Acessórios" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Acessórios Urbanos
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Links Horizontais de Alta Usabilidade */}
+          <nav className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 sm:gap-x-8 gap-y-4 w-full lg:w-auto justify-items-center sm:justify-center">
+            <Link to="/products" className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all flex items-center gap-2 group">
+              <ChevronRight className="hidden sm:block w-4 h-4 text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+              Produtos
+            </Link>
+            <Link to="/offers" className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all flex items-center gap-2 group">
+              <ChevronRight className="hidden sm:block w-4 h-4 text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+              Ofertas
+            </Link>
+            <Link to="/trends" className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all flex items-center gap-2 group">
+              <ChevronRight className="hidden sm:block w-4 h-4 text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+              Tendências
+            </Link>
+            <Link to="/customer" className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all flex items-center gap-2 group">
+              <ChevronRight className="hidden sm:block w-4 h-4 text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+              Minha Conta
+            </Link>
+          </nav>
 
-          {/* Suporte */}
-          <div className="flex flex-col items-start space-y-6 pt-1">
-            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-primary leading-none h-[1.875rem] flex items-center">Suporte</h4>
-            <ul className="space-y-4 w-full">
-              <li>
-                <Link to="#" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Frequência de Perguntas
-                </Link>
-              </li>
-              <li>
-                <Link to="#" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Status do Pedido
-                </Link>
-              </li>
-              <li>
-                <Link to="#" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Política de Trocas
-                </Link>
-              </li>
-              <li>
-                <Link to="#" className="text-gray-400 hover:text-white transition-all text-sm font-bold flex items-center group relative hover:pl-6">
-                  <ChevronRight className="absolute left-0 h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                  Termos e Privacidade
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contato */}
-          <div className="flex flex-col items-start space-y-6 pt-1">
-            <h4 className="text-sm font-black uppercase tracking-[0.2em] text-primary leading-none h-[1.875rem] flex items-center">Contato</h4>
-            <ul className="space-y-5 w-full">
-              <li className="flex items-start gap-4 group">
-                <div className="h-10 w-10 flex items-center justify-center rounded-none bg-white/5 border border-white/5 group-hover:bg-primary transition-all">
-                  <Phone className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[10px] font-black uppercase text-gray-600 tracking-widest leading-none">Telefone</p>
-                  <p className="text-sm font-bold text-gray-200">(11) 4002-8922</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-4 group">
-                <div className="h-10 w-10 flex items-center justify-center rounded-none bg-white/5 border border-white/5 group-hover:bg-primary transition-all">
-                  <Mail className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[10px] font-black uppercase text-gray-600 tracking-widest leading-none">E-mail</p>
-                  <p className="text-sm font-bold text-gray-200">suporte@sigastore.br</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-4 group">
-                <div className="h-10 w-10 flex items-center justify-center rounded-none bg-white/5 border border-white/5 group-hover:bg-primary transition-all">
-                  <MapPin className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[10px] font-black uppercase text-gray-600 tracking-widest leading-none">Sede</p>
-                  <p className="text-sm font-bold text-gray-200">Av. Paulista, 1000 - SP</p>
-                </div>
-              </li>
-            </ul>
+          {/* Redes Sociais */}
+          <div className="flex items-center justify-center w-full lg:w-auto gap-4">
+            <a href="#" className="h-10 w-10 sm:h-9 sm:w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all">
+              <FaInstagram className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
+            </a>
+            <a href="#" className="h-10 w-10 sm:h-9 sm:w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all">
+              <FaFacebook className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
+            </a>
+            <a href="#" className="h-10 w-10 sm:h-9 sm:w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all">
+              <FaTwitter className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
+            </a>
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-[10px] uppercase font-black tracking-[0.3em] text-gray-600">
-            &copy; 2026 <span className="text-[#F59E0B]">SIGA</span> <span className="text-[#8B5CF6]">Store</span>. Todos os direitos reservados.
+        {/* Linha Final: Copyright & Pagamentos */}
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6">
+          <p className="text-[9px] md:text-[10px] uppercase font-black tracking-[0.25em] text-gray-600 text-center md:text-left">
+            © 2026 <span className="text-white">SIGASTORE</span>. Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-8">
-            <div className="hidden sm:flex items-center gap-3 grayscale opacity-40 invert hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-4" />
-              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-6" />
-              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-5" />
+          
+          <div className="flex flex-col sm:flex-row items-center gap-6 w-full md:w-auto">
+            <div className="flex items-center justify-center gap-3 opacity-60 hover:opacity-100 hover:brightness-125 transition-all duration-500 cursor-pointer">
+              <img src="/payment/visa.png" alt="Visa" className="h-8 sm:h-10 w-auto object-contain" />
+              <img src="/payment/mastercard.png" alt="Mastercard" className="h-5 sm:h-6 w-auto object-contain" />
+              <img src="/payment/pix.png" alt="Pix" className="h-4 sm:h-5 w-auto object-contain" />
             </div>
-            <p
+            <button
               onClick={scrollToTop}
-              className="text-[10px] font-black uppercase text-gray-600 tracking-widest hover:text-white transition-colors cursor-pointer leading-none"
+              className="w-full sm:w-auto py-3 sm:py-0 border-t border-white/5 sm:border-t-0 text-[10px] sm:text-[9px] font-black uppercase text-gray-600 tracking-widest hover:text-white transition-colors flex items-center justify-center gap-2 sm:gap-1 group"
             >
-              Início da Página ↑
-            </p>
+              Início da Página <span className="group-hover:-translate-y-1 transition-transform">↑</span>
+            </button>
           </div>
         </div>
       </div>

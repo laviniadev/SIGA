@@ -8,7 +8,7 @@ import { useCartStore } from "@/stores/useCartStore"
 import { toast } from "sonner"
 import { useState, useMemo, useEffect, useRef } from "react"
 import { calculateFreight, getAddressByCep } from "@/lib/freight"
-import { Loader2, Calculator } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function Checkout() {
@@ -38,7 +38,7 @@ export default function Checkout() {
   // Calcula sugestão de e-mail
   const getEmailSuggestion = (value: string) => {
     if (!value.includes("@")) return null;
-    const [local, domain] = value.split("@");
+    const [, domain] = value.split("@");
     if (!domain) return "gmail.com"; // Sugestão padrão ao digitar apenas @
     
     const suggestion = commonDomains.find(d => d.startsWith(domain.toLowerCase()));
@@ -112,7 +112,7 @@ export default function Checkout() {
   const ValidationTooltip = ({ field, value }: { field: string; value: string }) => {
     const feedback = getFieldFeedback(field, value);
     const [visible, setVisible] = useState(false);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
       if (focusedField === field && feedback) {
@@ -185,11 +185,6 @@ export default function Checkout() {
       setShippingValue(null);
     }
   }, [cep]);
-
-  const totalWeight = useMemo(() =>
-    cartItems.reduce((acc, item) => acc + (item.weight || 0.5) * item.quantity, 0),
-    [cartItems]
-  );
 
   const finalShipping = useMemo(() => {
     if (totalItems > 250) return 0;
