@@ -1,9 +1,10 @@
-import { Outlet, Link, useNavigate } from "react-router-dom"
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom"
 import { ShoppingBag, User, LogOut, Menu, X } from "lucide-react"
 import { useCartStore } from "@/stores/useCartStore"
 import { useAuthStore } from "@/stores/useAuthStore"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
+import { cn } from "@/lib/utils"
 
 import { Footer } from "@/components/public/Footer"
 import { Logo } from "@/components/public/Logo"
@@ -11,6 +12,7 @@ import { LogoutModal } from "@/components/ui/LogoutModal"
 
 export function PublicLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const cartCount = useCartStore((state) => state.cartCount());
   const { isAuthenticated, logout, user } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +20,7 @@ export function PublicLayout() {
   // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [navigate]);
+  }, [location.pathname]);
 
   // Block scroll when menu is open
   useEffect(() => {
@@ -35,6 +37,13 @@ export function PublicLayout() {
     navigate("/");
   };
 
+  const navLinks = [
+    { name: "Início", path: "/" },
+    { name: "Ofertas", path: "/offers" },
+    { name: "Tendências", path: "/trends" },
+    { name: "Produtos", path: "/products" },
+  ];
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-background overflow-x-hidden">
       <header className="fixed top-0 left-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
@@ -44,26 +53,32 @@ export function PublicLayout() {
           </Link>
           <div className="mx-6 flex flex-1 items-center justify-center space-x-4">
             <nav className="hidden md:flex items-center space-x-6 text-sm font-black uppercase tracking-[0.2em]">
-              <Link to="/" className="transition-all hover:text-primary relative group">
-                Início
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </Link>
-              <Link to="/offers" className="transition-all hover:text-primary relative group">
-                Ofertas
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </Link>
-              <Link to="/trends" className="transition-all hover:text-primary relative group">
-                Tendências
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </Link>
-              <Link to="/products" className="transition-all hover:text-primary relative group">
-                Produtos
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-              </Link>
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path;
+                return (
+                  <Link 
+                    key={link.path}
+                    to={link.path} 
+                    className={cn(
+                      "transition-all hover:text-primary relative group",
+                      isActive ? "text-primary" : "text-muted-foreground"
+                    )}
+                  >
+                    {link.name}
+                    <span className={cn(
+                      "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all",
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    )}></span>
+                  </Link>
+                );
+              })}
             </nav>
           </div>
           <div className="flex items-center space-x-5">
-            <Link to="/cart" className="text-muted-foreground hover:text-primary relative transition-all active:scale-90 p-1">
+            <Link to="/cart" className={cn(
+              "text-muted-foreground hover:text-primary relative transition-all active:scale-90 p-1",
+              location.pathname === "/cart" && "text-primary"
+            )}>
               <ShoppingBag className="h-6 w-6" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold animate-in zoom-in duration-300 shadow-md">
@@ -74,9 +89,15 @@ export function PublicLayout() {
             
             {isAuthenticated ? (
               <div className="hidden md:flex items-center space-x-4">
-                <Link to="/customer" className="text-muted-foreground hover:text-primary flex items-center gap-2 transition-all active:scale-90 group">
-                  <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                    <User className="h-5 w-5" />
+                <Link to="/customer" className={cn(
+                  "text-muted-foreground hover:text-primary flex items-center gap-2 transition-all active:scale-90 group",
+                  location.pathname === "/customer" && "text-primary"
+                )}>
+                  <div className={cn(
+                    "h-8 w-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors",
+                    location.pathname === "/customer" && "bg-primary/10"
+                  )}>
+                    <User className={cn("h-5 w-5", location.pathname === "/customer" && "text-primary")} />
                   </div>
                   <span className="hidden md:inline text-xs font-bold uppercase tracking-wider">{user?.name.split(' ')[0]}</span>
                 </Link>
@@ -90,14 +111,20 @@ export function PublicLayout() {
                 </LogoutModal>
               </div>
             ) : (
-              <Link to="/login" className="hidden md:flex text-muted-foreground hover:text-primary transition-all active:scale-90 p-1">
+              <Link to="/login" className={cn(
+                "hidden md:flex text-muted-foreground hover:text-primary transition-all active:scale-90 p-1",
+                location.pathname === "/login" && "text-primary"
+              )}>
                 <User className="h-6 w-6" />
               </Link>
             )}
 
             {/* Hamburger Button */}
             <button 
-              className="md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1"
+              className={cn(
+                "md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1",
+                isMenuOpen && "text-primary"
+              )}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
@@ -132,10 +159,22 @@ export function PublicLayout() {
             <div className="space-y-2">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/50 border-b border-primary/5 pb-1.5">Navegação</p>
                 <div className="flex flex-col space-y-4">
-                  <Link to="/" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Início</Link>
-                  <Link to="/offers" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Ofertas</Link>
-                  <Link to="/trends" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Tendências</Link>
-                  <Link to="/products" className="text-base font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">Produtos</Link>
+                  {navLinks.map((link) => {
+                    const isActive = location.pathname === link.path;
+                    return (
+                      <Link 
+                        key={link.path}
+                        to={link.path} 
+                        className={cn(
+                          "text-base font-black uppercase tracking-tighter transition-colors py-1 flex items-center justify-between group",
+                          isActive ? "text-primary" : "text-zinc-950"
+                        )}
+                      >
+                        {link.name}
+                        {isActive && <div className="h-1 w-1 rounded-full bg-primary" />}
+                      </Link>
+                    );
+                  })}
                 </div>
             </div>
 
