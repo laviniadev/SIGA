@@ -148,10 +148,12 @@ export function PublicLayout() {
                       <div className="h-7 w-7 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600"><User className="h-3.5 w-3.5" /></div>
                       Minha Área
                     </Link>
-                    <button onClick={handleLogout} className="flex items-center gap-3 text-[13px] font-black uppercase tracking-tighter text-destructive hover:opacity-80 transition-opacity text-left py-1">
-                      <div className="h-7 w-7 rounded-full bg-destructive/5 flex items-center justify-center"><LogOut className="h-3.5 w-3.5" /></div>
-                      Sair
-                    </button>
+                    <LogoutModal onConfirm={handleLogout}>
+                      <button className="flex items-center gap-3 text-[13px] font-black uppercase tracking-tighter text-destructive hover:opacity-80 transition-opacity text-left py-1 w-full">
+                        <div className="h-7 w-7 rounded-full bg-destructive/5 flex items-center justify-center"><LogOut className="h-3.5 w-3.5" /></div>
+                        Sair
+                      </button>
+                    </LogoutModal>
                   </>
                 ) : (
                   <Link to="/login" className="flex items-center gap-3 text-[13px] font-black uppercase tracking-tighter text-zinc-950 hover:text-primary transition-colors py-1">

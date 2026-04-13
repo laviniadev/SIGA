@@ -206,7 +206,7 @@ export default function ProductsList() {
           <div className="flex justify-center py-20">
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Explorando Seletiva...</p>
+              <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Carregando coleção...</p>
             </div>
           </div>
         )}
