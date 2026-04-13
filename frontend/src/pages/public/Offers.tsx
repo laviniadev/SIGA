@@ -90,7 +90,7 @@ export default function Offers() {
   const timeLeft = useCountdown(endOfPromo);
 
   // Products
-  const offerIds = ["2", "3", "4", "6", "8", "10", "1", "5", "7", "9", "11", "12"];
+  const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
   const allOffers = mockProducts.filter(p => offerIds.includes(p.id));
   const flashDeals = allOffers.slice(0, 3);
   const lastUnits = allOffers.slice(3, 6);
