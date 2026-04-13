@@ -28,7 +28,7 @@ export default function TrendsSection() {
         <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-16">
           
           {/* Ofertas Section */}
-          <div className="relative block group bg-card hover:bg-card/80 border border-foreground/10 shadow-sm hover:shadow-md md:bg-transparent md:border-transparent md:shadow-none md:hover:bg-transparent p-2 md:p-0 rounded-2xl md:rounded-none transition-all outline-none">
+          <div className="relative block group bg-card hover:bg-card/80 border border-foreground/10 shadow-sm hover:shadow-md md:bg-transparent md:border-transparent md:shadow-none md:hover:bg-transparent md:hover:shadow-none p-2 md:p-0 rounded-2xl md:rounded-none transition-all outline-none">
             
             {/* Link Invisível Mobile Overlay */}
             <Link to="/offers" className="absolute inset-0 z-10 md:hidden" aria-label="Ver todas as Ofertas" />
