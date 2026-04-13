@@ -1,4 +1,4 @@
-import { Shirt, Footprints, Watch, Tag } from "lucide-react"
+import { Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { ProductCard } from "@/components/public/ProductCard"
@@ -6,26 +6,37 @@ import { cn } from "@/lib/utils"
 
 export default function ProductsList() {
   const [activeFilter, setActiveFilter] = useState("Tudo");
+  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
 
-  // Filtragem base
+  // Filtragem e Ordenação base
   const getFilteredProducts = useCallback(() => {
-    return mockProducts.filter(p => {
+    const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
+    let filtered = mockProducts.filter(p => {
       if (activeFilter === "Tudo") return true;
-      if (activeFilter === "Promoções") return p.price < 150;
+      if (activeFilter === "Promoções") return offerIds.includes(p.id);
       return p.category === activeFilter;
     });
-  }, [activeFilter]);
 
-  // Reset ao mudar filtro
+    if (sortOrder === "asc") {
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "desc") {
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
+    }
+
+    return filtered;
+  }, [activeFilter, sortOrder]);
+
+  // Reset ao mudar filtro ou ordenação
   useEffect(() => {
     const filtered = getFilteredProducts();
     setDisplayProducts(filtered.slice(0, 10));
     setHasMore(filtered.length > 10);
-  }, [activeFilter, getFilteredProducts]);
+  }, [activeFilter, sortOrder, getFilteredProducts]);
 
   const lastProductElementRef = useCallback((node: HTMLElement | null) => {
     if (isLoading) return;
@@ -69,9 +80,57 @@ export default function ProductsList() {
               <div className="h-1 w-20 bg-primary"></div>
             </div>
             
-            <p className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-[0.2em] font-black">
-              Explorando <span className="text-primary">{getFilteredProducts().length}</span> itens exclusivos
-            </p>
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest border transition-all duration-200 active:scale-95 w-[160px] justify-between whitespace-nowrap",
+                  sortOrder !== "none"
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-muted-foreground/20 text-muted-foreground hover:border-foreground/40"
+                )}
+              >
+                <span className="flex items-center gap-1.5">
+                  <ArrowUpDown className="h-3 w-3" />
+                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : "Ordenar"}
+                </span>
+                <ChevronDown className={cn("h-3 w-3 transition-transform duration-200", isSortOpen ? "rotate-180" : "")} />
+              </button>
+
+              {isSortOpen && (
+                <div className="absolute right-0 top-full mt-1 z-30 border border-border bg-background shadow-lg w-[160px] animate-in fade-in slide-in-from-top-2 duration-150">
+                  <button
+                    onClick={() => { setSortOrder("asc"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "asc" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <ArrowUp className="h-3 w-3" />
+                    Menor preço
+                  </button>
+                  <button
+                    onClick={() => { setSortOrder("desc"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "desc" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <ArrowDown className="h-3 w-3" />
+                    Maior preço
+                  </button>
+                  {sortOrder !== "none" && (
+                    <button
+                      onClick={() => { setSortOrder("none"); setIsSortOpen(false); }}
+                      className="w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-red-50 text-red-500 transition-colors text-left border-t border-dashed"
+                    >
+                      Limpar filtro
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* New Filter Pills System */}
@@ -111,15 +170,36 @@ export default function ProductsList() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-h-[600px]">
-          {displayProducts.map((product, index) => (
-            <ProductCard 
-              key={`${product.id}-${activeFilter}`} 
-              product={product} 
-              innerRef={index === displayProducts.length - 1 ? lastProductElementRef : undefined}
-              animationDelay={`${(index % 5) * 50}ms`}
-              compact={true}
-            />
-          ))}
+          {displayProducts.map((product, index) => {
+            const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
+            const isOffer = offerIds.includes(product.id);
+            let discount = 0;
+            if (isOffer) {
+              if (product.price > 500) discount = 40;
+              else if (product.price > 200) discount = 30;
+              else if (product.price > 100) discount = 20;
+              else discount = 15;
+            }
+
+            return (
+              <div key={`${product.id}-${activeFilter}`} className="relative">
+                {isOffer && (
+                  <div className="absolute top-2 left-2 z-20">
+                    <div className="bg-orange-500 text-white px-2 py-0.5 rounded-md shadow-lg shadow-orange-500/40 transform -skew-x-6">
+                      <span className="block skew-x-6 text-[8px] sm:text-[10px] font-bold">-{discount}%</span>
+                    </div>
+                  </div>
+                )}
+                <ProductCard
+                  product={isOffer ? { ...product, price: product.price * (1 - discount / 100) } : product}
+                  originalPrice={isOffer ? product.price : undefined}
+                  innerRef={index === displayProducts.length - 1 ? lastProductElementRef : undefined}
+                  animationDelay={`${(index % 5) * 50}ms`}
+                  compact={true}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {(isLoading || hasMore) && (

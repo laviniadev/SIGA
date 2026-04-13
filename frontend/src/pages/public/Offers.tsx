@@ -1,10 +1,9 @@
 import { mockProducts } from "@/data/mockProducts"
 import { useState, useEffect } from "react"
 import { ProductCard } from "@/components/public/ProductCard"
-import { 
-  Timer, Flame, Zap, Gift, 
-  BadgePercent,
-  Package, ArrowRight
+import {
+  Timer, Flame, Zap, Gift,
+  Package, ArrowRight, ChevronDown, ChevronUp, ChevronRight
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import Carousel from "@/components/public/Carousel"
@@ -47,28 +46,50 @@ function CountdownBlock({ value, label }: { value: number; label: string }) {
 
 /* ─────────── Animated Urgency Bar ─────────── */
 function UrgencyBar() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const messages = [
-    "🔥 234 pessoas estão vendo essas ofertas agora",
-    "⚡ 12 itens vendidos na última hora",
-    "🏷️ Preços mais baixos do ano — só hoje!",
-    "🚚 Frete grátis acima de R$ 199",
+    { icon: "🔥", text: "234 pessoas vendo agora" },
+    { icon: "⚡", text: "12 itens vendidos na última hora" },
+    { icon: "🏷️", text: "Preços mais baixos do ano" },
+    { icon: "🚚", text: "Frete grátis acima de R$ 199" },
   ];
-  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => setCurrent(p => (p + 1) % messages.length), 3500);
+    const id = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % messages.length);
+    }, 4000);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="bg-orange-500 text-white overflow-hidden relative h-8 sm:h-9 flex items-center">
+    <div className="w-full h-10 md:h-12 bg-orange-500 text-white relative z-40 overflow-hidden border-b border-orange-600">
       <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.1)_50%,transparent_100%)] animate-[shimmer_2s_infinite]" />
-      <p 
-        key={current}
-        className="text-center w-full text-[9px] sm:text-[10px] md:text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-bottom-2 duration-500"
-      >
-        {messages[current]}
-      </p>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 relative z-10 h-full">
+        
+        {/* Universal View: Automatic Carousel */}
+        <div className="flex w-full h-full items-center justify-center relative overflow-hidden">
+          {messages.map((msg, idx) => {
+            const isActive = idx === activeIndex;
+            
+            return (
+              <div 
+                key={idx} 
+                className={`absolute inset-0 flex items-center justify-center gap-2 px-4 transition-opacity duration-700 ${
+                  isActive ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+                style={{ willChange: 'opacity' }}
+              >
+                <span className="text-sm md:text-base">{msg.icon}</span>
+                <h4 className="text-[10px] md:text-xs font-black uppercase tracking-[0.12em] text-white leading-tight">
+                  {msg.text}
+                </h4>
+              </div>
+            )
+          })}
+        </div>
+
+      </div>
     </div>
   );
 }
@@ -88,6 +109,7 @@ export default function Offers() {
   });
 
   const timeLeft = useCountdown(endOfPromo);
+  const [showAllUnits, setShowAllUnits] = useState(false);
 
   // Products
   const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
@@ -138,25 +160,25 @@ export default function Offers() {
       <UrgencyBar />
 
       {/* ═══════ Hero Carousel ═══════ */}
-      <section className="relative w-full overflow-hidden bg-zinc-950">
+      <section className="relative w-full overflow-hidden bg-zinc-950 leading-[0]">
         <Carousel items={carouselItems} variant="hero" autoPlayInterval={4500} />
       </section>
 
       {/* ═══════ Main Countdown Timer Strip ═══════ */}
-      <section className="relative bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 overflow-hidden">
+      <section className="relative bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 overflow-hidden -mt-px z-10">
         {/* Animated background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,255,255,0.1)_10px,rgba(255,255,255,0.1)_20px)]" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-5 md:py-6 relative z-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-2 sm:py-2.5 md:py-3 relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4">
             <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-2 mb-1">
+              <div className="flex items-center justify-center md:justify-start gap-1.5 mb-0.5">
                 <Flame className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-200 animate-pulse" />
-                <span className="text-[8px] sm:text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-orange-100">Oferta por tempo limitado</span>
+                <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-orange-100">Oferta por tempo limitado</span>
               </div>
-              <h2 className="text-white text-lg md:text-2xl font-extrabold uppercase tracking-tighter">
+              <h2 className="text-white text-base md:text-xl font-extrabold uppercase tracking-tighter">
                 A promoção acaba em:
               </h2>
             </div>
@@ -178,89 +200,134 @@ export default function Offers() {
       <div className="bg-gradient-to-b from-orange-50/80 via-white to-white">
 
         {/* ═══════ Últimas Unidades — Urgency Section ═══════ */}
-        <section className="py-6 md:py-10">
+        <section className="py-5 md:py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="flex items-center gap-3 mb-2 md:mb-8">
+            <div className="flex items-center gap-3 mb-4 md:mb-8">
               <div className="bg-red-500 p-2 rounded-lg shadow-lg shadow-red-500/30">
                 <Package className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
               </div>
-              <div className="space-y-1">
-                <h2 className="text-lg md:text-2xl font-extrabold tracking-tighter uppercase">Últimas Unidades</h2>
+              <div className="space-y-0.5">
+                <h2 className="text-base md:text-2xl font-extrabold tracking-tighter uppercase">Últimas Unidades</h2>
                 <p className="text-red-500 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest">Quando acabar, acabou!</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-              {lastUnits.map((product, i) => {
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
+              {(showAllUnits ? lastUnits : lastUnits.slice(0, 3)).map((product, i) => {
                 const unitsLeft = 5 - i;
                 const discount = getDiscount(product.price);
-                const originalPrice = (product.price / (1 - discount / 100)).toFixed(2);
 
                 return (
-                  <Link 
-                    to={`/product/${product.id}`} 
+                  <Link
+                    to={`/product/${product.id}`}
                     key={product.id}
-                    className="group flex items-center gap-4 bg-card border border-orange-200/50 dark:border-orange-900/30 hover:border-orange-400 dark:hover:border-orange-500/50 p-3 sm:p-4 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/5"
+                    className="group flex items-center gap-3 sm:gap-4 bg-card border border-orange-200/50 dark:border-orange-900/30 hover:border-orange-400 dark:hover:border-orange-500/50 p-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/5 animate-in fade-in duration-300"
                   >
-                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-muted/30 rounded-lg overflow-hidden flex-shrink-0">
-                      <img src={product.image} alt={product.name} className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-500" />
-                      <div className="absolute top-1 left-1 bg-orange-500 text-white text-[7px] sm:text-[8px] font-black px-1.5 py-0.5 rounded shadow">
+                    {/* Image */}
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-muted/30 rounded-lg overflow-hidden flex-shrink-0">
+                      <img src={product.image} alt={product.name} className="w-full h-full object-contain p-1.5 group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute top-1 left-1 bg-orange-500 text-white text-[7px] font-black px-1 py-0.5 rounded shadow">
                         -{discount}%
                       </div>
                     </div>
 
+                    {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-xs sm:text-sm uppercase tracking-tight text-foreground line-clamp-1 group-hover:text-orange-500 transition-colors">{product.name}</h3>
-                      <div className="flex items-baseline gap-2 mt-1.5">
+                      <h3 className="font-bold text-[11px] sm:text-xs md:text-sm uppercase tracking-tight text-foreground line-clamp-2 group-hover:text-orange-500 transition-colors leading-tight mb-1.5">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-baseline gap-1.5 flex-wrap">
                         <span className="text-orange-500 font-extrabold text-sm sm:text-base tabular-nums">
                           {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price * (1 - discount / 100))}
                         </span>
                         <span className="text-muted-foreground text-[9px] sm:text-[10px] line-through tabular-nums">
-                          R$ {product.price.toFixed(2)}
+                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1 mt-2">
-                        <span className="bg-red-500/10 text-red-500 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-red-500/20 animate-pulse">
+                      <div className="mt-1.5">
+                        <span className="bg-red-500/10 text-red-500 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-red-500/20">
                           🔥 {unitsLeft === 1 ? "Última unidade!" : `Restam ${unitsLeft}!`}
                         </span>
                       </div>
                     </div>
 
-                    <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-orange-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                    <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-orange-500 group-hover:translate-x-1 transition-all flex-shrink-0 hidden sm:block" />
                   </Link>
                 );
               })}
             </div>
+
+            {/* Ver mais / Ver menos button */}
+            {lastUnits.length > 3 && (
+              <div className="flex justify-center mt-5">
+                <button
+                  onClick={() => setShowAllUnits(prev => !prev)}
+                  className="group flex items-center gap-2 border-2 border-orange-500/40 text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-500/5 font-black text-[10px] md:text-xs uppercase tracking-widest px-8 py-2.5 rounded-none transition-all duration-200 active:scale-95"
+                >
+                  {showAllUnits ? (
+                    <>
+                      <ChevronUp className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5" />
+                      Ver menos
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:translate-y-0.5" />
+                      Ver mais ({lastUnits.length - 3} restantes)
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
         {/* ═══════ Coupon Banner ═══════ */}
         <section className="relative overflow-hidden">
           <div className="bg-white/70 dark:bg-card/70 backdrop-blur-sm border-y border-orange-200/50 dark:border-orange-800/30">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-5 md:py-6">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-2.5 sm:py-4 md:py-5">
+              
+              {/* Mobile: compact single row */}
+              <div className="flex items-center justify-between gap-3 sm:hidden">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="bg-orange-500 p-2 rounded-lg shadow-lg shadow-orange-500/20 flex-shrink-0">
+                    <Gift className="h-3.5 w-3.5 text-white" />
+                  </div>
+                  <p className="text-xs font-bold text-foreground uppercase tracking-tight">
+                    <span className="text-orange-500 bg-orange-100 dark:bg-orange-500/20 px-1.5 py-0.5 rounded border border-dashed border-orange-300 dark:border-orange-500/40 mr-1">SIGA50</span>
+                    — 15% OFF
+                  </p>
+                </div>
+                <button
+                  onClick={() => { navigator.clipboard.writeText("SIGA50"); toast.success("Cupom copiado!"); }}
+                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-2 rounded-none shadow-md transition-all active:scale-95 flex items-center gap-1.5"
+                >
+                  Copiar
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+
+              {/* Desktop: full row */}
+              <div className="hidden sm:flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 sm:gap-4">
                   <div className="bg-orange-500 p-2 rounded-lg shadow-lg shadow-orange-500/20 flex-shrink-0">
-                    <Gift className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
+                    <Gift className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-orange-500 mb-0.5">Cupom exclusivo</p>
-                    <p className="text-xs sm:text-sm md:text-base font-bold text-foreground uppercase tracking-tight">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-orange-500 mb-0.5">Cupom exclusivo</p>
+                    <p className="text-sm md:text-base font-bold text-foreground uppercase tracking-tight">
                       Use o código <span className="text-orange-500 bg-orange-100 dark:bg-orange-500/20 px-2 py-0.5 rounded mx-1 border border-orange-300 dark:border-orange-500/40 border-dashed">SIGA50</span> e ganhe 15% OFF
                     </p>
                   </div>
                 </div>
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText("SIGA50");
-                    toast.success("Cupom copiado com sucesso!");
-                  }}
-                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-bold text-[10px] md:text-xs uppercase tracking-widest px-5 sm:px-6 py-2 sm:py-2.5 rounded-none shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
+                <button
+                  onClick={() => { navigator.clipboard.writeText("SIGA50"); toast.success("Cupom copiado com sucesso!"); }}
+                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-none shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
                 >
                   Copiar Cupom
-                  <BadgePercent className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                  <ChevronRight className="h-3.5 w-3.5" />
                 </button>
               </div>
+
             </div>
           </div>
         </section>
@@ -298,7 +365,7 @@ export default function Offers() {
                         <span className="block skew-x-6 text-[8px] sm:text-[10px] md:text-xs font-bold">-{discount}%</span>
                       </div>
                     </div>
-                    
+
                     {/* Flash icon */}
                     <div className="absolute top-2 right-2 z-20">
                       <div className="bg-yellow-400 text-zinc-900 p-1 sm:p-1.5 rounded-full shadow-lg animate-pulse">

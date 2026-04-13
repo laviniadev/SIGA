@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Link } from "react-router-dom"
-import { ChevronRight, Shirt, Footprints, Watch, Tag } from "lucide-react"
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Shirt, Footprints, Watch, Tag } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { ProductCard } from "@/components/public/ProductCard"
 import Carousel from "@/components/public/Carousel"
@@ -11,6 +11,8 @@ import { TrustBar } from "@/components/public/TrustBar"
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("Tudo");
+  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   return (
     <div className="bg-background min-h-screen">
@@ -57,16 +59,62 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 md:gap-6 mb-2 md:mb-8">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
-                <div className="h-1 w-20 bg-primary"></div>
-              </div>
+            <div className="space-y-2">
+              <h2 className="text-lg md:text-2xl font-black tracking-tighter uppercase">Destaques da Temporada</h2>
+              <div className="h-1 w-20 bg-primary"></div>
             </div>
-            
-            <Link to="/products" className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-all flex items-center gap-2 whitespace-nowrap group">
-              Ver Coleção Completa <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+
+            {/* Sort Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest border transition-all duration-200 active:scale-95 w-[160px] justify-between whitespace-nowrap",
+                  sortOrder !== "none"
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-muted-foreground/20 text-muted-foreground hover:border-foreground/40"
+                )}
+              >
+                <span className="flex items-center gap-1.5">
+                  <ArrowUpDown className="h-3 w-3" />
+                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : "Ordenar"}
+                </span>
+                <ChevronDown className={cn("h-3 w-3 transition-transform duration-200", isSortOpen ? "rotate-180" : "")} />
+              </button>
+
+              {isSortOpen && (
+                <div className="absolute right-0 top-full mt-1 z-30 border border-border bg-background shadow-lg w-[160px] animate-in fade-in slide-in-from-top-2 duration-150">
+                  <button
+                    onClick={() => { setSortOrder("asc"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "asc" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <ArrowUp className="h-3 w-3" />
+                    Menor preço
+                  </button>
+                  <button
+                    onClick={() => { setSortOrder("desc"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "desc" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <ArrowDown className="h-3 w-3" />
+                    Maior preço
+                  </button>
+                  {sortOrder !== "none" && (
+                    <button
+                      onClick={() => { setSortOrder("none"); setIsSortOpen(false); }}
+                      className="w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-red-50 text-red-500 transition-colors text-left border-t border-dashed"
+                    >
+                      Limpar filtro
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Minimalist Filter Pills */}
@@ -111,6 +159,11 @@ export default function Home() {
                 if (activeFilter === "Tudo") return true;
                 if (activeFilter === "Promoções") return isOffer;
                 return p.category === activeFilter;
+              })
+              .sort((a, b) => {
+                if (sortOrder === "asc") return a.price - b.price;
+                if (sortOrder === "desc") return b.price - a.price;
+                return 0;
               })
               .map((product, index) => {
                 const isOffer = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"].includes(product.id);
