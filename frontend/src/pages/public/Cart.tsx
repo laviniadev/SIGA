@@ -35,49 +35,49 @@ export default function Cart() {
           </div>
         ) : (
           <>
-            <div className="md:col-span-2 space-y-3 md:space-y-4">
+            <div className="md:col-span-2 space-y-3">
               {cartItems.map((item, idx) => (
               <div 
                 key={`${item.id}-${item.selectedSize}`} 
                 className={cn(
-                  "flex flex-col sm:flex-row items-start gap-3 md:gap-4 border py-3 md:py-4 bg-card rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm hover:shadow-md transition-all duration-300 animate-in fade-in slide-in-from-left-5",
+                  "flex flex-col sm:flex-row items-start gap-3 md:gap-4 border bg-card rounded-lg md:rounded-xl p-2.5 md:p-3.5 shadow-sm hover:shadow-md transition-all duration-300 animate-in fade-in slide-in-from-left-5",
                   `delay-[${idx * 100}ms]`
                 )}
               >
-                <div className="w-32 h-32 bg-muted rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border group/img">
+                <div className="w-24 h-24 md:w-28 md:h-28 bg-muted rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border group/img">
                   <img src={item.image} alt={item.name} className="object-cover w-full h-full group-hover/img:scale-110 transition-transform duration-500" />
                 </div>
                 
                 <div className="flex flex-1 flex-col w-full h-full justify-between">
                   <div>
-                    <div className="flex justify-between items-start mb-1">
-                       <h3 className="font-bold text-lg hover:text-primary transition-all active:scale-[0.98] origin-left">
+                    <div className="flex justify-between items-start">
+                       <h3 className="font-bold text-base md:text-lg hover:text-primary transition-all active:scale-[0.98] origin-left leading-tight">
                          <Link to={`/product/${item.id}`}>{item.name}</Link>
                        </h3>
                        <Button 
                          variant="ghost" 
                          size="icon" 
-                         className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 transition-colors active:scale-90" 
+                         className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-7 w-7 transition-colors active:scale-90 flex-shrink-0" 
                          onClick={() => removeFromCart(item.id, item.selectedSize)}
                        >
                          <Trash2 className="h-4 w-4" />
                        </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{item.description}</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 line-clamp-1">{item.description}</p>
                     
                     {/* Size Selector in Cart */}
-                    <div className="mt-3 flex flex-col gap-2">
-                       <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider">Tamanho:</span>
-                       <div className="flex flex-wrap gap-1.5">
+                    <div className="mt-2 flex flex-col gap-1.5">
+                       <span className="text-[9px] font-bold uppercase text-muted-foreground tracking-wider">Tamanho:</span>
+                       <div className="flex flex-wrap gap-1">
                           {getSizesForCategory(item.category).map((s) => (
                             <button
                               key={s}
                               onClick={() => updateSize(item.id, item.selectedSize, s)}
                               className={cn(
-                                "text-[10px] h-6 w-8 rounded font-bold border transition-all active:scale-90",
+                                "text-[9px] h-5 w-7 md:h-6 md:w-8 rounded font-bold border transition-all active:scale-90",
                                 item.selectedSize === s 
                                   ? "bg-primary text-primary-foreground border-primary shadow-sm" 
-                                  : "border-muted-foreground/30 hover:border-primary text-muted-foreground"
+                                  : "border-muted-foreground/20 hover:border-primary text-muted-foreground"
                               )}
                             >
                               {s}
@@ -87,14 +87,14 @@ export default function Cart() {
                     </div>
                   </div>
                   
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-1 bg-muted/40 rounded-full px-2 py-1 border overflow-hidden">
-                      <Button variant="ghost" size="sm" className="h-6 w-6 rounded-full px-0 hover:bg-background active:scale-75 transition-transform" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}>-</Button>
-                      <span className="w-8 text-center text-xs font-bold tabular-nums">{item.quantity}</span>
-                      <Button variant="ghost" size="sm" className="h-6 w-6 rounded-full px-0 hover:bg-background active:scale-75 transition-transform" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}>+</Button>
+                  <div className="mt-3 flex items-center justify-between">
+                    <div className="flex items-center space-x-1 bg-muted/40 rounded-full px-1.5 py-0.5 border overflow-hidden">
+                      <Button variant="ghost" size="sm" className="h-5 w-5 md:h-6 md:w-6 rounded-full px-0 hover:bg-background active:scale-75 transition-transform" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity - 1)}>-</Button>
+                      <span className="w-6 md:w-8 text-center text-[10px] md:text-xs font-bold tabular-nums">{item.quantity}</span>
+                      <Button variant="ghost" size="sm" className="h-5 w-5 md:h-6 md:w-6 rounded-full px-0 hover:bg-background active:scale-75 transition-transform" onClick={() => updateQuantity(item.id, item.selectedSize, item.quantity + 1)}>+</Button>
                     </div>
                     
-                    <span className="font-extrabold text-lg text-foreground tabular-nums">
+                    <span className="font-extrabold text-base md:text-lg text-foreground tabular-nums">
                       {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)}
                     </span>
                   </div>
@@ -105,10 +105,10 @@ export default function Cart() {
           
           {/* Resumo */}
           <div className="md:col-span-1">
-            <div className="bg-card p-6 rounded-2xl border shadow-lg sticky top-24">
-              <h3 className="text-lg md:text-2xl font-black tracking-tighter uppercase border-b pb-4">Resumo da Compra</h3>
+            <div className="bg-card p-5 md:p-6 rounded-2xl border shadow-lg sticky top-24">
+              <h3 className="text-base md:text-xl font-black tracking-tighter uppercase border-b pb-3 mb-4">Resumo da Compra</h3>
               
-              <div className="space-y-4 text-sm">
+              <div className="space-y-3 text-xs md:text-sm">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Itens ({cartCount()})</span>
                   <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal())}</span>
@@ -128,27 +128,27 @@ export default function Cart() {
                   </span>
                 </div>
                 
-                <div className="pt-4 border-t flex justify-between font-extrabold text-xl text-foreground">
+                <div className="pt-3 border-t flex justify-between font-extrabold text-lg md:text-xl text-foreground">
                   <span>Total</span>
                   <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cartTotal() + (cartTotal() > 250 ? 0 : (shippingValue || 0)))}</span>
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-dashed">
+              <div className="mt-5 pt-5 border-t border-dashed">
                 <FreightCalculator 
                   weight={totalWeight} 
                   onCalculate={(val) => setShippingValue(val)}
-                  className="bg-muted/30 border-none shadow-none"
+                  className="bg-muted/30 border-none shadow-none p-3"
                 />
               </div>
               
-              <Button size="lg" className="w-full bg-primary hover:bg-orange-600 h-14 shadow-xl rounded-full text-lg mt-8 group" asChild>
+              <Button size="lg" className="w-full bg-primary hover:bg-orange-600 h-11 md:h-12 shadow-xl rounded-full text-sm md:text-base mt-6 group" asChild>
                 <Link to="/checkout">
                   Finalizar Pedido
                 </Link>
               </Button>
               
-              <p className="text-[10px] text-center text-muted-foreground mt-4 uppercase font-bold tracking-widest">
+              <p className="text-[9px] text-center text-muted-foreground mt-4 uppercase font-bold tracking-widest">
                 Compra 100% Segura
               </p>
             </div>
