@@ -75,9 +75,18 @@ function UrgencyBar() {
 
 /* ─────────── Main Offers Page ─────────── */
 export default function Offers() {
-  // Set countdown to end of today
-  const endOfPromo = new Date();
-  endOfPromo.setHours(23, 59, 59, 999);
+  const [endOfPromo] = useState(() => {
+    const savedDate = localStorage.getItem("siga_promo_end");
+    if (savedDate && new Date(savedDate) > new Date()) {
+      return new Date(savedDate);
+    }
+    const target = new Date();
+    target.setHours(target.getHours() + 5);
+    target.setMinutes(target.getMinutes() + 38);
+    localStorage.setItem("siga_promo_end", target.toISOString());
+    return target;
+  });
+
   const timeLeft = useCountdown(endOfPromo);
 
   // Products
