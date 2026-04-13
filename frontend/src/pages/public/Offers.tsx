@@ -1,5 +1,5 @@
 import { mockProducts } from "@/data/mockProducts"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect } from "react"
 import { ProductCard } from "@/components/public/ProductCard"
 import { 
   Timer, Flame, Zap, Gift, 
@@ -84,38 +84,7 @@ export default function Offers() {
   const offerIds = ["2", "3", "4", "6", "8", "10", "1", "5", "7", "9", "11", "12"];
   const allOffers = mockProducts.filter(p => offerIds.includes(p.id));
   const flashDeals = allOffers.slice(0, 3);
-  const mainOffers = allOffers.slice(0, 8);
   const lastUnits = allOffers.slice(3, 6);
-
-  const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>(mainOffers.slice(0, 8));
-  const [hasMore, setHasMore] = useState(allOffers.length > 8);
-  const [isLoading, setIsLoading] = useState(false);
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  const lastProductElementRef = useCallback((node: HTMLElement | null) => {
-    if (isLoading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) loadMore();
-    });
-    if (node) observer.current.observe(node);
-  }, [hasMore, isLoading, displayProducts.length]);
-
-  const loadMore = () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    setTimeout(() => {
-      const currentLength = displayProducts.length;
-      const nextBatch = allOffers.slice(currentLength, currentLength + 6);
-      if (nextBatch.length > 0) {
-        setDisplayProducts(prev => [...prev, ...nextBatch]);
-        setHasMore(currentLength + nextBatch.length < allOffers.length);
-      } else {
-        setHasMore(false);
-      }
-      setIsLoading(false);
-    }, 600);
-  };
 
   // Discount simulator
   const getDiscount = (price: number) => {

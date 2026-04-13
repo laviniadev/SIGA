@@ -1,14 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-interface TrendItem {
-  id: string
-  image: string
-  category: string
-  title: string
-  tag: string
-}
-
 export default function TrendsSection() {
   const offers = [
     { id: 4, tag: "OFERTA RELÂMPAGO", image: "/products/watch-1.jpg" },

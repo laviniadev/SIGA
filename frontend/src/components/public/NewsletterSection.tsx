@@ -1,4 +1,4 @@
-import { Mail, Heart, ShieldCheck } from 'lucide-react'
+import { Mail, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useState, useRef, useEffect } from 'react'
@@ -15,7 +15,7 @@ export default function NewsletterSection() {
 
   const getEmailSuggestion = (value: string) => {
     if (!value.includes("@")) return null;
-    const [local, domain] = value.split("@");
+    const [, domain] = value.split("@");
     if (!domain) return "gmail.com";
 
     const suggestion = commonDomains.find(d => d.startsWith(domain.toLowerCase()));
@@ -23,7 +23,7 @@ export default function NewsletterSection() {
     return null;
   };
 
-  const getFieldFeedback = (name: string, value: string) => {
+  const getFieldFeedback = (_name: string, value: string) => {
     if (!value) return null;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return !emailRegex.test(value) ? "Digite um e-mail válido (ex@ex.com)" : "E-mail pronto p/ inscrição";
@@ -38,7 +38,7 @@ export default function NewsletterSection() {
   const ValidationTooltip = ({ field, value }: { field: string; value: string }) => {
     const feedback = getFieldFeedback(field, value);
     const [visible, setVisible] = useState(false);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
       if (focusedField === field && feedback) {

@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom"
 import {
-  MapPin,
-  Phone,
-  Mail,
   ChevronRight
 } from "lucide-react"
 import { FaInstagram, FaFacebook, FaTwitter } from "react-icons/fa"

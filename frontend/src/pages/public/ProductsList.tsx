@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button"
-import { Filter, Shirt, Footprints, Watch, Tag, ChevronRight } from "lucide-react"
+import { Shirt, Footprints, Watch, Tag } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { ProductCard } from "@/components/public/ProductCard"
