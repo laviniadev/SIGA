@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate, useLocation } from "react-router-dom"
+import { Outlet, Link, useNavigate, useLocation, useSearchParams } from "react-router-dom"
 import { ShoppingBag, User, LogOut, Menu, X, Search } from "lucide-react"
 import { useCartStore } from "@/stores/useCartStore"
 import { useAuthStore } from "@/stores/useAuthStore"
@@ -18,6 +18,12 @@ export function PublicLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+
+  // Sincroniza a barra de pesquisa com as mudanças de URL (ex: ao clicar em limpar busca)
+  useEffect(() => {
+    setSearchQuery(searchParams.get("search") || "");
+  }, [searchParams]);
 
   // Close menu when route changes
   useEffect(() => {
