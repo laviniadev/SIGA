@@ -10,6 +10,7 @@ export interface Product {
   material: string;
   care: string[];
   weight?: number; // Peso em kg
+  salesCount?: number; // Quantidade de vendas oculto do usuário
 }
 
 export const mockProducts: Product[] = [

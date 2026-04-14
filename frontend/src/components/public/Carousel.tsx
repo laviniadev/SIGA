@@ -121,7 +121,7 @@ export default function Carousel({
                             onCtaClick(item.ctaLink);
                           }
                         }}
-                        className="inline-flex items-center justify-center h-9 md:h-12 px-6 md:px-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest rounded-none shadow-2xl active:scale-95 transition-all bg-primary hover:bg-primary/90 text-white"
+                        className="inline-flex items-center justify-center h-9 md:h-12 px-6 md:px-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest rounded-sm shadow-2xl active:scale-95 transition-all bg-primary hover:bg-primary/90 text-white"
                       >
                         {item.cta}
                       </Link>

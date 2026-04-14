@@ -45,7 +45,7 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
   return (
     <Card
       className={cn(
-        "overflow-hidden hover:shadow-2xl transition-all duration-500 border-muted flex flex-col group relative rounded-none animate-in fade-in slide-in-from-bottom-4",
+        "overflow-hidden hover:shadow-2xl transition-all duration-500 border-muted flex flex-col group relative rounded-sm animate-in fade-in slide-in-from-bottom-4",
         className
       )}
       style={{ animationDelay }}
@@ -81,7 +81,7 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
                     handleAddToCart(product, size);
                   }}
                   className={cn(
-                    "bg-white hover:bg-primary hover:text-white text-black font-black rounded-none transition-all text-[10px] shadow-xl hover:scale-110 active:scale-90",
+                    "bg-white hover:bg-primary hover:text-white text-black font-black rounded-sm transition-all text-[10px] shadow-xl hover:scale-110 active:scale-90",
                     compact ? "h-8 w-8" : "h-10 w-10"
                   )}
                 >
@@ -129,7 +129,7 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
               </div>
 
               <Button
-                className="bg-success hover:bg-green-700 text-white rounded-none h-10 w-10 p-0 flex items-center justify-center ring-offset-background transition-all active:scale-95 shadow-md"
+                className="bg-success hover:bg-green-700 text-white rounded-sm h-10 w-10 p-0 flex items-center justify-center ring-offset-background transition-all active:scale-95 shadow-md"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

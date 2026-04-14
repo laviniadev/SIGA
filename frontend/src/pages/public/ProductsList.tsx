@@ -1,4 +1,4 @@
-import { Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Search } from "lucide-react"
+import { Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Search, Star } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 export default function ProductsList() {
   const [activeFilter, setActiveFilter] = useState("Tudo");
-  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc" | "bestSales">("none");
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,6 +57,12 @@ export default function ProductsList() {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortOrder === "desc") {
       filtered = [...filtered].sort((a, b) => b.price - a.price);
+    } else if (sortOrder === "bestSales") {
+      filtered = [...filtered].sort((a, b) => {
+        const salesA = a.salesCount ?? ((Number(a.id) * 73) % 1500); 
+        const salesB = b.salesCount ?? ((Number(b.id) * 73) % 1500);
+        return salesB - salesA;
+      });
     }
 
     return filtered;
@@ -126,7 +132,7 @@ export default function ProductsList() {
               >
                 <span className="flex items-center gap-1.5">
                   <ArrowUpDown className="h-3 w-3" />
-                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : "Ordenar"}
+                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : sortOrder === "bestSales" ? "Mais vendidos" : "Ordenar"}
                 </span>
                 <ChevronDown className={cn("h-3 w-3 transition-transform duration-200", isSortOpen ? "rotate-180" : "")} />
               </button>
@@ -152,6 +158,16 @@ export default function ProductsList() {
                   >
                     <ArrowDown className="h-3 w-3" />
                     Maior preço
+                  </button>
+                  <button
+                    onClick={() => { setSortOrder("bestSales"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "bestSales" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <Star className="h-3 w-3" />
+                    Mais vendidos
                   </button>
                   {sortOrder !== "none" && (
                     <button

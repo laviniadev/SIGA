@@ -262,7 +262,7 @@ export default function Offers() {
               <div className="flex justify-center mt-5">
                 <button
                   onClick={() => setShowAllUnits(prev => !prev)}
-                  className="group flex items-center gap-2 border-2 border-orange-500/40 text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-500/5 font-black text-[10px] md:text-xs uppercase tracking-widest px-8 py-2.5 rounded-none transition-all duration-200 active:scale-95"
+                  className="group flex items-center gap-2 border-2 border-orange-500/40 text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-500/5 font-black text-[10px] md:text-xs uppercase tracking-widest px-8 py-2.5 rounded-sm transition-all duration-200 active:scale-95"
                 >
                   {showAllUnits ? (
                     <>
@@ -299,7 +299,7 @@ export default function Offers() {
                 </div>
                 <button
                   onClick={() => { navigator.clipboard.writeText("SIGA50"); toast.success("Cupom copiado!"); }}
-                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-2 rounded-none shadow-md transition-all active:scale-95 flex items-center gap-1.5"
+                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-2 rounded-sm shadow-md transition-all active:scale-95 flex items-center gap-1.5"
                 >
                   Copiar
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -321,7 +321,7 @@ export default function Offers() {
                 </div>
                 <button
                   onClick={() => { navigator.clipboard.writeText("SIGA50"); toast.success("Cupom copiado com sucesso!"); }}
-                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-none shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
+                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-sm shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
                 >
                   Copiar Cupom
                   <ChevronRight className="h-3.5 w-3.5" />

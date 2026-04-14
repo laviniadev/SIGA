@@ -321,10 +321,10 @@ export default function Product() {
 
             {/* Actions */}
             <div className="space-y-3 mb-6">
-              <Button size="lg" className="w-full h-10 md:h-11 text-xs md:text-sm font-extrabold uppercase tracking-widest rounded-none shadow-lg active:scale-95 transition-transform" onClick={handleAddToCart}>
+              <Button size="lg" className="w-full h-10 md:h-11 text-xs md:text-sm font-extrabold uppercase tracking-widest rounded-sm shadow-lg active:scale-95 transition-transform" onClick={handleAddToCart}>
                  Adicionar ao Carrinho
               </Button>
-              <Button variant="outline" size="lg" className="w-full h-10 md:h-11 text-xs md:text-sm font-extrabold uppercase tracking-widest rounded-none border-2" asChild>
+              <Button variant="outline" size="lg" className="w-full h-10 md:h-11 text-xs md:text-sm font-extrabold uppercase tracking-widest rounded-sm border-2" asChild>
                  <Link to="/checkout" onClick={handleAddToCart}>Comprar Agora</Link>
               </Button>
             </div>

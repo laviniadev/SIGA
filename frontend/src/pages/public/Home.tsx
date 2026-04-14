@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Link } from "react-router-dom"
-import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Shirt, Footprints, Watch, Tag } from "lucide-react"
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Shirt, Footprints, Watch, Tag, Star } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { ProductCard } from "@/components/public/ProductCard"
 import Carousel from "@/components/public/Carousel"
@@ -10,7 +10,7 @@ import NewsletterSection from "@/components/public/NewsletterSection"
 import { TrustBar } from "@/components/public/TrustBar"
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("Tudo");
-  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc" | "bestSales">("none");
   const [isSortOpen, setIsSortOpen] = useState(false);
 
   return (
@@ -76,7 +76,7 @@ export default function Home() {
               >
                 <span className="flex items-center gap-1.5">
                   <ArrowUpDown className="h-3 w-3" />
-                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : "Ordenar"}
+                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : sortOrder === "bestSales" ? "Mais vendidos" : "Ordenar"}
                 </span>
                 <ChevronDown className={cn("h-3 w-3 transition-transform duration-200", isSortOpen ? "rotate-180" : "")} />
               </button>
@@ -102,6 +102,16 @@ export default function Home() {
                   >
                     <ArrowDown className="h-3 w-3" />
                     Maior preço
+                  </button>
+                  <button
+                    onClick={() => { setSortOrder("bestSales"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "bestSales" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <Star className="h-3 w-3" />
+                    Mais vendidos
                   </button>
                   {sortOrder !== "none" && (
                     <button
@@ -162,6 +172,11 @@ export default function Home() {
               .sort((a, b) => {
                 if (sortOrder === "asc") return a.price - b.price;
                 if (sortOrder === "desc") return b.price - a.price;
+                if (sortOrder === "bestSales") {
+                  const salesA = a.salesCount ?? ((Number(a.id) * 73) % 1500); 
+                  const salesB = b.salesCount ?? ((Number(b.id) * 73) % 1500);
+                  return salesB - salesA;
+                }
                 return 0;
               })
               .map((product, index) => {

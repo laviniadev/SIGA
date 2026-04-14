@@ -69,13 +69,13 @@ export const Footer = () => {
 
           {/* Redes Sociais - DESKTOP ONLY */}
           <div className="hidden md:flex items-center justify-center w-full lg:w-auto gap-4 mt-2 md:mt-0">
-            <a href="#" className="h-9 w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all rounded-none">
+            <a href="#" className="h-9 w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all rounded-sm">
               <FaInstagram className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
             </a>
-            <a href="#" className="h-9 w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all rounded-none">
+            <a href="#" className="h-9 w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all rounded-sm">
               <FaFacebook className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
             </a>
-            <a href="#" className="h-9 w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all rounded-none">
+            <a href="#" className="h-9 w-9 flex items-center justify-center bg-white/5 border border-white/5 hover:bg-white/10 group transition-all rounded-sm">
               <FaTwitter className="h-4 w-4 text-gray-400 group-hover:text-white transition-colors" />
             </a>
           </div>
