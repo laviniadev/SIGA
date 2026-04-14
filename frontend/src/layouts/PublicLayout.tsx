@@ -1,5 +1,5 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom"
-import { ShoppingBag, User, LogOut, Menu, X } from "lucide-react"
+import { ShoppingBag, User, LogOut, Menu, X, Search } from "lucide-react"
 import { useCartStore } from "@/stores/useCartStore"
 import { useAuthStore } from "@/stores/useAuthStore"
 import { useState, useEffect } from "react"
@@ -16,6 +16,8 @@ export function PublicLayout() {
   const cartCount = useCartStore((state) => state.cartCount());
   const { isAuthenticated, logout, user } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Close menu when route changes
   useEffect(() => {
@@ -47,12 +49,27 @@ export function PublicLayout() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-[#111111] overflow-x-hidden">
       <header className="fixed top-0 left-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex h-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex h-16 items-center relative">
           <Link to="/" className="mr-6 flex items-center transition-all active:scale-95 hover:opacity-80">
             <Logo className="text-2xl" />
           </Link>
-          <div className="ml-6 flex flex-1 items-center justify-center space-x-4">
-            <nav className="hidden md:flex items-center space-x-6 text-sm font-black uppercase tracking-[0.2em]">
+          <div className="ml-2 lg:ml-6 flex flex-1 items-center justify-start xl:justify-center space-x-6 lg:space-x-12">
+            {/* Desktop Search */}
+            <form 
+              onSubmit={(e) => { e.preventDefault(); navigate(`/products?search=${searchQuery}`); }}
+              className="hidden md:flex items-center h-10 bg-muted/40 border border-transparent focus-within:border-primary/50 rounded-full px-4 transition-colors w-[180px] lg:w-[240px]"
+            >
+              <Search className="h-4 w-4 text-muted-foreground mr-2 shrink-0" />
+              <input
+                type="text"
+                placeholder="Procurar..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground/70 text-foreground w-full"
+              />
+            </form>
+
+            <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 text-xs lg:text-sm font-black uppercase tracking-[0.2em]">
               {navLinks.filter(link => !link.mobileOnly).map((link) => {
                 const isActive = location.pathname === link.path;
                 const isTrends = link.name === "Tendências";
@@ -62,7 +79,7 @@ export function PublicLayout() {
                     key={link.path}
                     to={link.path}
                     className={cn(
-                      "transition-all relative group",
+                      "transition-all relative group whitespace-nowrap",
                       isTrends
                         ? (isActive ? "text-secondary" : "text-muted-foreground hover:text-secondary")
                         : (isActive ? "text-primary" : "text-muted-foreground hover:text-primary")
@@ -79,10 +96,48 @@ export function PublicLayout() {
               })}
             </nav>
           </div>
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center space-x-3 md:space-x-5">
+            <div className={cn(
+              "absolute left-4 right-2 sm:left-8 sm:right-5 top-1/2 -translate-y-1/2 bg-background z-20 transition-all duration-300 md:hidden flex items-center",
+              isSearchOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+            )}>
+              <form 
+                onSubmit={(e) => { e.preventDefault(); navigate(`/products?search=${searchQuery}`); setIsSearchOpen(false); }}
+                className="flex items-center w-full h-10 bg-muted/40 border border-transparent rounded-full px-4 transition-colors"
+              >
+                <Search className="h-4 w-4 text-muted-foreground mr-2 shrink-0" />
+                <input
+                  type="text"
+                  placeholder="Procurar..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground/70 text-foreground w-full"
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setIsSearchOpen(false)}
+                  className="ml-2 p-1 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </form>
+            </div>
+
+            {/* Mobile Search Toggle Button */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className={cn(
+                "md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1 opacity-100",
+                isSearchOpen && "opacity-0 pointer-events-none"
+              )}
+            >
+              <Search className="h-6 w-6" />
+            </button>
+
             <Link to="/cart" className={cn(
-              "text-muted-foreground hover:text-primary relative transition-all active:scale-90 p-1",
-              location.pathname === "/cart" && "text-primary"
+              "text-muted-foreground hover:text-primary relative transition-all active:scale-90 p-1 opacity-100",
+              location.pathname === "/cart" && "text-primary",
+              isSearchOpen && "opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto"
             )}>
               <ShoppingBag className="h-6 w-6" />
               {cartCount > 0 && (
@@ -93,7 +148,7 @@ export function PublicLayout() {
             </Link>
 
             {isAuthenticated ? (
-              <div className="hidden md:flex items-center space-x-4">
+              <div className={cn("hidden md:flex items-center space-x-4 opacity-100 transition-opacity", isSearchOpen && "opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto")}>
                 <Link to="/customer" className={cn(
                   "text-muted-foreground hover:text-primary flex items-center gap-2 transition-all active:scale-90 group",
                   location.pathname === "/customer" && "text-primary"
@@ -126,8 +181,9 @@ export function PublicLayout() {
             {/* Hamburger Button */}
             <button
               className={cn(
-                "md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1",
-                isMenuOpen && "text-primary"
+                "md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1 opacity-100",
+                isMenuOpen && "text-primary",
+                isSearchOpen && "opacity-0 pointer-events-none"
               )}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
