@@ -45,7 +45,7 @@ export function PublicLayout() {
   ];
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-zinc-950 overflow-x-hidden">
+    <div className="flex min-h-screen w-full flex-col bg-[#111111] overflow-x-hidden">
       <header className="fixed top-0 left-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
         <div className="max-w-7xl mx-auto px-8 lg:px-12 flex h-16 items-center">
           <Link to="/" className="mr-6 flex items-center transition-all active:scale-95 hover:opacity-80">
@@ -56,14 +56,14 @@ export function PublicLayout() {
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path;
                 const isTrends = link.name === "Tendências";
-                
+
                 return (
-                  <Link 
+                  <Link
                     key={link.path}
-                    to={link.path} 
+                    to={link.path}
                     className={cn(
                       "transition-all relative group",
-                      isTrends 
+                      isTrends
                         ? (isActive ? "text-secondary" : "text-muted-foreground hover:text-secondary")
                         : (isActive ? "text-primary" : "text-muted-foreground hover:text-primary")
                     )}
@@ -91,7 +91,7 @@ export function PublicLayout() {
                 </span>
               )}
             </Link>
-            
+
             {isAuthenticated ? (
               <div className="hidden md:flex items-center space-x-4">
                 <Link to="/customer" className={cn(
@@ -107,7 +107,7 @@ export function PublicLayout() {
                   <span className="hidden md:inline text-xs font-bold uppercase tracking-wider">{user?.name.split(' ')[0]}</span>
                 </Link>
                 <LogoutModal onConfirm={handleLogout}>
-                  <button 
+                  <button
                     className="text-muted-foreground hover:text-destructive transition-all active:scale-90 cursor-pointer p-1 outline-none"
                     title="Sair"
                   >
@@ -125,7 +125,7 @@ export function PublicLayout() {
             )}
 
             {/* Hamburger Button */}
-            <button 
+            <button
               className={cn(
                 "md:hidden text-muted-foreground hover:text-primary transition-all active:scale-90 p-1",
                 isMenuOpen && "text-primary"
@@ -142,17 +142,17 @@ export function PublicLayout() {
       {/* Mobile Menu - Refeito do Zero FORA do Header */}
       <div className={`fixed inset-0 z-[100] md:hidden transition-all duration-300 ${isMenuOpen ? "visible" : "invisible"}`}>
         {/* Overlay Escuro com Fade */}
-        <div 
-          className={`absolute inset-0 bg-zinc-950/40 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0"}`} 
+        <div
+          className={`absolute inset-0 bg-zinc-950/40 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0"}`}
           onClick={() => setIsMenuOpen(false)}
         />
-        
+
         {/* Gaveta Branca Sólida com Slide */}
         <nav className={`absolute right-0 top-0 h-full w-[240px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out p-6 ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
           {/* Header da Gaveta com Logo */}
           <div className="flex items-center justify-between mb-8 pt-2">
             <Logo className="text-lg" />
-            <button 
+            <button
               onClick={() => setIsMenuOpen(false)}
               className="p-1.5 text-zinc-400 hover:text-zinc-950 transition-colors"
             >
@@ -163,27 +163,27 @@ export function PublicLayout() {
           <div className="flex flex-col space-y-7">
             <div className="space-y-2">
               <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/50 border-b border-primary/5 pb-1.5">Navegação</p>
-                <div className="flex flex-col space-y-4">
-                  {navLinks.map((link) => {
-                    const isActive = location.pathname === link.path;
-                    const isTrends = link.name === "Tendências";
-                    return (
-                      <Link 
-                        key={link.path}
-                        to={link.path} 
-                        className={cn(
-                          "text-base font-black uppercase tracking-tighter transition-colors py-1 flex items-center justify-between group",
-                          isTrends 
-                            ? (isActive ? "text-secondary" : "text-zinc-950")
-                            : (isActive ? "text-primary" : "text-zinc-950")
-                        )}
-                      >
-                        {link.name}
-                        {isActive && <div className={cn("h-1 w-1 rounded-full", isTrends ? "bg-secondary" : "bg-primary")} />}
-                      </Link>
-                    );
-                  })}
-                </div>
+              <div className="flex flex-col space-y-4">
+                {navLinks.map((link) => {
+                  const isActive = location.pathname === link.path;
+                  const isTrends = link.name === "Tendências";
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className={cn(
+                        "text-base font-black uppercase tracking-tighter transition-colors py-1 flex items-center justify-between group",
+                        isTrends
+                          ? (isActive ? "text-secondary" : "text-zinc-950")
+                          : (isActive ? "text-primary" : "text-zinc-950")
+                      )}
+                    >
+                      {link.name}
+                      {isActive && <div className={cn("h-1 w-1 rounded-full", isTrends ? "bg-secondary" : "bg-primary")} />}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="space-y-2 pt-4 border-t border-zinc-50">
@@ -214,14 +214,14 @@ export function PublicLayout() {
 
           {/* Rodapé da Gaveta */}
           <div className="mt-auto pt-8 border-t border-zinc-50">
-             <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 text-center">
-               SIGASTORE © 2026
-             </p>
+            <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 text-center">
+              SIGASTORE © 2026
+            </p>
           </div>
         </nav>
       </div>
 
-      <main className="flex-1 pt-16 min-h-screen">
+      <main className="flex-1 pt-16 bg-background">
         <Outlet />
       </main>
 

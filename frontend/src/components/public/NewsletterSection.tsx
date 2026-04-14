@@ -5,7 +5,11 @@ import { useState, useRef, useEffect } from 'react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
-export default function NewsletterSection() {
+interface NewsletterSectionProps {
+  className?: string;
+}
+
+export default function NewsletterSection({ className }: NewsletterSectionProps) {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -94,7 +98,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="pt-2 pb-16 md:pt-4 md:pb-24">
+    <section className={cn("pt-2 pb-16 md:pt-4 md:pb-24", className)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="relative overflow-hidden rounded-2xl bg-zinc-50 border border-zinc-200 p-6 md:p-8 lg:p-10">
           <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />

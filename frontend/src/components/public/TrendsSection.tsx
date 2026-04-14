@@ -28,7 +28,7 @@ export default function TrendsSection() {
             {/* Header */}
             <div className="flex justify-between items-center md:items-end px-0.5 md:px-0 mb-1.5 md:mb-8 relative z-20 pointer-events-none md:pointer-events-auto">
               <div className="space-y-0 md:space-y-2">
-                <h2 className="text-[10px] sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
+                <h2 className="text-sm sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
                   Ofertas
                 </h2>
                 <div className="hidden md:block h-1 w-16 bg-primary"></div>
@@ -77,7 +77,7 @@ export default function TrendsSection() {
             {/* Header */}
             <div className="flex justify-between items-center md:items-end px-0.5 md:px-0 mb-1.5 md:mb-8 relative z-20 pointer-events-none md:pointer-events-auto">
               <div className="space-y-0 md:space-y-2">
-                <h2 className="text-[10px] sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
+                <h2 className="text-sm sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
                    Tendências
                 </h2>
                 <div className="hidden md:block h-1 w-16 bg-secondary"></div>
