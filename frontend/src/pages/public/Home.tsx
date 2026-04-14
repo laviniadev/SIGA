@@ -8,8 +8,6 @@ import Carousel from "@/components/public/Carousel"
 import TrendsSection from "@/components/public/TrendsSection"
 import NewsletterSection from "@/components/public/NewsletterSection"
 import { TrustBar } from "@/components/public/TrustBar"
-import { UrgencyBar } from "@/components/public/UrgencyBar"
-
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("Tudo");
   const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
