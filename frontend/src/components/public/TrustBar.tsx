@@ -40,7 +40,7 @@ export const TrustBar = () => {
           {items.map((item, idx) => (
             <div 
               key={idx} 
-              className="group flex-1 flex items-center justify-center gap-4 py-2.5 px-6 relative"
+              className="group flex-1 flex items-center justify-center gap-4 h-[47px] px-6 relative"
             >
               {idx !== items.length - 1 && (
                 <div className="hidden md:block absolute right-0 h-4 w-[1px] bg-zinc-300/60" />
@@ -61,7 +61,7 @@ export const TrustBar = () => {
         </div>
 
         {/* Mobile View: Automatic Carousel */}
-        <div className="flex md:hidden h-12 items-center justify-center">
+        <div className="flex md:hidden h-[47px] items-center justify-center">
           {items.map((item, idx) => {
             const isActive = idx === activeIndex
             const isPrevious = idx === (activeIndex - 1 + items.length) % items.length

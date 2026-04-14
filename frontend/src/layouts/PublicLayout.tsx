@@ -45,7 +45,7 @@ export function PublicLayout() {
   ];
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-background overflow-x-hidden">
+    <div className="flex min-h-screen w-full flex-col bg-zinc-950 overflow-x-hidden">
       <header className="fixed top-0 left-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
         <div className="max-w-7xl mx-auto px-8 lg:px-12 flex h-16 items-center">
           <Link to="/" className="mr-6 flex items-center transition-all active:scale-95 hover:opacity-80">
@@ -55,18 +55,23 @@ export function PublicLayout() {
             <nav className="hidden md:flex items-center space-x-6 text-sm font-black uppercase tracking-[0.2em]">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path;
+                const isTrends = link.name === "Tendências";
+                
                 return (
                   <Link 
                     key={link.path}
                     to={link.path} 
                     className={cn(
-                      "transition-all hover:text-primary relative group",
-                      isActive ? "text-primary" : "text-muted-foreground"
+                      "transition-all relative group",
+                      isTrends 
+                        ? (isActive ? "text-secondary" : "text-muted-foreground hover:text-secondary")
+                        : (isActive ? "text-primary" : "text-muted-foreground hover:text-primary")
                     )}
                   >
                     {link.name}
                     <span className={cn(
-                      "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all",
+                      "absolute -bottom-1 left-0 h-0.5 transition-all",
+                      isTrends ? "bg-secondary" : "bg-primary",
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     )}></span>
                   </Link>
@@ -161,17 +166,20 @@ export function PublicLayout() {
                 <div className="flex flex-col space-y-4">
                   {navLinks.map((link) => {
                     const isActive = location.pathname === link.path;
+                    const isTrends = link.name === "Tendências";
                     return (
                       <Link 
                         key={link.path}
                         to={link.path} 
                         className={cn(
                           "text-base font-black uppercase tracking-tighter transition-colors py-1 flex items-center justify-between group",
-                          isActive ? "text-primary" : "text-zinc-950"
+                          isTrends 
+                            ? (isActive ? "text-secondary" : "text-zinc-950")
+                            : (isActive ? "text-primary" : "text-zinc-950")
                         )}
                       >
                         {link.name}
-                        {isActive && <div className="h-1 w-1 rounded-full bg-primary" />}
+                        {isActive && <div className={cn("h-1 w-1 rounded-full", isTrends ? "bg-secondary" : "bg-primary")} />}
                       </Link>
                     );
                   })}

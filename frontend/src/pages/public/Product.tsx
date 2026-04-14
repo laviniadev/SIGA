@@ -160,7 +160,7 @@ export default function Product() {
 
   return (
     <div className="bg-background min-h-screen font-sans">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 py-6">
+      <div className="max-w-7xl mx-auto px-8 lg:px-12 pt-10 pb-6">
         <Link to="/products" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary mb-6 transition-colors">
           <ChevronLeft className="mr-2 h-4 w-4" /> Voltar
         </Link>

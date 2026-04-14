@@ -15,7 +15,7 @@ export default function TrendsSection() {
   ];
 
   return (
-    <section className="pt-8 pb-6 md:pt-12 md:pb-8 bg-background">
+    <section className="pt-8 pb-6 md:pt-10 md:pb-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-16">
           

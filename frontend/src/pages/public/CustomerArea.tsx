@@ -263,154 +263,154 @@ export default function CustomerArea() {
               {/* Reuse the standardized cards here */}
               {/* Order 1 - Em Trânsito */}
               <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
-                  <div className="flex flex-col lg:flex-row">
-                    <div className="bg-muted w-full lg:w-1/3 min-h-[140px] md:min-h-[180px] relative flex flex-col p-4 md:p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
-                      <div className="flex justify-between items-start">
-                        <span className="bg-zinc-950 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                          Em Trânsito
-                        </span>
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                          #ORD-4492
-                        </span>
-                      </div>
-                      <div className="py-4 flex justify-center items-center">
-                        <div className="w-20 h-20 md:w-24 md:h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
-                          <Package className="h-8 w-8 md:h-10 md:w-10 text-primary" />
-                        </div>
-                      </div>
-                      <p className="text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                        Previsão: 10 Abr
-                      </p>
+                <div className="flex flex-col lg:flex-row">
+                  <div className="bg-muted w-full lg:w-1/3 min-h-[140px] md:min-h-[180px] relative flex flex-col p-4 md:p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-zinc-950 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                        Em Trânsito
+                      </span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        #ORD-4492
+                      </span>
                     </div>
+                    <div className="py-4 flex justify-center items-center">
+                      <div className="w-20 h-20 md:w-24 md:h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
+                        <Package className="h-8 w-8 md:h-10 md:w-10 text-primary" />
+                      </div>
+                    </div>
+                    <p className="text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                      Previsão: 10 Abr
+                    </p>
+                  </div>
 
-                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-center">
-                      <h3 className="text-base md:text-xl font-black tracking-tighter uppercase mb-4">Tênis Urban Style Blue</h3>
-                      <div className="space-y-4">
-                        <div className="relative">
-                          <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
-                          <div className="space-y-4 relative">
-                            <div className="flex items-start gap-4">
-                              <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(34,197,94,0.4)] z-10 border-3 border-background"></div>
-                              <div className="flex-1">
-                                <p className="font-semibold text-foreground text-sm uppercase">Em trânsito para sua cidade</p>
-                                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">03 abr 2026, 09:15</p>
-                                <div className="flex items-center gap-2 text-[10px] font-bold text-primary mt-1">
-                                  <MapPin className="h-3 w-3" /> Centro de Distribuição - SP
-                                </div>
+                  <div className="p-4 md:p-6 flex-1 flex flex-col justify-center">
+                    <h3 className="text-base md:text-xl font-black tracking-tighter uppercase mb-4">Tênis Urban Style Blue</h3>
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                        <div className="space-y-4 relative">
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(34,197,94,0.4)] z-10 border-3 border-background"></div>
+                            <div className="flex-1">
+                              <p className="font-semibold text-foreground text-sm uppercase">Em trânsito para sua cidade</p>
+                              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">03 abr 2026, 09:15</p>
+                              <div className="flex items-center gap-2 text-[10px] font-bold text-primary mt-1">
+                                <MapPin className="h-3 w-3" /> Centro de Distribuição - SP
                               </div>
                             </div>
-                            <div className="flex items-start gap-4">
-                              <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
-                              <div>
-                                <p className="font-semibold text-muted-foreground text-sm uppercase">Saiu para entrega</p>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Previsto</p>
-                              </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
+                            <div>
+                              <p className="font-semibold text-muted-foreground text-sm uppercase">Saiu para entrega</p>
+                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Previsto</p>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
+              </Card>
 
-                {/* Order 2 - Confirmado */}
-                <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
-                  <div className="flex flex-col lg:flex-row">
-                    <div className="bg-muted w-full lg:w-1/3 min-h-[140px] md:min-h-[180px] relative flex flex-col p-4 md:p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
-                      <div className="flex justify-between items-start">
-                        <span className="bg-success text-white px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest">
-                          Confirmado
-                        </span>
-                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                          #ORD-4491
-                        </span>
-                      </div>
-                      <div className="py-2 flex justify-center items-center">
-                        <div className="w-16 h-16 md:w-24 md:h-24 bg-background rounded-full shadow-lg flex items-center justify-center relative ring-4 ring-background/50">
-                          <Package className="h-6 w-6 md:h-10 md:w-10 text-success" />
-                        </div>
-                      </div>
-                      <p className="text-center text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-                        Processando
-                      </p>
+              {/* Order 2 - Confirmado */}
+              <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="bg-muted w-full lg:w-1/3 min-h-[140px] md:min-h-[180px] relative flex flex-col p-4 md:p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-success text-white px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest">
+                        Confirmado
+                      </span>
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                        #ORD-4491
+                      </span>
                     </div>
+                    <div className="py-2 flex justify-center items-center">
+                      <div className="w-16 h-16 md:w-24 md:h-24 bg-background rounded-full shadow-lg flex items-center justify-center relative ring-4 ring-background/50">
+                        <Package className="h-6 w-6 md:h-10 md:w-10 text-success" />
+                      </div>
+                    </div>
+                    <p className="text-center text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+                      Processando
+                    </p>
+                  </div>
 
-                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-center">
-                      <h3 className="text-base md:text-lg font-black tracking-tighter uppercase mb-2">Moletom Premium Preto</h3>
-                      <div className="space-y-4 mt-2">
-                        <div className="relative">
-                          <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
-                          <div className="space-y-4 relative">
-                            <div className="flex items-start gap-4">
-                              <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background animate-pulse"></div>
-                              <div>
-                                <p className="font-semibold text-foreground text-sm">Pedido Confirmado</p>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">05 abr 2026, 16:45</p>
-                              </div>
+                  <div className="p-4 md:p-6 flex-1 flex flex-col justify-center">
+                    <h3 className="text-base md:text-lg font-black tracking-tighter uppercase mb-2">Moletom Premium Preto</h3>
+                    <div className="space-y-4 mt-2">
+                      <div className="relative">
+                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                        <div className="space-y-4 relative">
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success shadow-[0_0_15px_rgba(52,211,153,0.5)] z-10 border-3 border-background animate-pulse"></div>
+                            <div>
+                              <p className="font-semibold text-foreground text-sm">Pedido Confirmado</p>
+                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">05 abr 2026, 16:45</p>
                             </div>
-                            <div className="flex items-start gap-4">
-                              <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
-                              <div>
-                                <p className="font-semibold text-muted-foreground text-sm">Preparando para envio</p>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Em breve</p>
-                              </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-muted z-10 border-3 border-background"></div>
+                            <div>
+                              <p className="font-semibold text-muted-foreground text-sm">Preparando para envio</p>
+                              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Em breve</p>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
+              </Card>
 
-                {/* Order 3 - Entregue */}
-                <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
-                  <div className="flex flex-col lg:flex-row">
-                    <div className="bg-muted w-full lg:w-1/3 min-h-[140px] md:min-h-[180px] relative flex flex-col p-4 md:p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
-                      <div className="flex justify-between items-start">
-                        <span className="bg-success text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                          Entregue
-                        </span>
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                          #ORD-4490
-                        </span>
-                      </div>
-                      <div className="py-4 flex justify-center items-center">
-                        <div className="w-20 h-20 md:w-24 md:h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
-                          <CheckCircle2 className="h-8 w-8 md:h-10 md:w-10 text-success" />
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-widest mb-1">Entrega</p>
-                        <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">02 abr 2026</p>
+              {/* Order 3 - Entregue */}
+              <Card className="border-border/50 shadow-2xl rounded-2xl overflow-hidden bg-background">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="bg-muted w-full lg:w-1/3 min-h-[140px] md:min-h-[180px] relative flex flex-col p-4 md:p-6 justify-between border-b lg:border-b-0 lg:border-r border-border">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-success text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                        Entregue
+                      </span>
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        #ORD-4490
+                      </span>
+                    </div>
+                    <div className="py-4 flex justify-center items-center">
+                      <div className="w-20 h-20 md:w-24 md:h-24 bg-background rounded-full shadow-2xl flex items-center justify-center relative ring-6 ring-background/50">
+                        <CheckCircle2 className="h-8 w-8 md:h-10 md:w-10 text-success" />
                       </div>
                     </div>
+                    <div className="text-center">
+                      <p className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-widest mb-1">Entrega</p>
+                      <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">02 abr 2026</p>
+                    </div>
+                  </div>
 
-                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-center">
-                      <h3 className="text-base md:text-xl font-black tracking-tighter uppercase mb-4">Camiseta Básica Branca</h3>
-                      <div className="space-y-4">
-                        <div className="relative">
-                          <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
-                          <div className="space-y-6 relative">
-                            <div className="flex items-start gap-4">
-                              <div className="mt-1 h-5 w-5 rounded-full bg-success/20 z-10 border-3 border-background"></div>
-                              <div className="flex-1">
-                                <p className="font-semibold text-muted-foreground text-sm uppercase">Confirmado</p>
-                                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">30 mar 2026, 11:20</p>
-                              </div>
+                  <div className="p-4 md:p-6 flex-1 flex flex-col justify-center">
+                    <h3 className="text-base md:text-xl font-black tracking-tighter uppercase mb-4">Camiseta Básica Branca</h3>
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <div className="absolute left-3 top-0 h-full w-0.5 bg-muted"></div>
+                        <div className="space-y-6 relative">
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success/20 z-10 border-3 border-background"></div>
+                            <div className="flex-1">
+                              <p className="font-semibold text-muted-foreground text-sm uppercase">Confirmado</p>
+                              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">30 mar 2026, 11:20</p>
                             </div>
-                            <div className="flex items-start gap-4">
-                              <div className="mt-1 h-5 w-5 rounded-full bg-success z-10 border-3 border-background shadow-[0_0_10px_rgba(34,197,94,0.4)]"></div>
-                              <div>
-                                <p className="font-semibold text-foreground text-sm uppercase">Entregue</p>
-                                <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">02 abr 2026, 14:15</p>
-                              </div>
+                          </div>
+                          <div className="flex items-start gap-4">
+                            <div className="mt-1 h-5 w-5 rounded-full bg-success z-10 border-3 border-background shadow-[0_0_10px_rgba(34,197,94,0.4)]"></div>
+                            <div>
+                              <p className="font-semibold text-foreground text-sm uppercase">Entregue</p>
+                              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-widest">02 abr 2026, 14:15</p>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
+              </Card>
             </div>
           </div>
         )
@@ -604,8 +604,8 @@ export default function CustomerArea() {
                 onClick={() => setActiveSection(section.id)}
                 className={cn(
                   "flex items-center gap-2 px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all active:scale-90",
-                  isActive 
-                    ? "bg-zinc-950 text-white shadow-lg" 
+                  isActive
+                    ? "bg-zinc-950 text-white shadow-lg"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
                 )}
               >
@@ -635,8 +635,8 @@ export default function CustomerArea() {
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
                     className={`flex items-center justify-between w-full p-4 rounded-xl font-semibold hover:scale-[1.02] active:scale-95 transition-all group ${isActive
-                        ? 'bg-neutral-950 text-white shadow-lg'
-                        : 'hover:bg-muted text-foreground font-semibold'
+                      ? 'bg-neutral-950 text-white shadow-lg'
+                      : 'hover:bg-muted text-foreground font-semibold'
                       }`}
                   >
                     <div className="flex items-center gap-4">
@@ -644,13 +644,13 @@ export default function CustomerArea() {
                       <span className="uppercase tracking-widest text-[11px] md:text-xs font-semibold">{section.label}</span>
                     </div>
                     <ChevronRight className={`h-4 w-4 ${isActive
-                        ? 'opacity-50 group-hover:translate-x-1 group-hover:opacity-100'
-                        : 'opacity-0 group-hover:translate-x-1 group-hover:opacity-100'
+                      ? 'opacity-50 group-hover:translate-x-1 group-hover:opacity-100'
+                      : 'opacity-0 group-hover:translate-x-1 group-hover:opacity-100'
                       } transition-all`} />
                   </button>
                 )
               })}
-              
+
             </nav>
           </aside>
 

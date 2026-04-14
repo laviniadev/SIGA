@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { ProductCard } from './ProductCard'
+import type { Product } from '@/data/mockProducts'
 
 interface CarouselItem {
   id: string
@@ -9,6 +11,7 @@ interface CarouselItem {
   subtitle: string
   cta: string
   ctaLink: string
+  product?: Product
 }
 
 interface CarouselProps {
@@ -16,13 +19,21 @@ interface CarouselProps {
   autoPlay?: boolean
   autoPlayInterval?: number
   variant?: 'default' | 'hero'
+  overlayClassName?: string
+  isTrends?: boolean
+  align?: 'center' | 'left'
+  onCtaClick?: (ctaLink: string) => void
 }
 
 export default function Carousel({ 
   items, 
   autoPlay = true, 
   autoPlayInterval = 5000,
-  variant = 'default'
+  variant = 'default',
+  overlayClassName,
+  isTrends = false,
+  align = 'center',
+  onCtaClick
 }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -69,49 +80,88 @@ export default function Carousel({
               index === currentIndex ? 'scale-110' : 'scale-100'
             }`}
           />
+          
+          {/* Base Gradient Overlay */}
           <div className={`absolute inset-0 ${
             isHero 
               ? 'bg-gradient-to-t from-black/80 via-black/40 to-transparent' 
               : 'bg-gradient-to-t from-black/70 via-black/30 to-transparent'
           }`} />
 
+          {/* Custom Overlay (e.g. Purple for Trends) */}
+          {overlayClassName && (
+            <div className={`absolute inset-0 ${overlayClassName}`} />
+          )}
+
           {index === currentIndex && (
-            <div className={`absolute inset-0 flex items-center justify-center p-6 md:p-8 text-center text-white ${
+            <div className={`absolute inset-0 flex items-center justify-center p-6 md:p-8 text-white ${
               !isHero && 'items-end'
             }`}>
-              <div className={`animate-in fade-in slide-in-from-bottom-8 duration-1000 max-w-4xl px-4 ${
-                isHero ? 'pt-16 sm:pt-20 md:pt-24 pb-20' : 'text-left w-full translate-y-0'
+              <div className={`relative flex ${align === 'left' || isTrends ? 'flex-col md:flex-row items-center justify-between md:pl-20 lg:pl-32 md:pr-12 lg:pr-20' : 'flex-col items-center justify-center'} max-w-7xl w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 ${
+                isHero ? 'pt-16 sm:pt-20 md:pt-24 pb-20' : 'text-left translate-y-0'
               }`}>
-                {isHero ? (
-                  <>
-                    <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black tracking-tighter leading-[1.1] mb-3 md:mb-5 drop-shadow-2xl uppercase">
-                      {item.title}
-                    </h1>
-                    <p className="text-white/90 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-lg mx-auto font-medium tracking-tight mb-5 md:mb-8 drop-shadow-md whitespace-pre-line">
-                      {item.subtitle}
-                    </p>
-                    <Link 
-                      to={item.ctaLink}
-                      className="inline-flex items-center justify-center h-9 md:h-12 px-6 md:px-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest rounded-none shadow-2xl active:scale-95 transition-all bg-primary hover:bg-primary/90 text-white"
-                    >
-                      {item.cta}
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <h3 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-black tracking-tight mb-1 md:mb-2 text-white">
-                      {item.title}
-                    </h3>
-                    <p className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-white/90 mb-2 md:mb-4 max-w-xs sm:max-w-lg lg:max-w-xl line-clamp-2 sm:line-clamp-none">
-                      {item.subtitle}
-                    </p>
-                    <Link
-                      to={item.ctaLink}
-                      className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest rounded-full px-4 md:px-6 text-[8px] md:text-[10px] h-7 md:h-9 lg:h-10"
-                    >
-                      {item.cta}
-                    </Link>
-                  </>
+                
+                {/* Text Content */}
+                <div className={`animate-in fade-in slide-in-from-bottom-8 duration-1000 ${
+                  isHero ? (align === 'left' || isTrends ? 'text-left max-w-xl' : 'text-center max-w-4xl') : 'w-full'
+                }`}>
+                  {isHero ? (
+                    <>
+                      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-black tracking-tighter leading-[1.1] mb-3 md:mb-5 drop-shadow-2xl uppercase">
+                        {item.title}
+                      </h1>
+                      <p className={`text-white/90 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-lg font-medium tracking-tight mb-5 md:mb-8 drop-shadow-md whitespace-pre-line ${(align !== 'left' && !isTrends) && 'mx-auto'}`}>
+                        {item.subtitle}
+                      </p>
+                      <Link 
+                        to={item.ctaLink}
+                        onClick={(e) => {
+                          if (onCtaClick) {
+                            e.preventDefault();
+                            onCtaClick(item.ctaLink);
+                          }
+                        }}
+                        className="inline-flex items-center justify-center h-9 md:h-12 px-6 md:px-10 text-[9px] md:text-[11px] font-black uppercase tracking-widest rounded-none shadow-2xl active:scale-95 transition-all bg-primary hover:bg-primary/90 text-white"
+                      >
+                        {item.cta}
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="text-base sm:text-lg md:text-2xl lg:text-3xl font-black tracking-tight mb-1 md:mb-2 text-white">
+                        {item.title}
+                      </h3>
+                      <p className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm text-white/90 mb-2 md:mb-4 max-w-xs sm:max-w-lg lg:max-w-xl line-clamp-2 sm:line-clamp-none">
+                        {item.subtitle}
+                      </p>
+                      <Link
+                        to={item.ctaLink}
+                        onClick={(e) => {
+                          if (onCtaClick) {
+                            e.preventDefault();
+                            onCtaClick(item.ctaLink);
+                          }
+                        }}
+                        className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest rounded-full px-4 md:px-6 text-[8px] md:text-[10px] h-7 md:h-9 lg:h-10"
+                      >
+                        {item.cta}
+                      </Link>
+                    </>
+                  )}
+                </div>
+
+                {/* Product Card Overlay - Only for Trends, integrated into the flex layout */}
+                {isTrends && isHero && item.product && (
+                  <div className="hidden md:block animate-in fade-in slide-in-from-right-8 duration-1000 delay-300 w-[150px] lg:w-[185px] shrink-0 transform rotate-2 hover:rotate-0 transition-transform ml-8">
+                    <div className="bg-white/10 backdrop-blur-xl p-2.5 border border-white/20 shadow-2xl">
+                      <p className="text-[7px] lg:text-[8px] font-black uppercase tracking-[0.3em] mb-2 text-white/70 text-center">Destaque da Coleção</p>
+                      <ProductCard 
+                        product={item.product} 
+                        compact={true}
+                        className="shadow-3xl"
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
