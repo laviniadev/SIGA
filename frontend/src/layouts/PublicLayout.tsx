@@ -38,7 +38,7 @@ export function PublicLayout() {
   };
 
   const navLinks = [
-    { name: "Início", path: "/" },
+    { name: "Início", path: "/", mobileOnly: true },
     { name: "Ofertas", path: "/offers" },
     { name: "Tendências", path: "/trends" },
     { name: "Produtos", path: "/products" },
@@ -47,13 +47,13 @@ export function PublicLayout() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-[#111111] overflow-x-hidden">
       <header className="fixed top-0 left-0 z-50 w-full border-b border-border/40 bg-background/70 backdrop-blur-md transition-all duration-500">
-        <div className="max-w-7xl mx-auto px-8 lg:px-12 flex h-16 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex h-16 items-center">
           <Link to="/" className="mr-6 flex items-center transition-all active:scale-95 hover:opacity-80">
             <Logo className="text-2xl" />
           </Link>
-          <div className="mx-6 flex flex-1 items-center justify-center space-x-4">
+          <div className="ml-6 flex flex-1 items-center justify-center space-x-4">
             <nav className="hidden md:flex items-center space-x-6 text-sm font-black uppercase tracking-[0.2em]">
-              {navLinks.map((link) => {
+              {navLinks.filter(link => !link.mobileOnly).map((link) => {
                 const isActive = location.pathname === link.path;
                 const isTrends = link.name === "Tendências";
 
@@ -104,7 +104,6 @@ export function PublicLayout() {
                   )}>
                     <User className={cn("h-5 w-5", location.pathname === "/customer" && "text-primary")} />
                   </div>
-                  <span className="hidden md:inline text-xs font-bold uppercase tracking-wider">{user?.name.split(' ')[0]}</span>
                 </Link>
                 <LogoutModal onConfirm={handleLogout}>
                   <button

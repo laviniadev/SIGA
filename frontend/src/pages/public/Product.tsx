@@ -159,18 +159,18 @@ export default function Product() {
   };
 
   return (
-    <div className="bg-background min-h-screen font-sans">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 pt-10 pb-6">
+    <div className="bg-background min-h-screen font-sans overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pt-6 pb-6">
         <Link to="/products" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary mb-6 transition-colors">
           <ChevronLeft className="mr-2 h-4 w-4" /> Voltar
         </Link>
 
         {/* Main Product Info Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 mb-12">
           
           {/* Photos Column (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col items-center space-y-4">
-            <div className="w-full max-w-[400px] space-y-4 relative">
+          <div className="lg:col-span-1 flex flex-col items-center space-y-4">
+            <div className="w-full max-w-[320px] space-y-3 relative">
               <div className="bg-muted/5 rounded-lg overflow-hidden border border-muted w-full aspect-square flex items-center justify-center relative group"
               ref={imageContainerRef}
               onMouseEnter={() => setZoomVisible(true)}
@@ -220,10 +220,10 @@ export default function Product() {
                 </button>
               </div>
 
-              {/* Zoom Popup Panel — appears to the right of the image on lg screens */}
+              {/* Zoom Popup Panel — appears to the right, clipped to viewport */}
               {zoomVisible && (
                 <div
-                  className="hidden lg:block absolute left-[calc(100%+12px)] top-0 z-50 border border-border shadow-2xl rounded-lg overflow-hidden bg-background"
+                  className="hidden lg:block absolute left-[calc(100%+12px)] top-0 z-50 border border-border shadow-2xl rounded-lg overflow-hidden bg-background max-w-[300px]"
                   style={{
                     width: ZOOM_SIZE,
                     height: ZOOM_SIZE,
@@ -254,10 +254,10 @@ export default function Product() {
           </div>
 
           {/* Details Column (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col pt-4">
-            <div className="mb-5">
+          <div className="lg:col-span-1 flex flex-col pt-2 pr-1 lg:pr-4">
+            <div className="mb-3 md:mb-5">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mb-1">{product.category}</p>
-              <h1 className="text-3xl lg:text-4xl font-bold text-foreground leading-tight tracking-tight mb-3 text-left">{product.name}</h1>
+              <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-foreground leading-tight tracking-tight mb-1.5 text-left">{product.name}</h1>
               
               <div className="flex items-center gap-3">
                 {isOffer ? (
@@ -265,13 +265,13 @@ export default function Product() {
                     <span className="text-muted-foreground text-sm font-medium line-through tabular-nums mb-1 text-left">
                       {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(originalPrice)}
                     </span>
-                    <p className="text-3xl font-black text-orange-600 flex items-center gap-3">
+                    <p className="text-base md:text-xl font-black text-orange-600 flex items-center gap-2">
                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(currentPrice)}
                        <span className="bg-orange-500 text-white px-2 py-0.5 rounded-md shadow transform -skew-x-6 text-xs inline-block ml-1">-{discount}% OFF</span>
                     </p>
                   </div>
                 ) : (
-                  <p className="text-3xl font-light text-foreground">
+                  <p className="text-base md:text-xl font-light text-foreground">
                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(currentPrice)}
                   </p>
                 )}
@@ -296,7 +296,7 @@ export default function Product() {
             </div>
 
             {/* Size Selection */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 mb-5">
               <div className="flex justify-between items-center text-xs uppercase tracking-widest font-bold">
                  <span>Tamanho</span>
                  <button className="text-primary underline hover:text-orange-600">Guia de Medidas</button>
@@ -307,7 +307,7 @@ export default function Product() {
                     key={size}
                     onClick={() => setSelectedSize(size)}
                     className={cn(
-                      "h-12 flex-1 min-w-[50px] border font-bold text-sm transition-all focus:outline-none",
+                      "h-9 md:h-10 flex-1 min-w-[44px] border font-bold text-xs md:text-sm transition-all focus:outline-none",
                       selectedSize === size
                         ? "bg-foreground text-background border-foreground shadow-[4px_4px_0px_rgba(0,0,0,0.1)]"
                         : "border-muted-foreground/30 hover:border-foreground text-foreground"
@@ -320,11 +320,11 @@ export default function Product() {
             </div>
 
             {/* Actions */}
-            <div className="space-y-4 mb-12">
-              <Button size="lg" className="w-full h-14 text-sm font-extrabold uppercase tracking-widest rounded-none shadow-lg active:scale-95 transition-transform" onClick={handleAddToCart}>
+            <div className="space-y-3 mb-6">
+              <Button size="lg" className="w-full h-10 md:h-11 text-xs md:text-sm font-extrabold uppercase tracking-widest rounded-none shadow-lg active:scale-95 transition-transform" onClick={handleAddToCart}>
                  Adicionar ao Carrinho
               </Button>
-              <Button variant="outline" size="lg" className="w-full h-14 text-sm font-extrabold uppercase tracking-widest rounded-none border-2" asChild>
+              <Button variant="outline" size="lg" className="w-full h-10 md:h-11 text-xs md:text-sm font-extrabold uppercase tracking-widest rounded-none border-2" asChild>
                  <Link to="/checkout" onClick={handleAddToCart}>Comprar Agora</Link>
               </Button>
             </div>
@@ -406,12 +406,12 @@ export default function Product() {
               </div>
             </div>
 
-            <div className="mt-8 flex items-center gap-6 py-6 border-t border-dashed">
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center text-center gap-3 sm:gap-6 py-6">
                <div className="flex items-center gap-2">
                  <ShieldCheck className="w-5 h-5 text-success" />
                  <span className="text-[10px] font-bold uppercase tracking-widest">Garantia SIGA</span>
                </div>
-               <div className="h-4 w-[1px] bg-muted border-l"></div>
+               <div className="hidden sm:block h-4 w-[1px] bg-muted border-l"></div>
                <div className="text-[10px] text-muted-foreground font-medium">Produto Original. Pagamento Criptografado.</div>
             </div>
           </div>
