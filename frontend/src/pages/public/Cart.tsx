@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Trash2, ShoppingBag, ShieldCheck } from "lucide-react"
+import { Trash2, ShoppingBag } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/stores/useCartStore"
 import { cn } from "@/lib/utils"
