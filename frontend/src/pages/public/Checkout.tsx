@@ -680,7 +680,7 @@ export default function Checkout() {
         </div>
 
         <div className="md:col-span-1">
-          <div className="bg-card p-5 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-3 sticky top-24 transform transition-transform hover:shadow-primary/5">
+          <div className="bg-card p-5 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-3 sticky top-24 transform transition-transform">
             <h3 className="text-sm md:text-base font-black tracking-tighter uppercase border-b pb-2">Resumo Final</h3>
             <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
               {cartItems.map((item) => (

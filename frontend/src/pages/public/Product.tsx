@@ -23,6 +23,7 @@ export default function Product() {
   const [activeImage, setActiveImage] = useState<string>(product?.image || "");
   const [isFavorited, setIsFavorited] = useState<boolean>(false);
   const [activeReviewImage, setActiveReviewImage] = useState<{reviewIndex: number, imgIndex: number} | null>(null);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   const sizes = product ? (product.category === "Roupas" 
     ? ["P", "M", "G", "GG"] 
@@ -315,7 +316,7 @@ export default function Product() {
               {/* Zoom Popup Panel — appears to the right, clipped to viewport */}
               {zoomVisible && (
                 <div
-                  className="hidden lg:block absolute left-[calc(100%+12px)] top-0 z-50 border border-border shadow-2xl rounded-lg overflow-hidden bg-background max-w-[300px]"
+                  className="hidden lg:block absolute left-[calc(100%+12px)] top-0 z-50 border border-border shadow-2xl rounded-lg overflow-hidden bg-background max-w-[300px] pointer-events-none"
                   style={{
                     width: ZOOM_SIZE,
                     height: ZOOM_SIZE,
@@ -346,7 +347,7 @@ export default function Product() {
           </div>
 
           {/* Details Column (5 cols) */}
-          <div className="lg:col-span-1 flex flex-col pt-2 pr-1 lg:pr-4">
+          <div className="lg:col-span-1 flex flex-col pt-2 pr-1 lg:pr-4 relative z-10">
             <div className="mb-3 md:mb-5">
               <div className="flex justify-between items-start gap-4">
                 <div>
@@ -436,7 +437,7 @@ export default function Product() {
             <div className="space-y-3 mb-5">
               <div className="flex justify-between items-center text-xs uppercase tracking-widest font-bold">
                  <span>Tamanho</span>
-                 <button className="text-primary underline hover:text-orange-600">Guia de Medidas</button>
+                 <button onClick={() => setIsSizeGuideOpen(true)} className="text-primary underline hover:text-orange-600 transition-colors">Guia de Medidas</button>
               </div>
               <div className="flex flex-wrap gap-2.5">
                 {sizes.map((size) => (
@@ -769,6 +770,104 @@ export default function Product() {
                        </button>
                     </div>
                  </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Size Guide Modal */}
+        {isSizeGuideOpen && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="absolute inset-0" onClick={() => setIsSizeGuideOpen(false)} />
+            <div className="bg-background w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative z-10 animate-in zoom-in-95 duration-300">
+              <div className="p-6 border-b flex justify-between items-center bg-muted/20">
+                <h3 className="text-lg font-black uppercase tracking-tighter">Guia de Medidas</h3>
+                <button onClick={() => setIsSizeGuideOpen(false)} className="p-1.5 hover:bg-muted rounded-full transition-colors text-muted-foreground">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <div className="p-8 overflow-y-auto max-h-[70vh]">
+                <div className="mb-8 p-4 bg-orange-50 dark:bg-orange-500/10 rounded-lg border border-orange-200 dark:border-orange-500/20">
+                  <p className="text-xs text-orange-800 dark:text-orange-200 leading-relaxed font-medium">
+                    As medidas abaixo referem-se às dimensões da peça em centímetros. Recomendamos comparar com uma peça que você já possua para garantir o melhor ajuste.
+                  </p>
+                </div>
+
+                {product.category === "Roupas" ? (
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b-2 border-muted">
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Tamanho</th>
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-center">Busto</th>
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-center">Cintura</th>
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-center">Quadril</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      {[
+                        { s: "P", b: "84-88", c: "66-70", q: "94-98" },
+                        { s: "M", b: "92-96", c: "74-78", q: "102-106" },
+                        { s: "G", b: "100-104", c: "82-86", q: "110-114" },
+                        { s: "GG", b: "108-112", c: "90-94", q: "118-122" }
+                      ].map((row) => (
+                        <tr key={row.s} className="hover:bg-muted/30 transition-colors">
+                          <td className="py-4 text-xs font-black text-secondary">{row.s}</td>
+                          <td className="py-4 text-xs text-muted-foreground text-center tabular-nums">{row.b} cm</td>
+                          <td className="py-4 text-xs text-muted-foreground text-center tabular-nums">{row.c} cm</td>
+                          <td className="py-4 text-xs text-muted-foreground text-center tabular-nums">{row.q} cm</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : product.category === "Calçados" ? (
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b-2 border-muted">
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground">BR</th>
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-center">Comprimento do Pé</th>
+                        <th className="py-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-center">Largura</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      {[
+                        { s: "38", l: "24.5 - 25.1", w: "9.5" },
+                        { s: "39", l: "25.2 - 25.8", w: "9.8" },
+                        { s: "40", l: "25.9 - 26.5", w: "10.0" },
+                        { s: "41", l: "26.6 - 27.2", w: "10.3" },
+                        { s: "42", l: "27.3 - 27.9", w: "10.5" }
+                      ].map((row) => (
+                        <tr key={row.s} className="hover:bg-muted/30 transition-colors">
+                          <td className="py-4 text-xs font-black text-secondary">{row.s}</td>
+                          <td className="py-4 text-xs text-muted-foreground text-center tabular-nums">{row.l} cm</td>
+                          <td className="py-4 text-xs text-muted-foreground text-center tabular-nums">{row.w} cm</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="py-12 text-center text-muted-foreground">
+                    <p className="text-sm">Tamanho único. Ajustável para todos os perfis.</p>
+                  </div>
+                )}
+
+                <div className="mt-10 space-y-4">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground">Como Medir?</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-1.5">
+                      <p className="text-[11px] font-bold uppercase">1. Busto/Peitoral</p>
+                      <p className="text-[10px] text-muted-foreground leading-relaxed">Contorne o busto passando pela parte mais larga com a fita métrica paralela ao chão.</p>
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-[11px] font-bold uppercase">2. Cintura</p>
+                      <p className="text-[10px] text-muted-foreground leading-relaxed">Meça a circunferência da parte mais estreita da cintura naturalmente.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 bg-muted/10 border-t flex justify-center">
+                <Button onClick={() => setIsSizeGuideOpen(false)} variant="secondary" className="px-12 text-[10px] font-black uppercase tracking-widest h-10">Entendi</Button>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Trash2, ShoppingBag, ShieldCheck } from "lucide-react"
+import { Trash2, ShoppingBag } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useCartStore } from "@/stores/useCartStore"
 import { cn } from "@/lib/utils"
@@ -120,7 +120,7 @@ export default function Cart() {
 
             {/* Resumo */}
             <div className="md:col-span-1 mb-32">
-              <div className="bg-card p-3.5 rounded-xl border shadow-lg sticky top-24">
+              <div className="bg-card p-3.5 rounded-xl border shadow-lg sticky top-24 relative z-10">
                 <h3 className="text-[10px] font-black tracking-widest uppercase border-b pb-2 mb-3 text-muted-foreground/90">Resumo da Compra</h3>
 
                 <div className="space-y-3 text-[9px]">

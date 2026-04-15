@@ -51,23 +51,25 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
       style={{ animationDelay }}
     >
       <div className="flex flex-col h-full group/card transition-all" ref={innerRef}>
-        <Link to={`/product/${product.id}`} className={cn(
-          "block relative overflow-hidden bg-muted/20",
+        <div className={cn(
+          "relative overflow-hidden bg-muted/20",
           compact ? "aspect-square" : "aspect-[4/5]"
         )}>
-          <img 
-            src={product.image} 
-            alt={product.name} 
-            className={cn(
-              "object-contain w-full h-full transition-transform duration-700 group-hover:scale-110",
-              compact ? "p-3" : "p-4"
-            )}
-          />
+          <Link to={`/product/${product.id}`} className="block w-full h-full">
+            <img 
+              src={product.image} 
+              alt={product.name} 
+              className={cn(
+                "object-contain w-full h-full transition-transform duration-700 group-hover:scale-110",
+                compact ? "p-3" : "p-4"
+              )}
+            />
+          </Link>
           
-          {/* Quick Add Overlay */}
+          {/* Quick Add Overlay - Now a sibling of the Link, not a child! */}
           <div className={cn(
             "absolute inset-0 bg-black/85 backdrop-blur-[4px] transition-all duration-500 flex flex-col items-center justify-center space-y-4 z-30",
-            showQuickAdd ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full",
+            showQuickAdd ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none",
             compact ? "p-4" : "p-6"
           )}>
             <p className="text-white font-black text-[10px] uppercase tracking-[0.2em] text-center mb-1">Tamanhos</p>
@@ -89,8 +91,19 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
                 </button>
               ))}
             </div>
+            {/* Close button for overlay */}
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowQuickAdd(false);
+              }}
+              className="mt-4 text-white/50 hover:text-white text-[10px] font-bold uppercase tracking-widest border border-white/20 px-3 py-1 rounded-full"
+            >
+              Cancelar
+            </button>
           </div>
-        </Link>
+        </div>
         
         <CardContent className={cn(
           "flex flex-col flex-grow bg-white",

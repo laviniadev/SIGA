@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { Footer } from "@/components/public/Footer"
 import { Logo } from "@/components/public/Logo"
 import { LogoutModal } from "@/components/ui/LogoutModal"
+import { ChatWidget } from "@/components/public/ChatWidget"
 
 export function PublicLayout() {
   const navigate = useNavigate();
@@ -287,6 +288,7 @@ export function PublicLayout() {
       </main>
 
       <Footer />
+      <ChatWidget />
     </div>
   )
 }

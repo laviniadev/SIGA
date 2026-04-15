@@ -6,22 +6,31 @@ import { ProductCard } from "@/components/public/ProductCard"
 import { cn } from "@/lib/utils"
 
 export default function ProductsList() {
-  const [activeFilter, setActiveFilter] = useState("Tudo");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const searchTerm = searchParams.get("search")?.toLowerCase() || "";
+  const categoryParam = searchParams.get("category");
+
+  const [activeFilter, setActiveFilter] = useState(categoryParam || "Tudo");
   const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc" | "bestSales">("none");
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const searchTerm = searchParams.get("search")?.toLowerCase() || "";
 
   const prevSearchRef = useRef(searchTerm);
 
+  // Sync with URL params
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveFilter(categoryParam);
+    }
+  }, [categoryParam]);
+
   // Se o usuário faz uma nova busca, reseta o filtro de categoria para 'Tudo', prevenindo resultados falsamente negativos
   useEffect(() => {
-    if (searchTerm !== prevSearchRef.current) {
+    if (searchTerm && searchTerm !== prevSearchRef.current) {
       setActiveFilter("Tudo");
       prevSearchRef.current = searchTerm;
     }
