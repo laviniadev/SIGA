@@ -5,7 +5,7 @@ import {
   Timer, Flame, Zap, Gift,
   Package, ArrowRight, ChevronDown, ChevronUp, ChevronRight
 } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Carousel from "@/components/public/Carousel"
 import NewsletterSection from "@/components/public/NewsletterSection"
 import { toast } from "sonner"
@@ -95,6 +95,7 @@ function UrgencyBar() {
 
 /* ─────────── Main Offers Page ─────────── */
 export default function Offers() {
+  const navigate = useNavigate();
   const [endOfPromo] = useState(() => {
     const savedDate = localStorage.getItem("siga_promo_end");
     if (savedDate && new Date(savedDate) > new Date()) {
@@ -109,6 +110,18 @@ export default function Offers() {
 
   const timeLeft = useCountdown(endOfPromo);
   const [showAllUnits, setShowAllUnits] = useState(false);
+
+  // Handlers
+  const handleCtaClick = (link: string) => {
+    // If it's the coupon slide
+    if (link.includes("offer-hero-2") || link.toLowerCase().includes("cupom")) {
+      navigator.clipboard.writeText("SIGA50");
+      toast.success("Cupom copiado com sucesso!");
+      return;
+    }
+    // Standard navigation
+    navigate(link);
+  };
 
   // Products
   const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
@@ -140,7 +153,7 @@ export default function Offers() {
       title: "CÓDIGO: SIGA50",
       subtitle: "Use o cupom na finalização e ganhe 50% de desconto extra. Válido apenas hoje — corra!",
       cta: "Usar Cupom",
-      ctaLink: `/product/${allOffers[1]?.id || "3"}`
+      ctaLink: "cupom" // Special handle
     },
     {
       id: "offer-hero-3",
@@ -160,7 +173,7 @@ export default function Offers() {
 
       {/* ═══════ Hero Carousel ═══════ */}
       <section className="relative w-full overflow-hidden bg-zinc-950 leading-[0]">
-        <Carousel items={carouselItems} variant="hero" autoPlayInterval={4500} />
+        <Carousel items={carouselItems} variant="hero" autoPlayInterval={4500} onCtaClick={handleCtaClick} />
       </section>
 
       {/* ═══════ Main Countdown Timer Strip ═══════ */}
