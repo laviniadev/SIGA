@@ -4,14 +4,15 @@ import type { Product } from '../data/mockProducts';
 export interface CartItem extends Product {
   quantity: number;
   selectedSize: string;
+  selectedColor: string;
 }
 
 interface CartState {
   cartItems: CartItem[];
-  addToCart: (product: Product, selectedSize: string, quantity?: number) => void;
-  removeFromCart: (productId: string, size: string) => void;
-  updateQuantity: (productId: string, size: string, quantity: number) => void;
-  updateSize: (productId: string, oldSize: string, newSize: string) => void;
+  addToCart: (product: Product, selectedSize: string, selectedColor: string, quantity?: number) => void;
+  removeFromCart: (productId: string, size: string, color: string) => void;
+  updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
+  updateSize: (productId: string, oldSize: string, color: string, newSize: string) => void;
   clearCart: () => void;
   cartTotal: () => number;
   cartCount: () => number;
@@ -20,10 +21,10 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   cartItems: [],
 
-  addToCart: (product, selectedSize, quantity = 1) => {
+  addToCart: (product, selectedSize, selectedColor, quantity = 1) => {
     set((state) => {
       const existingItemIndex = state.cartItems.findIndex(
-        (item) => item.id === product.id && item.selectedSize === selectedSize
+        (item) => item.id === product.id && item.selectedSize === selectedSize && item.selectedColor === selectedColor
       );
 
       if (existingItemIndex !== -1) {
@@ -35,39 +36,39 @@ export const useCartStore = create<CartState>((set, get) => ({
         return { cartItems: updatedItems };
       }
 
-      return { cartItems: [...state.cartItems, { ...product, quantity, selectedSize }] };
+      return { cartItems: [...state.cartItems, { ...product, quantity, selectedSize, selectedColor }] };
     });
   },
 
-  removeFromCart: (productId, size) => {
+  removeFromCart: (productId, size, color) => {
     set((state) => ({
       cartItems: state.cartItems.filter(
-        (item) => !(item.id === productId && item.selectedSize === size)
+        (item) => !(item.id === productId && item.selectedSize === size && item.selectedColor === color)
       ),
     }));
   },
 
-  updateQuantity: (productId, size, quantity) => {
+  updateQuantity: (productId, size, color, quantity) => {
     set((state) => ({
       cartItems: state.cartItems.map((item) =>
-        item.id === productId && item.selectedSize === size
+        item.id === productId && item.selectedSize === size && item.selectedColor === color
           ? { ...item, quantity: Math.max(1, quantity) }
           : item
       ),
     }));
   },
 
-  updateSize: (productId, oldSize, newSize) => {
+  updateSize: (productId, oldSize, color, newSize) => {
     set((state) => {
       // Check if the new size already exists in the cart for this product
       const targetItemIndex = state.cartItems.findIndex(
-        (item) => item.id === productId && item.selectedSize === oldSize
+        (item) => item.id === productId && item.selectedSize === oldSize && item.selectedColor === color
       );
       
       if (targetItemIndex === -1) return state;
 
       const existingSiblingIndex = state.cartItems.findIndex(
-        (item) => item.id === productId && item.selectedSize === newSize
+        (item) => item.id === productId && item.selectedSize === newSize && item.selectedColor === color
       );
 
       const updatedItems = [...state.cartItems];

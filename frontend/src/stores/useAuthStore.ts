@@ -11,6 +11,20 @@ export interface PaymentCard {
   isDefault: boolean
 }
 
+export interface PersonalInfo {
+  name: string
+  email: string
+  phone: string
+  birth: string
+  cpf: string
+  cep: string
+  endereco: string
+  numero: string
+  bairro: string
+  cidade: string
+  estado: string
+}
+
 interface AuthState {
   user: User | null
   isAuthenticated: boolean
@@ -20,6 +34,8 @@ interface AuthState {
   addCard: (card: PaymentCard) => void
   removeCard: (id: string) => void
   updateCard: (card: PaymentCard) => void
+  personalInfo: PersonalInfo
+  updatePersonalInfo: (info: Partial<PersonalInfo>) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -27,6 +43,19 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
+      personalInfo: {
+        name: "João Oliveira",
+        email: "joao@exemplo.com",
+        phone: "(11) 98765-4321",
+        birth: "1995-05-15",
+        cpf: "",
+        cep: "",
+        endereco: "",
+        numero: "",
+        bairro: "",
+        cidade: "",
+        estado: ""
+      },
       cards: [
         { id: '1', number: '•••• •••• •••• 4829', name: 'João Oliveira', expiry: '12/26', isDefault: true },
         { id: '2', number: '•••• •••• •••• 1234', name: 'João Oliveira', expiry: '08/25', isDefault: false }
@@ -86,6 +115,12 @@ export const useAuthStore = create<AuthState>()(
             cards: updatedCards.map(c => c.id === updatedCard.id ? updatedCard : c)
           };
         });
+      },
+
+      updatePersonalInfo: (info) => {
+        set((state) => ({
+          personalInfo: { ...state.personalInfo, ...info }
+        }));
       },
     }),
     {

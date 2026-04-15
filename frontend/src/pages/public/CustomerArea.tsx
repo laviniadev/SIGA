@@ -7,6 +7,9 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuthStore } from "@/stores/useAuthStore"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
+import { useEffect, useRef } from "react"
+import { getAddressByCep } from "@/lib/freight"
 
 type Section = 'overview' | 'orders' | 'cards' | 'settings'
 
@@ -14,7 +17,142 @@ export default function CustomerArea() {
   const navigate = useNavigate();
 
   const [activeSection, setActiveSection] = useState<Section>('overview')
-  const { cards, addCard, removeCard, updateCard } = useAuthStore()
+  const { cards, addCard, removeCard, updateCard, personalInfo, updatePersonalInfo } = useAuthStore()
+
+  const [profileName, setProfileName] = useState(personalInfo?.name || '')
+  const [profileEmail, setProfileEmail] = useState(personalInfo?.email || '')
+  const [profilePhone, setProfilePhone] = useState(personalInfo?.phone || '')
+  const [profileBirth, setProfileBirth] = useState(personalInfo?.birth || '')
+  const [profileCpf, setProfileCpf] = useState(personalInfo?.cpf || '')
+  const [profileCep, setProfileCep] = useState(personalInfo?.cep || '')
+  const [profileEndereco, setProfileEndereco] = useState(personalInfo?.endereco || '')
+  const [profileNumero, setProfileNumero] = useState(personalInfo?.numero || '')
+  const [profileBairro, setProfileBairro] = useState(personalInfo?.bairro || '')
+  const [profileCidade, setProfileCidade] = useState(personalInfo?.cidade || '')
+  const [profileEstado, setProfileEstado] = useState(personalInfo?.estado || '')
+
+  const [focusedField, setFocusedField] = useState<string | null>(null)
+
+  // Validation Logic (copied from Checkout)
+  const isValidCPF = (cpf: string) => {
+    cpf = cpf.replace(/\D/g, "");
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    let sum = 0;
+    let rest;
+    for (let i = 1; i <= 9; i++) sum = sum + parseInt(cpf.substring(i-1, i)) * (11 - i);
+    rest = (sum * 10) % 11;
+    if ((rest === 10) || (rest === 11)) rest = 0;
+    if (rest !== parseInt(cpf.substring(9, 10))) return false;
+    sum = 0;
+    for (let i = 1; i <= 10; i++) sum = sum + parseInt(cpf.substring(i-1, i)) * (12 - i);
+    rest = (sum * 10) % 11;
+    if ((rest === 10) || (rest === 11)) rest = 0;
+    if (rest !== parseInt(cpf.substring(10, 11))) return false;
+    return true;
+  };
+
+  const getFieldFeedback = (name: string, value: string) => {
+    if (!value) return null;
+    switch (name) {
+      case "nome":
+        const nameParts = value.trim().split(/\s+/).filter(part => part.length >= 2);
+        if (nameParts.length < 2) return "Digite nome e sobrenome (ex: João Silva)";
+        return "Nome completo validado";
+      case "cpf":
+        const cleanCpf = value.replace(/\D/g, "");
+        if (cleanCpf.length < 11) return `Faltam ${11 - cleanCpf.length} dígitos no CPF`;
+        if (cleanCpf.length === 11) return isValidCPF(cleanCpf) ? "CPF válido e verificado" : "CPF inválido";
+        return "CPF inválido";
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return !emailRegex.test(value) ? "Digite um e-mail válido (ex@ex.com)" : "E-mail validado";
+      case "telefone":
+        const cleanTel = value.replace(/\D/g, "");
+        if (cleanTel.length < 10) return "Digite DDD + Número (mínimo 10 dígitos)";
+        return "Telefone em formato válido";
+      case "cep":
+        const cleanCep = value.replace(/\D/g, "");
+        if (cleanCep.length < 8) return `Faltam ${8 - cleanCep.length} dígitos no CEP`;
+        return cleanCep.length === 8 ? "CEP pronto para consulta" : "CEP incompleto";
+      case "numero":
+        return value.trim().length === 0 ? "O número é obrigatório" : "Número preenchido";
+      default:
+        return null;
+    }
+  };
+
+  const ValidationTooltip = ({ field, value }: { field: string; value: string }) => {
+    const feedback = getFieldFeedback(field, value);
+    const [visible, setVisible] = useState(false);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+      if (focusedField === field && feedback) {
+        setVisible(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setVisible(false), 3000);
+      } else {
+        setVisible(false);
+      }
+      return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+    }, [value, focusedField, feedback, field]);
+
+    if (!visible || !feedback) return null;
+    const isValid = feedback.includes("válido") || feedback.includes("ok") || feedback.includes("validado") || feedback.includes("pronto") || feedback.includes("preenchido");
+
+    return (
+      <div className="absolute -top-7 left-2 z-50 animate-in fade-in slide-in-from-bottom-1 duration-200">
+        <div className={cn(
+          "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-sm border whitespace-nowrap",
+          isValid ? "bg-gray-100 text-gray-500 border-gray-200" : "bg-gray-100 text-gray-600 border-gray-200"
+        )}>
+          {feedback}
+        </div>
+        <div className="absolute -bottom-1 left-3 w-2 h-2 bg-gray-100 border-r border-b border-gray-200 transform rotate-45"></div>
+      </div>
+    );
+  };
+
+  // Auto-complete address when CEP is typed
+  useEffect(() => {
+    const cleanCep = profileCep.replace(/\D/g, "");
+    if (cleanCep.length === 8) {
+      const fetchAddress = async () => {
+        try {
+          const data = await getAddressByCep(cleanCep);
+          if (data && !data.erro) {
+            setProfileEndereco(data.logradouro || "");
+            setProfileBairro(data.bairro || "");
+            setProfileCidade(data.localidade || "");
+            setProfileEstado(data.uf || "");
+            toast.success("Endereço preenchido automaticamente!");
+          }
+        } catch (error) {
+          console.error("Erro ao buscar CEP:", error);
+        }
+      };
+      fetchAddress();
+    }
+  }, [profileCep]);
+
+  const handleSaveProfile = () => {
+    updatePersonalInfo({
+      name: profileName,
+      email: profileEmail,
+      phone: profilePhone,
+      birth: profileBirth,
+      cpf: profileCpf,
+      cep: profileCep,
+      endereco: profileEndereco,
+      numero: profileNumero,
+      bairro: profileBairro,
+      cidade: profileCidade,
+      estado: profileEstado
+    })
+    toast.success('Perfil atualizado com sucesso!', {
+      icon: <CheckCircle2 className="h-5 w-5 text-success" />,
+    })
+  }
 
   const [isAddCardOpen, setIsAddCardOpen] = useState(false)
   const [cardToDelete, setCardToDelete] = useState<string | null>(null)
@@ -592,27 +730,80 @@ export default function CustomerArea() {
                   Informações Pessoais
                 </h3>
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-[9px] md:text-[10px] font-bold md:font-semibold uppercase tracking-widest text-muted-foreground">Nome Completo</Label>
-                      <Input id="name" defaultValue="João Oliveira" className="h-9 md:h-12 border-muted-foreground/20 focus:border-primary text-xs md:text-sm" />
+                  {/* Seção 1: Identificação */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="flex items-center justify-center w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] font-bold">1</span>
+                      <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground/70">Dados de Identificação</h4>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-[9px] md:text-[10px] font-bold md:font-semibold uppercase tracking-widest text-muted-foreground">E-mail</Label>
-                      <Input id="email" type="email" defaultValue="joao@exemplo.com" className="h-9 md:h-12 border-muted-foreground/20 focus:border-primary text-xs md:text-sm" />
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-x-3 gap-y-4">
+                    <div className="md:col-span-5 space-y-1 relative">
+                      <Label htmlFor="name" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Nome Completo</Label>
+                      <Input id="name" value={profileName} onFocus={() => setFocusedField('nome')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileName(e.target.value.replace(/[0-9]/g, '')); if (profileErrors.nome) setProfileErrors(prev => ({ ...prev, nome: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                      <ValidationTooltip field="nome" value={profileName} />
+                    </div>
+                    <div className="md:col-span-2 space-y-1 relative">
+                      <Label htmlFor="cpf" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">CPF</Label>
+                      <Input id="cpf" placeholder="000.000.000-00" value={profileCpf} onFocus={() => setFocusedField('cpf')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileCpf(e.target.value.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})/, '$1-$2').replace(/(-\d{2})\d+?$/, '$1')); if (profileErrors.cpf) setProfileErrors(prev => ({ ...prev, cpf: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2 tracking-tighter" />
+                      <ValidationTooltip field="cpf" value={profileCpf} />
+                    </div>
+                    <div className="md:col-span-2 space-y-1">
+                      <Label htmlFor="birth" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Nascimento</Label>
+                      <Input id="birth" type="date" value={profileBirth} onChange={e => setProfileBirth(e.target.value)} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-1" />
+                    </div>
+                    <div className="md:col-span-3 space-y-1 relative">
+                      <Label htmlFor="email" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">E-mail</Label>
+                      <Input id="email" type="email" value={profileEmail} onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileEmail(e.target.value); if (profileErrors.email) setProfileErrors(prev => ({ ...prev, email: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                      <ValidationTooltip field="email" value={profileEmail} />
+                    </div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-[9px] md:text-[10px] font-bold md:font-semibold uppercase tracking-widest text-muted-foreground">Telefone</Label>
-                      <Input id="phone" defaultValue="(11) 98765-4321" className="h-9 md:h-12 border-muted-foreground/20 focus:border-primary text-xs md:text-sm" />
+
+                  {/* Seção 2: Endereço */}
+                  <div className="space-y-4 pt-2 border-t border-muted/50">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="flex items-center justify-center w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] font-bold">2</span>
+                      <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground/70">Endereço de Entrega</h4>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="birth" className="text-[9px] md:text-[10px] font-bold md:font-semibold uppercase tracking-widest text-muted-foreground">Data de Nascimento</Label>
-                      <Input id="birth" type="date" defaultValue="1995-05-15" className="h-9 md:h-12 border-muted-foreground/20 focus:border-primary text-xs md:text-sm" />
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-x-3 gap-y-4">
+                    <div className="md:col-span-2 space-y-1 relative">
+                      <Label htmlFor="phone" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Celular</Label>
+                      <Input id="phone" value={profilePhone} onFocus={() => setFocusedField('telefone')} onBlur={() => setFocusedField(null)} onChange={e => { setProfilePhone(e.target.value.replace(/\D/g, '').replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2").replace(/(-\d{4})\d+?$/, "$1")); if (profileErrors.telefone) setProfileErrors(prev => ({ ...prev, telefone: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2 tracking-tighter" />
+                      <ValidationTooltip field="telefone" value={profilePhone} />
+                    </div>
+                    <div className="md:col-span-2 space-y-1 relative">
+                      <Label htmlFor="cep" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">CEP</Label>
+                      <Input id="cep" placeholder="00000-000" value={profileCep} onFocus={() => setFocusedField('cep')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileCep(e.target.value.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2').replace(/(-\d{3})\d+?$/, '$1')); if (profileErrors.cep) setProfileErrors(prev => ({ ...prev, cep: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2" />
+                      <ValidationTooltip field="cep" value={profileCep} />
+                    </div>
+                    <div className="md:col-span-8 space-y-1">
+                      <Label htmlFor="endereco" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Logradouro</Label>
+                      <Input id="endereco" value={profileEndereco} onChange={e => setProfileEndereco(e.target.value)} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                    </div>
+
+                      <div className="md:col-span-1 space-y-1 relative">
+                        <Label htmlFor="numero" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Nº</Label>
+                        <Input id="numero" placeholder="123" value={profileNumero} onFocus={() => setFocusedField('numero')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileNumero(e.target.value); if (profileErrors.numero) setProfileErrors(prev => ({ ...prev, numero: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] placeholder:text-[10px]" />
+                        <ValidationTooltip field="numero" value={profileNumero} />
+                      </div>
+                      <div className="md:col-span-3 space-y-1">
+                        <Label htmlFor="bairro" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Bairro</Label>
+                        <Input id="bairro" value={profileBairro} onChange={e => setProfileBairro(e.target.value)} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                      </div>
+                      <div className="md:col-span-6 space-y-1">
+                        <Label htmlFor="cidade" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Cidade</Label>
+                        <Input id="cidade" value={profileCidade} onChange={e => setProfileCidade(e.target.value)} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                      </div>
+                      <div className="md:col-span-2 space-y-1">
+                        <Label htmlFor="estado" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">UF</Label>
+                        <Input id="estado" value={profileEstado} onChange={e => setProfileEstado(e.target.value)} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] uppercase" maxLength={2} />
+                      </div>
                     </div>
                   </div>
-                  <Button className="bg-primary hover:bg-orange-600 h-9 md:h-10 px-6 text-[10px] font-bold uppercase tracking-widest rounded-lg">Salvar Alterações</Button>
+
+                  <div className="flex justify-end pt-2">
+                    <Button onClick={handleSaveProfile} className="bg-primary hover:bg-orange-600 h-9 px-8 text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">Salvar Configurações</Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
