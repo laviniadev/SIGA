@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
 import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Shirt, Footprints, Watch, Tag, Star } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { ProductCard } from "@/components/public/ProductCard"

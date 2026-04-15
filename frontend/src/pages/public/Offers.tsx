@@ -8,7 +8,6 @@ import {
 import { Link } from "react-router-dom"
 import Carousel from "@/components/public/Carousel"
 import NewsletterSection from "@/components/public/NewsletterSection"
-import { TrustBar } from "@/components/public/TrustBar"
 import { toast } from "sonner"
 
 /* ─────────── Countdown Timer Hook ─────────── */

@@ -2,19 +2,83 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Package, User, Settings, CreditCard, ShoppingBag, MapPin, Heart, ChevronRight, Clock, CheckCircle2, Trash2, Plus, Bell, Lock, LogOut } from "lucide-react"
+import { Package, User, Settings, CreditCard, ShoppingBag, MapPin, Heart, ChevronRight, CheckCircle2, Trash2, Plus, Bell, Lock } from "lucide-react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuthStore } from "@/stores/useAuthStore"
 import { cn } from "@/lib/utils"
 
 type Section = 'overview' | 'orders' | 'cards' | 'settings'
 
 export default function CustomerArea() {
-  const handleLogout = () => {
-    // Simulação de logout
-    window.location.href = '/'
-  }
+  const navigate = useNavigate();
 
   const [activeSection, setActiveSection] = useState<Section>('overview')
+  const { cards, addCard, removeCard, updateCard } = useAuthStore()
+
+  const [isAddCardOpen, setIsAddCardOpen] = useState(false)
+  const [cardToDelete, setCardToDelete] = useState<string | null>(null)
+  const [cardToEdit, setCardToEdit] = useState<any | null>(null)
+
+  // Card form states
+  const [newCardNumber, setNewCardNumber] = useState('')
+  const [newCardName, setNewCardName] = useState('')
+  const [newCardExpiry, setNewCardExpiry] = useState('')
+  const [newCardCVV, setNewCardCVV] = useState('')
+  const [newCardIsDefault, setNewCardIsDefault] = useState(false)
+
+  const resetForm = () => {
+    setNewCardNumber('')
+    setNewCardName('')
+    setNewCardExpiry('')
+    setNewCardCVV('')
+    setNewCardIsDefault(false)
+    setCardToEdit(null)
+  }
+
+  const handleOpenEdit = (card: any) => {
+    setCardToEdit(card)
+    setNewCardNumber(card.number)
+    setNewCardName(card.name)
+    setNewCardExpiry(card.expiry)
+    setNewCardCVV('***')
+    setNewCardIsDefault(card.isDefault)
+    setIsAddCardOpen(true)
+  }
+
+  const handleSaveCard = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (cardToEdit) {
+      updateCard({
+        ...cardToEdit,
+        number: newCardNumber,
+        name: newCardName,
+        expiry: newCardExpiry,
+        isDefault: newCardIsDefault
+      })
+    } else {
+      const last4 = newCardNumber.replace(/\s/g, '').slice(-4)
+      const newCard = {
+        id: Math.random().toString(36).substr(2, 9),
+        number: `•••• •••• •••• ${last4}`,
+        name: newCardName,
+        expiry: newCardExpiry,
+        isDefault: newCardIsDefault || cards.length === 0
+      }
+      addCard(newCard)
+    }
+
+    setIsAddCardOpen(false)
+    resetForm()
+  }
+
+  const handleDeleteCard = () => {
+    if (cardToDelete) {
+      removeCard(cardToDelete)
+      setCardToDelete(null)
+    }
+  }
 
   const sections = [
     { id: 'overview' as Section, label: 'Visão Geral', icon: User },
@@ -46,7 +110,10 @@ export default function CustomerArea() {
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-xl bg-background rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500 aspect-square md:aspect-auto flex flex-col items-center justify-center md:items-start md:justify-between h-full relative">
+              <Card
+                className="border-none shadow-xl bg-background rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500 aspect-square md:aspect-auto flex flex-col items-center justify-center md:items-start md:justify-between h-full relative cursor-pointer"
+                onClick={() => setActiveSection('orders')}
+              >
                 <CardContent className="p-1 md:p-6 flex flex-col items-center md:items-start justify-center text-center md:text-left h-full w-full">
                   <div className="hidden md:block absolute -right-4 -top-4 opacity-5">
                     <Package className="h-48 w-48" />
@@ -62,9 +129,9 @@ export default function CustomerArea() {
                 </CardContent>
               </Card>
 
-              <Card 
+              <Card
                 className="border-none shadow-xl bg-zinc-950 text-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500 aspect-square md:aspect-auto flex flex-col items-center justify-center md:items-start md:justify-between h-full relative group cursor-pointer"
-                onClick={() => window.location.href = '/favorites'}
+                onClick={() => navigate('/favorites')}
               >
                 <CardContent className="p-1 md:p-6 flex flex-col items-center md:items-start justify-center text-center md:text-left h-full w-full">
                   <div className="hidden md:block absolute -right-4 -top-4 opacity-5 group-hover:opacity-70 group-hover:text-red-500 group-hover:scale-110 transition-all duration-700">
@@ -425,62 +492,86 @@ export default function CustomerArea() {
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-bold tracking-tighter uppercase mb-2">Formas de Pagamento</h2>
-                <p className="text-secondary text-sm font-medium uppercase tracking-widest">Gerencie seus cartões de crédito</p>
+                <h2 className="text-xl md:text-3xl font-black tracking-tighter uppercase mb-1">Formas de Pagamento</h2>
+                <p className="text-secondary text-[10px] md:text-sm font-bold uppercase tracking-widest">Gerencie seus cartões de crédito</p>
               </div>
-              <Button className="flex items-center gap-2 bg-primary hover:bg-orange-600 h-10 px-4 text-xs font-semibold uppercase tracking-widest rounded-lg">
+              <Button
+                onClick={() => setIsAddCardOpen(true)}
+                className="flex items-center gap-2 bg-primary hover:bg-orange-600 h-10 px-4 text-[10px] font-black uppercase tracking-widest rounded-lg transition-transform active:scale-95"
+              >
                 <Plus className="h-3.5 w-3.5" /> Adicionar Cartão
               </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="border-2 border-primary shadow-lg bg-gradient-to-br from-primary to-orange-600 rounded-xl overflow-hidden">
-                <CardContent className="p-6 text-white">
-                  <div className="flex justify-between items-start mb-4">
-                    <CreditCard className="h-6 w-6 opacity-80" />
-                    <span className="text-[10px] font-semibold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">Padrão</span>
-                  </div>
-                  <div className="mb-6">
-                    <p className="text-[9px] font-bold uppercase tracking-widest opacity-80 mb-1">Número do Cartão</p>
-                    <p className="text-lg font-bold tracking-wider">•••• •••• •••• 4829</p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest opacity-80 mb-1">Nome</p>
-                      <p className="text-[13px] font-semibold uppercase tracking-tight">João Oliveira</p>
+              {cards.map((card) => (
+                <Card
+                  key={card.id}
+                  className={cn(
+                    "border-none shadow-xl rounded-xl overflow-hidden transition-all group relative h-[180px]",
+                    card.isDefault
+                      ? "bg-gradient-to-br from-primary to-orange-600 scale-[1.02] z-10"
+                      : "bg-gradient-to-br from-zinc-800 to-zinc-950 hover:scale-[1.02]"
+                  )}
+                >
+                  <CardContent className="p-6 text-white h-full flex flex-col justify-between">
+                    <div className="flex justify-between items-start">
+                      <CreditCard className="h-6 w-6 text-white/80" />
                     </div>
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest opacity-80 mb-1">Validade</p>
-                      <p className="text-[13px] font-semibold uppercase tracking-tight">12/26</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
-              <Card className="border-2 border-muted shadow-lg bg-background rounded-xl overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <CreditCard className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="mb-6">
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-1">Número do Cartão</p>
-                    <p className="text-lg font-bold tracking-wider text-foreground">•••• •••• •••• 1234</p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Nome</p>
-                      <p className="text-[13px] font-semibold uppercase tracking-tight text-foreground">João Oliveira</p>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-[8px] font-black uppercase tracking-widest text-white/60 mb-1">Número do Cartão</p>
+                        <p className="text-lg font-black tracking-widest tabular-nums">{card.number}</p>
+                      </div>
+
+                      <div className="flex justify-between items-end gap-4">
+                        <div className="grid grid-cols-2 gap-4 flex-1">
+                          <div>
+                            <p className="text-[9px] font-black uppercase tracking-widest text-white/60 mb-1">Nome</p>
+                            <p className="text-[11px] font-black uppercase tracking-tight truncate">{card.name}</p>
+                          </div>
+                          <div>
+                            <p className="text-[9px] font-black uppercase tracking-widest text-white/60 mb-1">Validade</p>
+                            <p className="text-[11px] font-black tabular-nums tracking-tight">{card.expiry}</p>
+                          </div>
+                        </div>
+
+                        {card.isDefault && (
+                          <div className="flex items-center gap-1.5 bg-white/10 text-white px-3 py-1.5 rounded-full border border-white/20 shadow-lg animate-in fade-in zoom-in-95">
+                            <CheckCircle2 className="h-3 w-3 text-primary-foreground" />
+                            <span className="text-[9px] font-black uppercase tracking-widest leading-none">Padrão</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Validade</p>
-                      <p className="text-[13px] font-semibold uppercase tracking-tight text-foreground">08/25</p>
+
+                    <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                      <button
+                        onClick={() => handleOpenEdit(card)}
+                        className="p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition-all"
+                        title="Editar Cartão"
+                      >
+                        <Settings className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => setCardToDelete(card.id)}
+                        className="p-2 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-all"
+                        title="Remover Cartão"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
-                  </div>
-                  <button className="flex items-center gap-2 text-destructive hover:text-red-600 font-semibold text-sm uppercase tracking-widest">
-                    <Trash2 className="h-4 w-4" /> Remover
-                  </button>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {cards.length === 0 && (
+                <div className="col-span-full py-12 flex flex-col items-center justify-center border-2 border-dashed border-muted rounded-2xl text-muted-foreground">
+                  <CreditCard className="h-10 w-10 mb-4 opacity-20" />
+                  <p className="text-xs font-black uppercase tracking-widest">Nenhum cartão cadastrado</p>
+                </div>
+              )}
             </div>
           </div>
         )
@@ -665,6 +756,147 @@ export default function CustomerArea() {
           </div>
         </div>
       </div>
+      {/* MODALS */}
+
+      {/* ⚠️ Add Card Modal */}
+      {isAddCardOpen && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-background border border-border/40 rounded-2xl shadow-2xl p-6 w-[95%] max-w-[450px] relative animate-in zoom-in-95 duration-300">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-10 w-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
+                {cardToEdit ? <Settings className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+              </div>
+              <h2 className="text-xl font-black tracking-tighter uppercase">{cardToEdit ? 'Editar Cartão' : 'Adicionar Novo Cartão'}</h2>
+            </div>
+
+            <form onSubmit={handleSaveCard} className="space-y-5">
+              <div className="space-y-2">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">Número do Cartão</Label>
+                <Input
+                  required
+                  placeholder="0000 0000 0000 0000"
+                  value={newCardNumber}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+                    if (v.length <= 19) setNewCardNumber(v);
+                  }}
+                  className="h-11 border-muted-foreground/20 focus:border-primary rounded-xl text-[13px] font-medium tabular-nums tracking-wider"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">Nome no Cartão</Label>
+                <Input
+                  required
+                  placeholder="Nome impresso no cartão"
+                  value={newCardName}
+                  onChange={(e) => setNewCardName(e.target.value)}
+                  className="h-11 border-muted-foreground/20 focus:border-primary rounded-xl text-[13px] font-medium tracking-tight"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">Validade</Label>
+                  <Input
+                    required
+                    placeholder="MM/AA"
+                    value={newCardExpiry}
+                    onChange={(e) => {
+                      const v = e.target.value.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2').trim();
+                      if (v.length <= 5) setNewCardExpiry(v);
+                    }}
+                    className="h-11 border-muted-foreground/20 focus:border-primary rounded-xl text-[13px] font-medium tabular-nums tracking-wider"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">CVV</Label>
+                  <Input
+                    id="card-cvv"
+                    required
+                    type="password"
+                    placeholder="***"
+                    autoComplete="off"
+                    value={newCardCVV}
+                    onMouseDown={() => {
+                      if (newCardCVV.includes('*')) setNewCardCVV('')
+                    }}
+                    onFocus={() => {
+                      if (newCardCVV.includes('*')) setNewCardCVV('')
+                    }}
+                    onChange={(e) => {
+                      const v = e.target.value.replace(/\D/g, '');
+                      if (v.length <= 4) setNewCardCVV(v);
+                    }}
+                    className="h-11 border-muted-foreground/20 focus:border-primary rounded-xl text-[13px] font-medium tracking-widest"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl border border-border/30 cursor-pointer hover:bg-muted/40 transition-colors" onClick={() => setNewCardIsDefault(!newCardIsDefault)}>
+                <div className={cn(
+                  "h-4 w-4 rounded border flex items-center justify-center transition-all",
+                  newCardIsDefault ? "bg-primary border-primary" : "border-muted-foreground/30 bg-transparent"
+                )}>
+                  {newCardIsDefault && <CheckCircle2 className="h-2.5 w-2.5 text-white" />}
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Definir como cartão padrão</span>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1 font-black uppercase tracking-widest text-[10px] h-12 rounded-xl"
+                  onClick={() => { setIsAddCardOpen(false); resetForm(); }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 font-black uppercase tracking-widest text-[10px] h-12 rounded-xl bg-primary hover:bg-orange-600"
+                >
+                  {cardToEdit ? 'Salvar Alterações' : 'Confirmar Cartão'}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 🗑️ Delete Confirm Modal */}
+      {cardToDelete && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-background border border-border/40 rounded-2xl shadow-2xl p-8 w-[95%] max-w-[380px] relative animate-in scale-in-95 duration-300">
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-destructive/10 text-destructive mb-2">
+                <Trash2 className="h-8 w-8" />
+              </div>
+              <h2 className="text-xl font-black tracking-tighter uppercase px-2">Remover Método de Pagamento?</h2>
+              <p className="text-muted-foreground text-xs font-medium leading-relaxed mb-4">
+                Tem certeza que deseja excluir esse cartão? Esta ação não pode ser desfeita.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="destructive"
+                className="w-full font-black uppercase tracking-widest text-[10px] h-12 rounded-xl bg-destructive hover:bg-red-700 transition-colors"
+                onClick={handleDeleteCard}
+              >
+                Sim, Remover Cartão
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full font-black uppercase tracking-widest text-[10px] h-12 rounded-xl hover:bg-muted"
+                onClick={() => setCardToDelete(null)}
+              >
+                Voltar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

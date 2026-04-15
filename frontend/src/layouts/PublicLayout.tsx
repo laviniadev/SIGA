@@ -14,7 +14,7 @@ export function PublicLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const cartCount = useCartStore((state) => state.cartCount());
-  const { isAuthenticated, logout, user } = useAuthStore();
+  const { isAuthenticated, logout } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -104,7 +104,7 @@ export function PublicLayout() {
           </div>
           <div className="flex items-center space-x-3 md:space-x-5">
             <div className={cn(
-              "absolute left-4 right-2 sm:left-8 sm:right-5 top-1/2 -translate-y-1/2 bg-background z-20 transition-all duration-300 md:hidden flex items-center",
+              "absolute left-4 right-2 sm:left-8 sm:right-5 top-1/2 -translate-y-1/2 bg-background z-20 transition-all duration-300 md:hidden flex items-center rounded-full",
               isSearchOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
             )}>
               <form 
