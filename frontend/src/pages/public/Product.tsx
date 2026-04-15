@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Star, StarHalf, ChevronLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, RefreshCw, ChevronRight } from "lucide-react"
+import { Star, StarHalf, ChevronLeft, ChevronDown, ChevronUp, Truck, ShieldCheck, RefreshCw, ChevronRight, Heart } from "lucide-react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { mockProducts } from "@/data/mockProducts"
 import { useCartStore } from "@/stores/useCartStore"
@@ -19,6 +19,25 @@ export default function Product() {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [openSection, setOpenSection] = useState<string | null>("description");
   const [activeImage, setActiveImage] = useState<string>(product?.image || "");
+  const [isFavorited, setIsFavorited] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (id) setIsFavorited(localStorage.getItem(`fav_${id}`) === 'true');
+  }, [id]);
+
+  const toggleFavorite = () => {
+    const newState = !isFavorited;
+    setIsFavorited(newState);
+    if (id) {
+      if (newState) {
+        localStorage.setItem(`fav_${id}`, "true");
+        toast.success("Adicionado aos favoritos!");
+      } else {
+        localStorage.removeItem(`fav_${id}`);
+        toast.info("Removido dos favoritos.");
+      }
+    }
+  };
 
   // Zoom lens state
   const [zoomVisible, setZoomVisible] = useState(false);
@@ -256,8 +275,21 @@ export default function Product() {
           {/* Details Column (5 cols) */}
           <div className="lg:col-span-1 flex flex-col pt-2 pr-1 lg:pr-4">
             <div className="mb-3 md:mb-5">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mb-1">{product.category}</p>
-              <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-foreground leading-tight tracking-tight mb-1.5 text-left">{product.name}</h1>
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mb-1">{product.category}</p>
+                  <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-foreground leading-tight tracking-tight mb-1.5 text-left">{product.name}</h1>
+                </div>
+                <button
+                  onClick={toggleFavorite}
+                  className={cn(
+                    "p-2.5 rounded-full border border-muted-foreground/20 hover:bg-muted/30 transition-all active:scale-95 group flex-shrink-0 focus:outline-none shadow-sm"
+                  )}
+                  title="Favoritar"
+                >
+                  <Heart className={cn("w-5 h-5 transition-colors", isFavorited ? "fill-red-500 text-red-500" : "text-muted-foreground group-hover:text-red-500/70")} />
+                </button>
+              </div>
               
               <div className="flex items-center gap-3">
                 {isOffer ? (

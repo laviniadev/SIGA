@@ -62,7 +62,10 @@ export default function CustomerArea() {
                 </CardContent>
               </Card>
 
-              <Card className="border-none shadow-xl bg-zinc-950 text-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500 aspect-square md:aspect-auto flex flex-col items-center justify-center md:items-start md:justify-between h-full relative group cursor-pointer">
+              <Card 
+                className="border-none shadow-xl bg-zinc-950 text-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform duration-500 aspect-square md:aspect-auto flex flex-col items-center justify-center md:items-start md:justify-between h-full relative group cursor-pointer"
+                onClick={() => window.location.href = '/favorites'}
+              >
                 <CardContent className="p-1 md:p-6 flex flex-col items-center md:items-start justify-center text-center md:text-left h-full w-full">
                   <div className="hidden md:block absolute -right-4 -top-4 opacity-5 group-hover:opacity-70 group-hover:text-red-500 group-hover:scale-110 transition-all duration-700">
                     <Heart className="h-32 w-32 md:h-48 md:w-48" />
@@ -72,7 +75,9 @@ export default function CustomerArea() {
                   </div>
                   <p className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-zinc-500 md:text-zinc-500/60 leading-none mb-1 md:mb-4 z-10">Wishlist</p>
                   <div className="z-10">
-                    <h4 className="text-sm md:text-3xl font-black tabular-nums tracking-tighter text-white">14</h4>
+                    <h4 className="text-sm md:text-3xl font-black tabular-nums tracking-tighter text-white">
+                      {typeof window !== 'undefined' ? Object.keys(localStorage).filter(key => key.startsWith('fav_') && localStorage.getItem(key) === 'true').length : 0}
+                    </h4>
                     <p className="hidden md:flex text-[10px] font-bold text-zinc-400 mt-1 items-center gap-2 group-hover:text-white transition-colors">
                       Ver favoritos <ChevronRight className="h-3 w-3" />
                     </p>
