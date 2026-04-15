@@ -57,8 +57,8 @@ export function FreightCalculator({ weight = 1, className, onCalculate }: Freigh
   return (
     <div className={cn("space-y-4 p-5 rounded-2xl border bg-card/40 backdrop-blur-md shadow-lg", className)}>
       <div className="flex items-center gap-2 mb-1">
-        <Truck className="w-4 h-4 text-primary" />
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/70">Simulador de Entrega</span>
+        <Truck className="w-3.5 h-3.5 text-primary" />
+        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-foreground/70">Simulador de Entrega</span>
       </div>
 
       <div className="flex gap-2">
@@ -67,7 +67,7 @@ export function FreightCalculator({ weight = 1, className, onCalculate }: Freigh
             placeholder="00000-000"
             value={cep}
             onChange={(e) => setCep(e.target.value)}
-            className="h-11 text-sm font-bold border-muted-foreground/20 focus:border-primary pr-10 rounded-xl"
+            className="h-9 text-[11px] font-bold border-muted-foreground/20 focus:border-primary pr-10 rounded-xl"
             maxLength={9}
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -104,14 +104,14 @@ export function FreightCalculator({ weight = 1, className, onCalculate }: Freigh
 
       {result && (
         <div className="space-y-3 animate-in fade-in zoom-in-95 duration-500">
-          <div className="flex justify-between items-center p-4 bg-primary/[0.03] rounded-xl border border-primary/10">
+          <div className="flex justify-between items-center p-3 bg-primary/[0.03] rounded-xl border border-primary/10">
             <div className="flex flex-col">
-              <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Prazo</span>
-              <span className="text-sm font-black text-foreground">{result.prazo_dias} {result.prazo_dias === 1 ? 'dia útil' : 'dias úteis'}</span>
+              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Prazo</span>
+              <span className="text-xs font-black text-foreground">{result.prazo_dias} {result.prazo_dias === 1 ? 'dia útil' : 'dias úteis'}</span>
             </div>
             <div className="flex flex-col items-end">
-              <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Valor Fixo</span>
-              <span className="text-lg font-black text-primary">
+              <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest">Valor Fixo</span>
+              <span className="text-sm font-black text-primary">
                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(result.valor)}
               </span>
             </div>

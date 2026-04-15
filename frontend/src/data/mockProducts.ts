@@ -11,6 +11,7 @@ export interface Product {
   care: string[];
   weight?: number; // Peso em kg
   salesCount?: number; // Quantidade de vendas oculto do usuário
+  colors?: string[]; // Cores ou variações de modelo (manga longa/curta, etc)
 }
 
 export const mockProducts: Product[] = [
@@ -29,7 +30,8 @@ export const mockProducts: Product[] = [
     category: "Roupas",
     material: "100% Algodão Egípcio",
     care: ["Lavar à máquina max. 30ºC", "Não utilizar alvejante", "Passar máximo 110ºC", "Não limpar a seco"],
-    weight: 0.3
+    weight: 0.3,
+    colors: ["Branca", "Preta", "Azul Marinho"]
   },
   {
     id: "2",
@@ -97,7 +99,8 @@ export const mockProducts: Product[] = [
     category: "Roupas",
     material: "Nylon Ripstop",
     care: ["Lavar em ciclo delicado", "Não passar"],
-    weight: 0.4
+    weight: 0.4,
+    colors: ["Com Manga", "Sem Manga"]
   },
   {
     id: "6",
