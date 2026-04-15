@@ -15,12 +15,12 @@ export default function TrendsSection() {
   ];
 
   return (
-    <section className="pt-8 pb-6 md:pt-12 md:pb-8 bg-background">
+    <section className="pt-8 pb-6 md:pt-10 md:pb-8 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 md:gap-16">
           
           {/* Ofertas Section */}
-          <div className="relative block group bg-card hover:bg-card/80 border border-foreground/10 shadow-sm hover:shadow-md md:bg-transparent md:border-transparent md:shadow-none md:hover:bg-transparent md:hover:shadow-none p-2 md:p-0 rounded-2xl md:rounded-none transition-all outline-none">
+          <div className="relative block group bg-card hover:bg-card/80 border border-foreground/10 shadow-sm hover:shadow-md md:bg-transparent md:border-transparent md:shadow-none md:hover:bg-transparent md:hover:shadow-none p-2 md:p-0 rounded-2xl md:rounded-sm transition-all outline-none">
             
             {/* Link Invisível Mobile Overlay */}
             <Link to="/offers" className="absolute inset-0 z-10 md:hidden" aria-label="Ver todas as Ofertas" />
@@ -28,7 +28,7 @@ export default function TrendsSection() {
             {/* Header */}
             <div className="flex justify-between items-center md:items-end px-0.5 md:px-0 mb-1.5 md:mb-8 relative z-20 pointer-events-none md:pointer-events-auto">
               <div className="space-y-0 md:space-y-2">
-                <h2 className="text-[10px] sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
+                <h2 className="text-sm sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
                   Ofertas
                 </h2>
                 <div className="hidden md:block h-1 w-16 bg-primary"></div>
@@ -69,7 +69,7 @@ export default function TrendsSection() {
           </div>
 
           {/* Tendências Section */}
-          <div className="relative block group bg-card md:bg-transparent hover:bg-card/80 md:hover:bg-transparent border border-foreground/10 md:border-transparent shadow-sm md:shadow-none hover:shadow-md md:hover:shadow-none p-2 md:p-0 rounded-2xl md:rounded-none transition-all outline-none">
+          <div className="relative block group bg-card md:bg-transparent hover:bg-card/80 md:hover:bg-transparent border border-foreground/10 md:border-transparent shadow-sm md:shadow-none hover:shadow-md md:hover:shadow-none p-2 md:p-0 rounded-2xl md:rounded-sm transition-all outline-none">
             
             {/* Link Invisível Mobile Overlay */}
             <Link to="/trends" className="absolute inset-0 z-10 md:hidden" aria-label="Ver todas as Tendências" />
@@ -77,7 +77,7 @@ export default function TrendsSection() {
             {/* Header */}
             <div className="flex justify-between items-center md:items-end px-0.5 md:px-0 mb-1.5 md:mb-8 relative z-20 pointer-events-none md:pointer-events-auto">
               <div className="space-y-0 md:space-y-2">
-                <h2 className="text-[10px] sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
+                <h2 className="text-sm sm:text-sm md:text-2xl font-black tracking-tighter uppercase text-foreground md:flex md:items-center md:gap-2">
                    Tendências
                 </h2>
                 <div className="hidden md:block h-1 w-16 bg-secondary"></div>

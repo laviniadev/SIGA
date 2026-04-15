@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom"
 import Carousel from "@/components/public/Carousel"
 import NewsletterSection from "@/components/public/NewsletterSection"
+import { TrustBar } from "@/components/public/TrustBar"
 import { toast } from "sonner"
 
 /* ─────────── Countdown Timer Hook ─────────── */
@@ -27,7 +28,7 @@ function useCountdown(targetDate: Date) {
   useEffect(() => {
     const id = setInterval(() => setTimeLeft(calcTimeLeft()), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [targetDate]);
 
   return timeLeft;
 }
@@ -63,21 +64,20 @@ function UrgencyBar() {
   }, []);
 
   return (
-    <div className="w-full h-10 md:h-12 bg-orange-500 text-white relative z-40 overflow-hidden border-b border-orange-600">
+    <div className="w-full h-[47px] bg-orange-500 text-white relative z-40 overflow-hidden border-b border-orange-600">
       <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.1)_50%,transparent_100%)] animate-[shimmer_2s_infinite]" />
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 relative z-10 h-full">
-        
+
         {/* Universal View: Automatic Carousel */}
         <div className="flex w-full h-full items-center justify-center relative overflow-hidden">
           {messages.map((msg, idx) => {
             const isActive = idx === activeIndex;
-            
+
             return (
-              <div 
-                key={idx} 
-                className={`absolute inset-0 flex items-center justify-center gap-2 px-4 transition-opacity duration-700 ${
-                  isActive ? "opacity-100" : "opacity-0 pointer-events-none"
-                }`}
+              <div
+                key={idx}
+                className={`absolute inset-0 flex items-center justify-center gap-2 px-4 transition-opacity duration-700 ${isActive ? "opacity-100" : "opacity-0 pointer-events-none"
+                  }`}
                 style={{ willChange: 'opacity' }}
               >
                 <span className="text-sm md:text-base">{msg.icon}</span>
@@ -262,7 +262,7 @@ export default function Offers() {
               <div className="flex justify-center mt-5">
                 <button
                   onClick={() => setShowAllUnits(prev => !prev)}
-                  className="group flex items-center gap-2 border-2 border-orange-500/40 text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-500/5 font-black text-[10px] md:text-xs uppercase tracking-widest px-8 py-2.5 rounded-none transition-all duration-200 active:scale-95"
+                  className="group flex items-center gap-2 border-2 border-orange-500/40 text-orange-600 dark:text-orange-400 hover:border-orange-500 hover:bg-orange-500/5 font-black text-[10px] md:text-xs uppercase tracking-widest px-8 py-2.5 rounded-sm transition-all duration-200 active:scale-95"
                 >
                   {showAllUnits ? (
                     <>
@@ -285,7 +285,7 @@ export default function Offers() {
         <section className="relative overflow-hidden">
           <div className="bg-white/70 dark:bg-card/70 backdrop-blur-sm border-y border-orange-200/50 dark:border-orange-800/30">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-2.5 sm:py-4 md:py-5">
-              
+
               {/* Mobile: compact single row */}
               <div className="flex items-center justify-between gap-3 sm:hidden">
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -299,7 +299,7 @@ export default function Offers() {
                 </div>
                 <button
                   onClick={() => { navigator.clipboard.writeText("SIGA50"); toast.success("Cupom copiado!"); }}
-                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-2 rounded-none shadow-md transition-all active:scale-95 flex items-center gap-1.5"
+                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-2 rounded-sm shadow-md transition-all active:scale-95 flex items-center gap-1.5"
                 >
                   Copiar
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -321,7 +321,7 @@ export default function Offers() {
                 </div>
                 <button
                   onClick={() => { navigator.clipboard.writeText("SIGA50"); toast.success("Cupom copiado com sucesso!"); }}
-                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-none shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
+                  className="flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-widest px-6 py-2.5 rounded-sm shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
                 >
                   Copiar Cupom
                   <ChevronRight className="h-3.5 w-3.5" />
@@ -385,8 +385,6 @@ export default function Offers() {
             </div>
           </div>
         </section>
-
-
 
         {/* ═══════ Newsletter ═══════ */}
         <NewsletterSection />

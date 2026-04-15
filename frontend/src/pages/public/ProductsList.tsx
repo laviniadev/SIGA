@@ -1,35 +1,72 @@
-import { Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown } from "lucide-react"
+import { Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Search, Star } from "lucide-react"
 import { mockProducts } from "@/data/mockProducts"
 import { useState, useRef, useCallback, useEffect } from "react"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { ProductCard } from "@/components/public/ProductCard"
 import { cn } from "@/lib/utils"
 
 export default function ProductsList() {
   const [activeFilter, setActiveFilter] = useState("Tudo");
-  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc">("none");
+  const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc" | "bestSales">("none");
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [displayProducts, setDisplayProducts] = useState<typeof mockProducts>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const searchTerm = searchParams.get("search")?.toLowerCase() || "";
+
+  const prevSearchRef = useRef(searchTerm);
+
+  // Se o usuário faz uma nova busca, reseta o filtro de categoria para 'Tudo', prevenindo resultados falsamente negativos
+  useEffect(() => {
+    if (searchTerm !== prevSearchRef.current) {
+      setActiveFilter("Tudo");
+      prevSearchRef.current = searchTerm;
+    }
+  }, [searchTerm]);
+
+  // Helper para busca ignorando acentos e maiúsculas/minúsculas
+  const strNormalize = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   // Filtragem e Ordenação base
   const getFilteredProducts = useCallback(() => {
     const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
     let filtered = mockProducts.filter(p => {
-      if (activeFilter === "Tudo") return true;
-      if (activeFilter === "Promoções") return offerIds.includes(p.id);
-      return p.category === activeFilter;
+      let matchesCategory = true;
+      if (activeFilter === "Promoções") {
+        matchesCategory = offerIds.includes(p.id);
+      } else if (activeFilter !== "Tudo") {
+        matchesCategory = p.category === activeFilter;
+      }
+      if (!matchesCategory) return false;
+
+      if (searchTerm) {
+        const query = strNormalize(searchTerm);
+        return (
+          strNormalize(p.name).includes(query) ||
+          strNormalize(p.description).includes(query) ||
+          strNormalize(p.category).includes(query)
+        );
+      }
+      return true;
     });
 
     if (sortOrder === "asc") {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (sortOrder === "desc") {
       filtered = [...filtered].sort((a, b) => b.price - a.price);
+    } else if (sortOrder === "bestSales") {
+      filtered = [...filtered].sort((a, b) => {
+        const salesA = a.salesCount ?? ((Number(a.id) * 73) % 1500); 
+        const salesB = b.salesCount ?? ((Number(b.id) * 73) % 1500);
+        return salesB - salesA;
+      });
     }
 
     return filtered;
-  }, [activeFilter, sortOrder]);
+  }, [activeFilter, sortOrder, searchTerm]);
 
   // Reset ao mudar filtro ou ordenação
   useEffect(() => {
@@ -73,10 +110,12 @@ export default function ProductsList() {
   return (
     <div className="py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex flex-col gap-2 md:gap-8 mb-12">
+        <div className="flex flex-col gap-2 md:gap-6 mb-2 md:mb-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="space-y-2">
-              <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase text-foreground">Coleção Completa</h1>
+              <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase text-foreground">
+                {searchTerm ? `Resultados para "${searchTerm}"` : 'Coleção Completa'}
+              </h1>
               <div className="h-1 w-20 bg-primary"></div>
             </div>
             
@@ -93,7 +132,7 @@ export default function ProductsList() {
               >
                 <span className="flex items-center gap-1.5">
                   <ArrowUpDown className="h-3 w-3" />
-                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : "Ordenar"}
+                  {sortOrder === "asc" ? "Menor preço" : sortOrder === "desc" ? "Maior preço" : sortOrder === "bestSales" ? "Mais vendidos" : "Ordenar"}
                 </span>
                 <ChevronDown className={cn("h-3 w-3 transition-transform duration-200", isSortOpen ? "rotate-180" : "")} />
               </button>
@@ -119,6 +158,16 @@ export default function ProductsList() {
                   >
                     <ArrowDown className="h-3 w-3" />
                     Maior preço
+                  </button>
+                  <button
+                    onClick={() => { setSortOrder("bestSales"); setIsSortOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-2 px-3 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-muted/40 transition-colors text-left whitespace-nowrap",
+                      sortOrder === "bestSales" ? "text-primary font-black" : ""
+                    )}
+                  >
+                    <Star className="h-3 w-3" />
+                    Mais vendidos
                   </button>
                   {sortOrder !== "none" && (
                     <button
@@ -169,8 +218,9 @@ export default function ProductsList() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-h-[600px]">
-          {displayProducts.map((product, index) => {
+        {displayProducts.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-h-[300px]">
+            {displayProducts.map((product, index) => {
             const offerIds = ["13", "16", "29", "2", "3", "4", "22", "8", "10", "28", "21", "20", "23", "27"];
             const isOffer = offerIds.includes(product.id);
             let discount = 0;
@@ -199,20 +249,45 @@ export default function ProductsList() {
                 />
               </div>
             );
-          })}
-        </div>
+            })}
+          </div>
+        ) : (
+          !isLoading && (
+            <div className="flex flex-col items-center justify-center py-8 md:py-10 text-center space-y-6 border border-dashed border-muted/60 bg-muted/5 rounded-2xl mx-1 md:mx-0 px-8 mt-0">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-2">
+                <Search className="h-7 w-7 text-muted-foreground" />
+              </div>
+              <h2 className="text-xl md:text-2xl font-black uppercase text-foreground tracking-tighter">
+                {searchTerm ? `Sem resultados para "${searchTerm}"` : "Nenhum produto encontrado"}
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-md">
+                Tente procurar usando termos mais simples, verifique a flexão das palavras ou remova os filtros atuais para explorar todo o nosso catálogo.
+              </p>
+              <button 
+                onClick={() => {
+                  setActiveFilter("Tudo");
+                  setSortOrder("none");
+                  navigate("/products", { replace: true });
+                }}
+                className="mt-4 px-8 py-3 bg-foreground text-background font-black uppercase text-xs tracking-widest hover:bg-primary transition-colors active:scale-95"
+              >
+                Voltar para Coleção Completa
+              </button>
+            </div>
+          )
+        )}
 
         {(isLoading || hasMore) && (
           <div className="flex justify-center py-20">
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Explorando Seletiva...</p>
+              <p className="text-xs font-black uppercase tracking-[0.4em] text-muted-foreground animate-pulse mt-2">Carregando coleção...</p>
             </div>
           </div>
         )}
 
-        {!hasMore && !isLoading && (
-          <div className="py-20 text-center">
+        {!hasMore && !isLoading && displayProducts.length > 0 && (
+          <div className="pt-12 md:pt-16 pb-16 text-center">
             <div className="inline-block px-12 py-6 border-2 border-muted bg-muted/10">
               <p className="text-muted-foreground text-[10px] uppercase tracking-[0.6em] font-black opacity-60">Fim do catálogo {activeFilter !== "Tudo" ? activeFilter : "premium"}</p>
             </div>

@@ -31,7 +31,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
         <Button 
           onClick={() => setIsOpen(!isOpen)}
           variant="outline" 
-          className={`flex items-center gap-2 border-2 px-5 py-3 md:px-8 md:py-4 rounded-none text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+          className={`flex items-center gap-2 border-2 px-5 py-3 md:px-8 md:py-4 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
             isOpen 
               ? 'bg-foreground text-background border-foreground' 
               : 'hover:bg-foreground hover:text-background border-muted-foreground/30'
