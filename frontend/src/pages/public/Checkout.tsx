@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, MapPin } from "lucide-react"
-import { Link } from "react-router-dom"
+import { CheckCircle, MapPin, CreditCard, CheckCircle2, Plus } from "lucide-react"
+import { useNavigate, Link } from "react-router-dom"
 import { useCartStore } from "@/stores/useCartStore"
+import { useAuthStore } from "@/stores/useAuthStore"
 import { toast } from "sonner"
 import { useState, useMemo, useEffect, useRef } from "react"
 import { calculateFreight, getAddressByCep } from "@/lib/freight"
@@ -12,7 +13,9 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const { cartItems, cartTotal, clearCart } = useCartStore();
+  const { cards, isAuthenticated } = useAuthStore();
   const totalItems = cartTotal();
   const [cep, setCep] = useState("");
   const [endereco, setEndereco] = useState("");
@@ -20,8 +23,21 @@ export default function Checkout() {
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'card'>('pix');
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const [isPaymentOptionOpen, setIsPaymentOptionOpen] = useState(false);
+  const [cardPaymentType, setCardPaymentType] = useState<'debit' | 'credit'>('credit');
+  const [installments, setInstallments] = useState(1);
+  const [hasSelectedInstallments, setHasSelectedInstallments] = useState(false);
   const [shippingValue, setShippingValue] = useState<number | null>(null);
   const [loadingFreight, setLoadingFreight] = useState(false);
+
+  // Define cartão padrão ao carregar ou mudar método
+  useEffect(() => {
+    if (paymentMethod === 'card' && cards.length > 0 && !selectedCardId) {
+      const defaultCard = cards.find(c => c.isDefault) || cards[0];
+      setSelectedCardId(defaultCard.id);
+    }
+  }, [paymentMethod, cards]);
 
   // Estados do Formulário
   const [nome, setNome] = useState("");
@@ -244,14 +260,102 @@ export default function Checkout() {
       toast.error("Por favor, corrija os erros no formulário.");
       return;
     }
+    if (paymentMethod === 'card' && cardPaymentType === 'credit' && !hasSelectedInstallments) {
+      toast.error("Por favor, selecione as parcelas do cartão.");
+      setIsPaymentOptionOpen(true);
+      return;
+    }
+    if (paymentMethod === 'pix') {
+      navigate('/checkout/pix');
+      return;
+    }
     toast.success("Pedido realizado com sucesso!");
-    clearCart();
+    navigate('/checkout/success');
   };
+
+  const installmentsOptions = [1, 2, 3, 4];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* 💳 Modal de Opções do Cartão */}
+      {isPaymentOptionOpen && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-background border border-border/40 rounded-2xl shadow-2xl p-8 w-[95%] max-w-[400px] relative animate-in zoom-in-95 duration-300">
+            <div className="flex flex-col items-center text-center gap-4 mb-8">
+              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-primary/10 text-primary">
+                <CreditCard className="h-8 w-8" />
+              </div>
+              <h2 className="text-xl font-black tracking-tighter uppercase">Opções do Cartão</h2>
+              <p className="text-muted-foreground text-xs font-medium">Como deseja realizar o pagamento?</p>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <button 
+                  onClick={() => setCardPaymentType('debit')}
+                  className={cn(
+                    "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all gap-2",
+                    cardPaymentType === 'debit' ? "border-primary bg-primary/5 text-primary" : "border-muted hover:border-primary/30"
+                  )}
+                >
+                  <span className="text-xs font-black uppercase tracking-widest">Débito</span>
+                  <span className="text-[8px] font-bold uppercase opacity-60">À Vista</span>
+                </button>
+                <button 
+                  onClick={() => setCardPaymentType('credit')}
+                  className={cn(
+                    "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all gap-2",
+                    cardPaymentType === 'credit' ? "border-primary bg-primary/5 text-primary" : "border-muted hover:border-primary/30"
+                  )}
+                >
+                  <span className="text-xs font-black uppercase tracking-widest">Crédito</span>
+                  <span className="text-[8px] font-bold uppercase opacity-60">Parcelado</span>
+                </button>
+              </div>
+
+              {cardPaymentType === 'credit' && (
+                <div className="space-y-2 pt-2 animate-in slide-in-from-top-2 duration-300">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Parcelas (Sem Juros)</Label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {installmentsOptions.map(num => (
+                      <button 
+                        key={num}
+                        onClick={() => setInstallments(num)}
+                        className={cn(
+                          "w-full flex justify-between items-center px-4 py-3 rounded-xl border-2 transition-all",
+                          installments === num ? "border-primary bg-primary/5 text-primary" : "border-muted hover:border-primary/30"
+                        )}
+                      >
+                        <span className="text-xs font-bold">{num}x de {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(grandTotal / num)}</span>
+                        {installments === num && <CheckCircle2 className="h-4 w-4" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <Button 
+                onClick={() => {
+                  setHasSelectedInstallments(true);
+                  setIsPaymentOptionOpen(false);
+                }}
+                className="w-full h-12 bg-primary hover:bg-orange-600 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg mt-4"
+              >
+                Confirmar Opção
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        <h1 className="col-span-full text-center text-lg md:text-2xl font-black tracking-tighter uppercase text-primary mb-2 md:mb-4">Finalizar Compra</h1>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 col-span-full mb-2 md:mb-4 animate-in fade-in slide-in-from-top-4 duration-700">
+          <div className="space-y-2">
+            <h1 className="text-lg md:text-2xl font-black tracking-tighter uppercase text-foreground">
+              Finalizar Compra
+            </h1>
+            <div className="h-1 w-20 bg-primary"></div>
+          </div>
+        </div>
 
         <div className="md:col-span-2 space-y-4 md:space-y-6">
           <Card className="shadow-lg border-muted/20">
@@ -451,12 +555,13 @@ export default function Checkout() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-lg border-muted/20 overflow-hidden">
-            <CardHeader className="bg-muted/5 border-b">
-              <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">3. Método de Pagamento</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="min-h-[420px]">
+            <Card className="shadow-lg border-muted/20 overflow-hidden h-fit">
+              <CardHeader className="bg-muted/5 border-b">
+                <CardTitle className="text-secondary font-bold uppercase text-sm tracking-widest">3. Método de Pagamento</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 pt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div
                   className={cn(
                     "border-2 rounded-xl p-6 cursor-pointer flex flex-col items-center justify-center space-y-2 transition-all duration-500",
@@ -493,31 +598,91 @@ export default function Checkout() {
                   </span>
                 </div>
               </div>
+
+              {/* Seleção de Cartões Salvos */}
+              {paymentMethod === 'card' && (
+                <div className="pt-6 border-t border-muted/30 animate-in fade-in slide-in-from-top-4 duration-500 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Selecione um cartão salvo</h4>
+                    <Link to="/customer" className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1">
+                      <Plus className="h-3 w-3" /> Gerenciar
+                    </Link>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {cards.map((card) => (
+                      <div 
+                        key={card.id}
+                        onClick={() => {
+                          setSelectedCardId(card.id);
+                          setIsPaymentOptionOpen(true);
+                        }}
+                        className={cn(
+                          "relative p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden group",
+                          selectedCardId === card.id 
+                            ? "border-primary bg-primary/5 shadow-md scale-[1.02]" 
+                            : "border-muted hover:border-primary/30 bg-background"
+                        )}
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <CreditCard className={cn("h-5 w-5", selectedCardId === card.id ? "text-primary" : "text-muted-foreground")} />
+                          {selectedCardId === card.id && (
+                            <CheckCircle2 className="h-4 w-4 text-primary animate-in zoom-in" />
+                          )}
+                        </div>
+                        <div>
+                          <p className={cn("text-xs font-black tracking-widest", selectedCardId === card.id ? "text-foreground" : "text-muted-foreground")}>{card.number}</p>
+                          <div className="flex justify-between items-end mt-2">
+                            <span className="text-[9px] font-bold uppercase text-muted-foreground/60">{card.name}</span>
+                            <span className="text-[9px] font-bold tabular-nums text-muted-foreground/60">{card.expiry}</span>
+                          </div>
+                        </div>
+                        
+                        {/* Indicador de "Padrão" sutil */}
+                        {card.isDefault && (
+                          <div className="absolute top-0 right-0 bg-primary/10 text-primary text-[7px] font-black px-2 py-0.5 rounded-bl-lg uppercase">Padrão</div>
+                        )}
+                      </div>
+                    ))}
+                    
+                    {cards.length === 0 && (
+                      <Link 
+                        to="/customer" 
+                        className="col-span-full border-2 border-dashed border-muted p-8 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-primary/50 hover:bg-primary/5 transition-all text-muted-foreground group"
+                      >
+                        <Plus className="h-6 w-6 group-hover:scale-110 transition-transform" />
+                        <span className="text-[10px] font-black uppercase tracking-widest">Adicionar primeiro cartão</span>
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
+          </div>
         </div>
 
         <div className="md:col-span-1">
-          <div className="bg-card p-8 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-6 sticky top-24 transform transition-transform hover:shadow-primary/5">
-            <h3 className="text-lg md:text-2xl font-black tracking-tighter uppercase border-b pb-4">Resumo Final</h3>
-            <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+          <div className="bg-card p-5 rounded-2xl border-2 border-muted/50 shadow-2xl space-y-3 sticky top-24 transform transition-transform hover:shadow-primary/5">
+            <h3 className="text-sm md:text-base font-black tracking-tighter uppercase border-b pb-2">Resumo Final</h3>
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
               {cartItems.map((item) => (
-                <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between items-start gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
+                <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between items-start gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
                   <div className="flex-1">
-                    <p className="font-bold text-sm line-clamp-1 leading-none mb-1">{item.name}</p>
-                    <div className="flex gap-2">
-                      <span className="text-[9px] font-black uppercase bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tamanho {item.selectedSize}</span>
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase">{item.quantity} unidades</span>
+                    <p className="font-bold text-[11px] line-clamp-1 leading-none mb-0.5">{item.name}</p>
+                    <div className="flex gap-1.5">
+                      <span className="text-[8px] font-black uppercase bg-secondary/10 text-secondary px-1.5 py-0.5 rounded">T {item.selectedSize}</span>
+                      <span className="text-[8px] font-bold text-muted-foreground uppercase">{item.quantity} un</span>
                     </div>
                   </div>
-                  <span className="font-black text-sm tabular-nums whitespace-nowrap">
+                  <span className="font-black text-xs tabular-nums whitespace-nowrap">
                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="space-y-3 pt-6 border-t text-sm font-medium text-muted-foreground">
+            <div className="space-y-1.5 pt-3 border-t text-[11px] font-medium text-muted-foreground">
               {/* 1. Subtotal */}
               <div className="flex justify-between">
                 <span>Subtotal</span>
@@ -527,10 +692,7 @@ export default function Checkout() {
               {/* 2. Frete */}
               <div className="flex justify-between">
                 <span>Taxa de Entrega</span>
-                <span className={cn(
-                  "tabular-nums",
-                  finalShipping === 0 ? "text-success font-bold" : "text-foreground"
-                )}>
+                <span className="tabular-nums text-foreground">
                   {totalItems > 250 || (shippingValue === 0) ? "Grátis" : shippingValue ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(shippingValue) : "--"}
                 </span>
               </div>
@@ -542,20 +704,52 @@ export default function Checkout() {
                   <span className="tabular-nums font-bold">- {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(discountAmount)}</span>
                 </div>
               )}
+
+              {/* Detalhes do Pagamento Selecionado */}
+              <div className="pt-2 mt-1 border-t border-muted/20">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-[9px] font-black uppercase tracking-widest opacity-60">Pagamento</span>
+                  <span className="text-[9px] font-black uppercase text-primary">{paymentMethod === 'pix' ? 'PIX' : 'Cartão'}</span>
+                </div>
+                
+                {paymentMethod === 'card' && selectedCardId && (
+                  <div className="flex justify-between items-center bg-muted/10 p-1.5 rounded-lg border border-muted/20">
+                    <div className="flex items-center gap-1.5">
+                      <CreditCard className="h-2.5 w-2.5 text-muted-foreground" />
+                      <span className="text-[8px] font-bold text-muted-foreground tracking-tighter">
+                        {cards.find(c => c.id === selectedCardId)?.number}
+                      </span>
+                    </div>
+                    <span className="text-[8px] font-black uppercase px-1.5 py-0.5 bg-primary/10 text-primary rounded">
+                      {cardPaymentType === 'credit' ? `${installments}x` : 'Débito'}
+                    </span>
+                  </div>
+                )}
+                
+                {paymentMethod === 'pix' && (
+                  <div className="flex items-center gap-1.5 bg-success/5 p-1.5 rounded-lg border border-success/10">
+                    <div className="h-1 w-1 bg-success rounded-full animate-pulse" />
+                    <span className="text-[8px] font-bold text-success uppercase tracking-widest">Aprovação instantânea</span>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="pt-6 border-t-2 flex flex-col items-end gap-1">
-              <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Total a pagar agora</span>
-              <span className="text-4xl font-black text-primary tabular-nums tracking-tighter drop-shadow-sm">
+            <div className="pt-3 border-t-2 flex flex-col items-end gap-1">
+              <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest leading-none">
+                {cardPaymentType === 'credit' && installments > 1 ? `${installments}x de ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(grandTotal / installments)}` : 'Total a pagar agora'}
+              </span>
+              <span className="text-2xl font-black text-primary tabular-nums tracking-tighter drop-shadow-sm leading-none">
                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(grandTotal)}
               </span>
             </div>
 
-            <Button className="w-full bg-success hover:bg-green-600 h-16 shadow-xl rounded-full uppercase font-black tracking-widest mt-4 text-lg active:scale-95 transition-all group overflow-hidden relative" onClick={handleConfirm} asChild>
-              <Link to="/customer">
-                <span className="relative z-10 flex items-center"><CheckCircle className="mr-3 h-5 w-5" /> Finalizar Pedido</span>
-                <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
-              </Link>
+            <Button 
+              className="w-full bg-success hover:bg-green-600 h-10 shadow-lg rounded-full uppercase font-black tracking-widest mt-1 text-[11px] active:scale-95 transition-all group overflow-hidden relative" 
+              onClick={handleConfirm}
+            >
+              <span className="relative z-10 flex items-center"><CheckCircle className="mr-2 h-3.5 w-3.5" /> Finalizar Pedido</span>
+              <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
             </Button>
 
             <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center mt-2">

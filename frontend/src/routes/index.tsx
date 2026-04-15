@@ -16,8 +16,9 @@ import Register from "@/pages/public/Register"
 import CustomerArea from "@/pages/public/CustomerArea"
 import ForgotPassword from "@/pages/public/ForgotPassword"
 import Offers from "@/pages/public/Offers"
-import Trends from "@/pages/public/Trends"
 import Favorites from "@/pages/public/Favorites"
+import PixPayment from "@/pages/public/PixPayment"
+import Success from "@/pages/public/Success"
 
 // Admin Pages
 import AdminLogin from "@/pages/admin/Login"
@@ -37,13 +38,15 @@ export function AppRoutes() {
         <Route path="product/:id" element={<Product />} />
         <Route path="cart" element={<Cart />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="checkout/pix" element={<PixPayment />} />
+        <Route path="checkout/success" element={<Success />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="offers" element={<Offers />} />
         <Route path="trends" element={<Trends />} />
         <Route path="favorites" element={<Favorites />} />
-        
+
         {/* Rota Protegida de Cliente */}
         <Route element={<ProtectedRoute allowedRoles={["customer", "admin"]} />}>
           <Route path="customer" element={<CustomerArea />} />
