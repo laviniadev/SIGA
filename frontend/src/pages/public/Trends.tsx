@@ -1,5 +1,6 @@
+import { useSearchParams } from "react-router-dom"
 import { mockProducts } from "@/data/mockProducts"
-import { useState, useRef, useCallback, useMemo } from "react"
+import { useState, useRef, useCallback, useMemo, useEffect } from "react"
 import { ProductCard } from "@/components/public/ProductCard"
 import { TrendingUp, Sparkles, ArrowUpDown, ChevronDown, ArrowUp, ArrowDown, Zap, Heart, Clock, Star } from "lucide-react"
 import Carousel from "@/components/public/Carousel"
@@ -7,7 +8,16 @@ import { cn } from "@/lib/utils"
 import NewsletterSection from "@/components/public/NewsletterSection"
 
 export default function Trends() {
-  const [activeFilter, setActiveFilter] = useState("Tudo");
+  const [searchParams] = useSearchParams();
+  const filterParam = searchParams.get("filter");
+  const [activeFilter, setActiveFilter] = useState(filterParam || "Tudo");
+
+  useEffect(() => {
+    if (filterParam) {
+      setActiveFilter(filterParam);
+    }
+  }, [filterParam]);
+
   const [sortOrder, setSortOrder] = useState<"none" | "asc" | "desc" | "bestSales">("none");
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
