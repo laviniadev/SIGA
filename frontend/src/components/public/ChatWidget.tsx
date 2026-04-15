@@ -65,7 +65,12 @@ export function ChatWidget() {
       
       // Helper to clean the search query from stop words/commands
       const cleanSearchQuery = (text: string) => {
-        const stopWords = ["buscar", "busca", "procurar", "procura", "encontrar", "quero", "ver", "comprar", "pesquisar", "pesquisa"];
+        const stopWords = [
+          "buscar", "busca", "procurar", "procura", "encontrar", "quero", "ver", "comprar", "pesquisar", "pesquisa",
+          "gostaria", "gostariia", "queria", "queriia", "preciso", "mostre", "exiba", "lista", "tem", "vcs", "vocês", 
+          "estou", "procurando", "por", "um", "uma", "uns", "umas", "de", "do", "da", "dos", "das", "pode", "mostrar", 
+          "algum", "alguma", "alguns", "algumas"
+        ];
         let cleaned = text;
         stopWords.forEach(word => {
           cleaned = cleaned.replace(new RegExp(`\\b${word}\\b`, 'gi'), "");
@@ -82,7 +87,7 @@ export function ChatWidget() {
       }
 
       // Sections detection...
-      if (containsWord("carrinho") || containsWord("sacola") || containsWord("cart") || containsWord("bag")) {
+      if (containsWord("carrinho") || containsWord("sacola") || containsWord("cart") || lowMsg.includes("meu carrinho") || lowMsg.includes("minha sacola")) {
         setFailureCount(0);
         return { text: "Acessando seu carrinho de compras.", internalLink: "/cart" };
       }
@@ -109,7 +114,7 @@ export function ChatWidget() {
         return { text: "Abrindo sua lista de desejos.", internalLink: "/favorites" };
       }
 
-      // Categories
+      // Categories (Robust for accents and typos)
       if (containsWord("roupa") || containsWord("roupas") || lowMsg.includes("vestuário") || containsWord("camiseta") || containsWord("clothes")) {
         setFailureCount(0);
         return { text: "Encontrei nossa coleção de roupas para você.", internalLink: "/products?category=Roupas" };
@@ -118,7 +123,7 @@ export function ChatWidget() {
         setFailureCount(0);
         return { text: "Veja aqui nossos calçados disponíveis.", internalLink: "/products?category=Calçados" };
       }
-      if (containsWord("acessório") || containsWord("acessórios") || containsWord("relógio") || containsWord("oculos") || containsWord("accessory") || containsWord("accessories")) {
+      if (containsWord("acessório") || containsWord("acessorio") || containsWord("acessórios") || containsWord("acessorios") || containsWord("relógio") || containsWord("relogio") || containsWord("oculos") || containsWord("accessory") || containsWord("accessories")) {
         setFailureCount(0);
         return { text: "Confira nossos acessórios.", internalLink: "/products?category=Acessórios" };
       }
@@ -207,12 +212,12 @@ export function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-4 md:bottom-14 md:right-8 z-[9999] flex flex-col items-end max-w-[calc(100vw-32px)]">
+    <div className="fixed bottom-6 right-4 md:bottom-14 md:right-8 z-[9999] flex flex-col items-end max-w-[calc(100vw-32px)] pointer-events-none">
       {/* Chat Window */}
       <div className={cn(
         "mb-4 w-[calc(100vw-32px)] md:w-[330px] h-[300px] md:h-[360px] bg-background shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] origin-bottom-right",
         isOpen
-          ? "opacity-100 scale-100 translate-y-0 blur-0 duration-300 ease-out"
+          ? "opacity-100 scale-100 translate-y-0 blur-0 duration-300 ease-out pointer-events-auto"
           : "opacity-0 scale-0 translate-y-32 blur-xl pointer-events-none duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
       )}>
         {/* Header */}
@@ -306,7 +311,7 @@ export function ChatWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#8B5CF6] text-white shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-90 relative",
+          "w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#8B5CF6] text-white shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-90 relative pointer-events-auto",
           isOpen && "rotate-90 opacity-0 pointer-events-none translate-y-4"
         )}
       >
