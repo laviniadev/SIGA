@@ -14,8 +14,8 @@ import { cn } from "@/lib/utils"
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cartItems, cartTotal, clearCart } = useCartStore();
-  const { cards, isAuthenticated } = useAuthStore();
+  const { cartItems, cartTotal } = useCartStore();
+  const { cards } = useAuthStore();
   const totalItems = cartTotal();
   const [cep, setCep] = useState("");
   const [endereco, setEndereco] = useState("");

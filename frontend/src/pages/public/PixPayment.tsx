@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { QRCodeSVG } from "qrcode.react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, Copy, Clock, ChevronLeft, ShieldCheck } from "lucide-react"
+import { CheckCircle2, Clock, ChevronLeft, ShieldCheck } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 

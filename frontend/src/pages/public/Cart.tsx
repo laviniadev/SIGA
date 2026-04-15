@@ -23,7 +23,7 @@ export default function Cart() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         
         {cartItems.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center justify-center text-center bg-card rounded-xl md:rounded-2xl border shadow-sm px-4 py-12 md:py-20 w-full max-w-md mx-auto">
+          <div className="col-span-full flex flex-col items-center justify-center text-center bg-card rounded-xl md:rounded-2xl border shadow-sm px-4 py-12 md:py-20 w-full max-w-md mx-auto mb-6">
             <div className="bg-muted p-4 md:p-6 rounded-full mb-4 md:mb-6">
               <ShoppingBag className="h-8 w-8 md:h-12 md:w-12 text-muted-foreground" />
             </div>

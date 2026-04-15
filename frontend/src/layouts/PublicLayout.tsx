@@ -14,7 +14,7 @@ export function PublicLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const cartCount = useCartStore((state) => state.cartCount());
-  const { isAuthenticated, logout, user } = useAuthStore();
+  const { isAuthenticated, logout } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");

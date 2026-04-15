@@ -13,7 +13,7 @@ export default function ProductsList() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const searchTerm = searchParams.get("search")?.toLowerCase() || "";
 

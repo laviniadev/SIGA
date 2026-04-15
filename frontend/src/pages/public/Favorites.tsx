@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { mockProducts } from "@/data/mockProducts"
 import { ProductCard } from "@/components/public/ProductCard"
-import { Heart, ChevronLeft, SearchX, ShoppingBag, Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Star } from "lucide-react"
+import { ChevronLeft, SearchX, Shirt, Footprints, Watch, Tag, ArrowUpDown, ArrowUp, ArrowDown, ChevronDown, Star } from "lucide-react"
 import { useState, useEffect, useMemo } from "react"
 import { cn } from "@/lib/utils"
 
