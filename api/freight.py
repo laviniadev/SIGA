@@ -10,6 +10,7 @@ BASE_FIXA = 15.00
 PESO_PRECO_KG = 2.50
 MAX_FRETE = 40.00
 
+@app.route('/', methods=['POST', 'OPTIONS'])
 @app.route('/calculate', methods=['POST', 'OPTIONS'])
 def calculate():
     if request.method == 'OPTIONS':
