@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/chat", "destination": "/api/chat.py" },
+    { "source": "/api/freight", "destination": "/api/freight.py" }
+  ],
+  "functions": {
+    "api/*.py": {
+      "maxDuration": 10
+    }
+  }
+}

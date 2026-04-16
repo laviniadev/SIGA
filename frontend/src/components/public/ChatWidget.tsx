@@ -69,7 +69,7 @@ export function ChatWidget() {
           "buscar", "busca", "procurar", "procura", "encontrar", "quero", "ver", "comprar", "pesquisar", "pesquisa",
           "gostaria", "gostariia", "queria", "queriia", "preciso", "mostre", "exiba", "lista", "tem", "vcs", "vocês", 
           "estou", "procurando", "por", "um", "uma", "uns", "umas", "de", "do", "da", "dos", "das", "pode", "mostrar", 
-          "algum", "alguma", "alguns", "algumas"
+          "algum", "alguma", "alguns", "algumas", "tamanho", "com", "para", "em", "pelo", "pela"
         ];
         let cleaned = text;
         stopWords.forEach(word => {
@@ -160,9 +160,13 @@ export function ChatWidget() {
       // 2. 3+ identical characters
       const hasRepeatingChars = /(.)\1\1/.test(finalQuery);
       // 3. Common smash keys or laughs
-      const isSmashOrLaugh = /asdf|dfgh|jkl|qwerty|qwer|zxcv|kkkk|hahah|rsrsrs|uhauh|shuashua|ksksks/i.test(finalQuery);
-      // 4. Random typing patterns (like 'jaijsijsaisj' or long weird strings)
-      const isRandomTyping = (finalQuery.length > 6 && !/\s/.test(finalQuery) && (finalQuery.match(/[jkuh]/gi) || []).length > finalQuery.length / 2) || (finalQuery.length > 15 && !/\s/.test(finalQuery));
+      const isSmashOrLaugh = /asdf|dfgh|jkl|qwerty|qwer|zxcv|kkkk|hahah|rsrsrs|uhauh|shuashua|ksksks|jaij|isji|iajs|isaj|jasa/i.test(finalQuery);
+      
+      // 4. Random typing patterns (lower threshold for home-row patterns)
+      const isRandomTyping = (finalQuery.length > 5 && !/\s/.test(finalQuery) && (
+        (finalQuery.match(/[asdfjkluiop]/gi) || []).length > finalQuery.length * 0.75 ||
+        (finalQuery.length > 15 && !/\s/.test(finalQuery))
+      ));
 
       const resemblesGibberish = hasConsonantCluster || hasRepeatingChars || isSmashOrLaugh || isRandomTyping;
 
@@ -182,7 +186,7 @@ export function ChatWidget() {
     };
 
     try {
-      const response = await fetch('http://localhost:5005/api/chat', {
+      const response = await fetch('http://127.0.0.1:5005/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMsg }),
@@ -191,14 +195,32 @@ export function ChatWidget() {
       if (!response.ok) throw new Error();
 
       const data = await response.json();
+      
+      // Simulação de digitação (atraso artificial para humanização)
+      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 800));
+
+      let finalResponse = data.response;
+      let finalLink = data.internal_link;
+
+      // Proteção de rotas autenticadas (Favoritos e Perfil)
+      if (!isAuthenticated && (finalLink === '/favorites' || finalLink === '/customer')) {
+        finalResponse = finalLink === '/favorites' 
+          ? "Você precisa estar logado para acessar seus favoritos. 🔒 Deseja fazer login agora?" 
+          : "Para ver seus pedidos e dados, é necessário fazer login. 👤 Deseja entrar?";
+        finalLink = '/login';
+      }
+
       setMessages(prev => [...prev, {
-        text: data.response,
+        text: finalResponse,
         isBot: true,
         timestamp: new Date(),
         needsHuman: data.needs_human,
-        internalLink: data.internal_link
+        internalLink: finalLink
       }]);
     } catch (error) {
+      // Delay também no fallback para consistência
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       const fallback = getLocalResponse();
       setMessages(prev => [...prev, {
         ...fallback,
