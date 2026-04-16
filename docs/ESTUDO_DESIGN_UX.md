@@ -44,7 +44,8 @@ O widget de chat atua como um elemento de suporte proativo.
 
 ### 3.3 Detalhes do Produto: O Ponto de Decisão
 - **Galeria de Imagens**: Ocupa a metade esquerda da interface em desktop. A decisão de compra em moda é 80% visual; portanto, a interface serve como moldura para a fotografia de alta qualidade.
-- **Seção de Checkout Local (Add to Cart)**: O botão é o elemento com maior contraste cromático da página. Utilizamos micro-animações no momento do clique para fornecer um feedback afirmativo de que o item foi processado pela lógica de estado do carrinho (Context API/Zustand).
+- **Seção de Checkout Local (Add to Cart)**: O botão é o elemento com maior contraste cromático da página. Utilizamos micro-animações no momento do clique para fornecer um feedback afirmativo de que o item foi processado pela lógica de estado reativa gerenciada pelo **Zustand**.
+- **Notificações Instantâneas (Sonner)**: Todas as ações críticas (adição ao carrinho, favoritos, erros de validação) disparam toasts via **Sonner**. Estes elementos são posicionados estrategicamente para não obstruir o conteúdo principal, fornecendo confirmação visual sem exigir que o usuário mude seu foco de atenção.
 
 ---
 
@@ -53,6 +54,7 @@ O widget de chat atua como um elemento de suporte proativo.
 ### 4.1 Carrinho (Cart)
 O carrinho foi projetado para ser uma etapa de revisão, não de distração.
 - **Resumo de Custos**: Exibição imediata de subtotal, frete e descontos. A transparência financeira nesta fase é crucial para evitar o abandono nas etapas finais.
+- **Gerenciamento de Estado Atômico (Zustand)**: A transição entre a listagem de produtos e o carrinho é instantânea. Ao utilizar o **Zustand** em vez de Context Providers convencionais, evitamos re-renderizações desnecessárias em componentes irmãos, garantindo que a interface permaneça fluida mesmo em dispositivos de baixo processamento.
 
 ### 4.2 Checkout (Distraction-Free Architecture)
 O checkout da SIGAstore aplica o princípio da **Tunelização**. Ao remover o cabeçalho complexo e os links externos, "estrangulamos" as rotas de saída do usuário, focando seu esforço cognitivo exclusivamente na conclusão da transação.
