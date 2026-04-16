@@ -186,7 +186,11 @@ export function ChatWidget() {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:5005/api/chat', {
+      const apiUrl = import.meta.env.PROD 
+        ? '/api/chat' 
+        : 'http://127.0.0.1:5005/api/chat';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMsg }),

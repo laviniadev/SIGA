@@ -20,7 +20,9 @@ export interface FreightError {
   message?: string;
 }
 
-const API_URL = "http://127.0.0.1:8000/calculate";
+const API_URL = import.meta.env.PROD 
+  ? "/api/freight" 
+  : "http://127.0.0.1:8000/calculate";
 const DEFAULT_ORIGIN = "01001000";
 
 export interface Address {
