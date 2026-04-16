@@ -7,6 +7,7 @@ Para detalhes específicos sobre o projeto, acesse os documentos técnicos:
 - [Gestão de Dependências](./docs/dependencias.md)
 - [Especificações de Frete e Logística](./docs/backend/feat-Frete_Calculo.md)
 - [Inteligência e Funcionalidades do Chatbot](./docs/backend/feat-Chatbot_IA.md)
+- [Estudo de Design, Usabilidade e Interface](./docs/ESTUDO_DESIGN_UX.md)
 
 Este sistema foi desenvolvido com foco em alta performance, design minimalista e inteligência conversacional. A arquitetura é composta por um front-end moderno em React e um ecossistema de micro-serviços em Python para processamento de lógica de negócio.
 
