@@ -153,7 +153,8 @@ def get_chat_response(message):
     
     return response_text, False, search_link
 
-@app.route('/api/chat', methods=['POST'])
+@app.route('/', methods=['POST', 'OPTIONS'])
+@app.route('/api/chat', methods=['POST', 'OPTIONS'])
 def chat():
     data = request.json
     user_message = data.get('message', '')
