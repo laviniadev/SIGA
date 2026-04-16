@@ -22,3 +22,11 @@ env/
 *.njsproj
 *.sln
 *.sw?
+
+# Testes e Utilitários
+test_pexels.js
+test_pexels_filter.js
+download_images.js
+backend/test_*.py
+backend/chatbot_service.py
+backend/full_test_suite.py
