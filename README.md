@@ -1,6 +1,14 @@
 # SIGAstore - Plataforma de E-commerce
 
-Este projeto consiste em uma plataforma de e-commerce premium desenvolvida com foco em alta performance, design minimalista e inteligência conversacional. A arquitetura é composta por um front-end moderno em React e um ecossistema de micro-serviços em Python para processamento de lógica de negócio.
+Este projeto é uma **Prova de Conceito (PoC)** de uma plataforma SaaS de larga escala. O desenvolvimento atual corresponde à **Fase 1 de 8** do cronograma de implementação do ecossistema completo.
+
+Para detalhes específicos sobre o projeto, acesse os documentos técnicos:
+- [Arquitetura do Sistema](./docs/arquitetura.md)
+- [Gestão de Dependências](./docs/dependencias.md)
+- [Especificações de Frete e Logística](./docs/backend/feat-Frete_Calculo.md)
+- [Inteligência e Funcionalidades do Chatbot](./docs/backend/feat-Chatbot_IA.md)
+
+Este sistema foi desenvolvido com foco em alta performance, design minimalista e inteligência conversacional. A arquitetura é composta por um front-end moderno em React e um ecossistema de micro-serviços em Python para processamento de lógica de negócio.
 
 ## Arquitetura do Projeto
 
