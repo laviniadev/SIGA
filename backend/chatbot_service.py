@@ -4,6 +4,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app) # Allow frontend to communicate with this backend
 
+import re
+
 # Base de conhecimento robusta e humanizada
 QA_BASE = {
     # Saudações e Humanização
@@ -34,18 +36,73 @@ QA_BASE = {
     "pagamento": ("Aceitamos PIX (com 5% de desconto extra!), Boletos e Cartões de Crédito em até 12x.", None),
 }
 
-def get_chat_response(message):
-    msg = message.lower()
+def is_gibberish(text):
+    """Identifica se uma string parece ser texto aleatório (gibberish)."""
+    text = text.lower().strip()
+    if not text or len(text) < 3: return False
     
-    # Busca por palavras-chave na mensagem do usuário
+    # 1. Aglomerados de consoantes (4 ou mais seguidas)
+    if re.search(r'[^aeiouáéíóúâêôãõç\s\d]{4,}', text):
+        return True
+        
+    # 2. Caracteres repetidos excessivamente (3 ou mais iguais seguidos)
+    if re.search(r'(.)\1\1', text):
+        return True
+        
+    # 3. Padrões de "keyboard smash" comuns e risadas
+    smash_patterns = ['asdf', 'dfgh', 'jkl', 'qwerty', 'qwer', 'zxcv', 'asdfgh', 'kkkk', 'hahah', 'rsrsrs', 'uhauh', 'shuashua']
+    if any(p in text for p in smash_patterns):
+        return True
+        
+    # 4. Heurística para sequências sem sentido (ex: 'sijiasdijas')
+    if len(text) > 6 and ' ' not in text:
+        # Conta vogais e consoantes
+        vowels = len(re.findall(r'[aeiouáéíóúâêôãõ]', text))
+        consonants = len(re.findall(r'[bcdfghjklmnpqrstvwxyzç]', text))
+        
+        # Se não houver vogais ou consoantes em uma string longa
+        if vowels == 0 or consonants == 0:
+            return True
+            
+        # Se a proporção de vogais for muito baixa (< 20%) em palavras longas
+        if len(text) > 8 and vowels < len(text) * 0.2:
+            return True
+            
+        # Heurística de proximidade de teclado (home row + vizinhos)
+        # Se a maioria dos caracteres vier de um cluster pequeno de teclas
+        home_row_hits = len(re.findall(r'[asdfghjkl]', text))
+        if home_row_hits > len(text) * 0.7:
+            return True
+
+    return False
+
+def get_chat_response(message):
+    msg = message.lower().strip()
+    
+    # Remove prefixo "chatbot" se presente no início da mensagem
+    if msg.startswith("chatbot "):
+        msg = msg[8:].strip()
+        message = message[8:].strip()
+    elif msg.startswith("chatbot"):
+        msg = msg[7:].strip()
+        message = message[7:].strip()
+
+    # Identifica se é gibberish/não são palavras
+    if is_gibberish(msg):
+        fallback = "Humm, não consegui entender essa mensagem. Poderia tentar descrever o produto ou dúvida de outra forma?"
+        return fallback, True, None
+
+    # Busca por palavras-chave na base de conhecimento
     for key in QA_BASE:
         if key in msg:
             response_text, link = QA_BASE[key]
             return response_text, False, link
             
-    # Caso não entenda, sugere o atendente
-    fallback = "Humm, não consegui encontrar uma informação exata sobre isso, mas não quero te deixar sem resposta!"
-    return fallback, True, None
+    # Caso não encontre palavra-chave, trata como busca de produto
+    response_text = f"Veja os resultados para \"{message}\" em nossa loja."
+    search_link = f"/products?search={message.strip()}"
+    
+    return response_text, False, search_link
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
