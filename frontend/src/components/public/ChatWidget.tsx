@@ -160,9 +160,13 @@ export function ChatWidget() {
       // 2. 3+ identical characters
       const hasRepeatingChars = /(.)\1\1/.test(finalQuery);
       // 3. Common smash keys or laughs
-      const isSmashOrLaugh = /asdf|dfgh|jkl|qwerty|qwer|zxcv|kkkk|hahah|rsrsrs|uhauh|shuashua|ksksks/i.test(finalQuery);
-      // 4. Random typing patterns (like 'jaijsijsaisj' or long weird strings)
-      const isRandomTyping = (finalQuery.length > 6 && !/\s/.test(finalQuery) && (finalQuery.match(/[jkuh]/gi) || []).length > finalQuery.length / 2) || (finalQuery.length > 15 && !/\s/.test(finalQuery));
+      const isSmashOrLaugh = /asdf|dfgh|jkl|qwerty|qwer|zxcv|kkkk|hahah|rsrsrs|uhauh|shuashua|ksksks|jaij|isji|iajs|isaj|jasa/i.test(finalQuery);
+      
+      // 4. Random typing patterns (lower threshold for home-row patterns)
+      const isRandomTyping = (finalQuery.length > 5 && !/\s/.test(finalQuery) && (
+        (finalQuery.match(/[asdfjkluiop]/gi) || []).length > finalQuery.length * 0.75 ||
+        (finalQuery.length > 15 && !/\s/.test(finalQuery))
+      ));
 
       const resemblesGibberish = hasConsonantCluster || hasRepeatingChars || isSmashOrLaugh || isRandomTyping;
 

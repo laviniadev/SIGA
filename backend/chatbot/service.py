@@ -9,7 +9,7 @@ import re
 # Base de conhecimento robusta e humanizada
 QA_BASE = {
     # Saudações e Humanização
-    "oi": ("Olá! Seja muito bem-vindo à SIGA. 👕 Como posso tornar seu dia mais estiloso hoje?", None),
+    "oi": ("Olá! Seja muito bem-vindo à SIGA. Como posso tornar seu dia mais estiloso hoje?", None),
     "olá": ("Olá! Tudo bem? Estou aqui para ajudar você a encontrar o look perfeito. O que procura?", None),
     "tudo bem": ("Comigo está tudo ótimo! Melhor agora conversando com você. Em que posso te ajudar?", None),
     "bom dia": ("Bom dia! Que prazer ter você por aqui. Já conferiu nossas novidades hoje?", "/trends"),
@@ -50,28 +50,26 @@ def is_gibberish(text):
         return True
         
     # 3. Padrões de "keyboard smash" comuns e risadas
-    smash_patterns = ['asdf', 'dfgh', 'jkl', 'qwerty', 'qwer', 'zxcv', 'asdfgh', 'kkkk', 'hahah', 'rsrsrs', 'uhauh', 'shuashua']
+    smash_patterns = ['asdf', 'dfgh', 'jkl', 'qwerty', 'qwer', 'zxcv', 'asdfgh', 'kkkk', 'hahah', 'rsrsrs', 'uhauh', 'shuashua', 'ksksks', 'jaij', 'isji', 'iajs', 'isaj', 'jasa']
     if any(p in text for p in smash_patterns):
         return True
         
-    # 4. Heurística para sequências sem sentido (ex: 'sijiasdijas')
-    if len(text) > 6 and ' ' not in text:
-        # Conta vogais e consoantes
+    # 4. Heurística para sequências sem sentido (ex: 'iajsijisajassa')
+    if len(text) > 5 and ' ' not in text:
         vowels = len(re.findall(r'[aeiouáéíóúâêôãõ]', text))
-        consonants = len(re.findall(r'[bcdfghjklmnpqrstvwxyzç]', text))
         
-        # Se não houver vogais ou consoantes em uma string longa
-        if vowels == 0 or consonants == 0:
-            return True
-            
-        # Se a proporção de vogais for muito baixa (< 20%) em palavras longas
-        if len(text) > 8 and vowels < len(text) * 0.2:
-            return True
-            
-        # Heurística de proximidade de teclado (home row + vizinhos)
-        # Se a maioria dos caracteres vier de um cluster pequeno de teclas
-        home_row_hits = len(re.findall(r'[asdfghjkl]', text))
-        if home_row_hits > len(text) * 0.7:
+        # Sequências de teclas muito próximas/repetitivas
+        if len(re.findall(r'[asdfjkluiop]', text)) > len(text) * 0.75 or (len(text) > 15 and ' ' not in text):
+            # Checagem de diversidade de caracteres
+            if len(set(text)) / len(text) < 0.45: 
+                return True
+            # Checagem de repetição de bigramas
+            bigrams = [text[i:i+2] for i in range(len(text)-1)]
+            if len(set(bigrams)) / len(bigrams) < 0.6:
+                return True
+
+        # Se a proporção de vogais for muito baixa ou alta demais em palavra única
+        if vowels < len(text) * 0.25 or vowels > len(text) * 0.75:
             return True
 
     return False
