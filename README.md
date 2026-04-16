@@ -1,45 +1,75 @@
-# 🚀 SIGA
+# SIGAstore - Plataforma de E-commerce
 
-O **SIGA** é uma aplicação web robusta com uma arquitetura moderna operando sob um modelo de **Monorepo**. Esse formato divide as responsabilidades e configurações físicas da aplicação em duas frentes independentes dentro do mesmo projeto: a Interface de Usuário (`frontend/`) e a infraestrutura de dados da API (`backend/`).
+Este projeto consiste em uma plataforma de e-commerce premium desenvolvida com foco em alta performance, design minimalista e inteligência conversacional. A arquitetura é composta por um front-end moderno em React e um ecossistema de micro-serviços em Python para processamento de lógica de negócio.
 
-## 📚 Documentação Auxiliar
+## Arquitetura do Projeto
 
-Preparamos artefatos detalhados sobre todas as decisões chave do projeto e controle das bibliotecas. Recomendamos muito a leitura:
-- [📖 Arquitetura e Comunicação](docs/arquitetura.md): Como as pastas operam e se preparam juntas.
-- [📦 Tecnologias e Dependências](docs/dependencias.md): Todas as ferramentas específicas, bibliotecas (Shadcn, Zustand, Tailwind etc.) e suas devidas razões de uso.
+O repositório está organizado como um monorepo para facilitar o desenvolvimento integrado:
 
----
+- /frontend: Interface do usuário desenvolvida em React.
+- /backend: Lógica de negócio e serviços em Python.
+- /api: Pontos de entrada para funções serverless otimizadas para o Vercel.
 
-## 🛠️ O que compõe o projeto?
+## Funcionalidades Principais
 
-Atualmente, o repositório orgulha-se de utilizar configurações "Edge" da comunidade, com foco pleno em performance extrema no cliente:
+### Front-end
+- Interface responsiva com foco em dispositivos móveis.
+- Layout de página inicial em sistema de Bento Grid.
+- Sistema de busca avançada com filtros dinâmicos.
+- Fluxo de checkout completo com suporte a diversos métodos de pagamento.
+- Área do cliente protegida por autenticação.
+- Lista de desejos persistente.
+- Calculadora de frete integrada à API ViaCEP e cálculos regionais.
+- Widget de Chatbot humanizado com animações de digitação.
 
-* **React 19 & Vite 8**: O "coração" da plataforma UI na construção de interfaces com o compilador em rollup ultrarrapido para HMR (Hot Module Replacement).
-* **Zustand**: Adotado isoladamente para lidar com o Estado Global da aplicação (State Management) de maneira atômica e menos verbosa que o Redux ou puramente ContextAPI.
-* **Tailwind CSS v4 & Shadcn/ui**: Combinação primária em relação a componentes e interfaces limpas, unindo utilitários dinâmicos de renderização com preceitos vitais de Acessibilidade mantidos abertamente pela Radix UI.
-* **TypeScript Estrito**: Prevenindo bugs vitais durante fase de refatoração nos componentes, exigindo que todas respostas do sistema sejam mapeadas visualmente.
-* **Python API (Futura)**: As projeções base delineiam o backend e banco de dados para adoção em ecossistema do Python.
+### Back-end e Inteligência
+- Serviço de Chatbot (Flask):
+  - Base de conhecimento integrada para FAQ.
+  - Redirecionamento inteligente para categorias e páginas do site.
+  - Filtros de busca por estilo (Urbano, Minimalista, Atemporal).
+  - Detecção de mensagens aleatórias (Gibberish Detection).
+- Serviço de Frete:
+  - Cálculo baseado no primeiro dígito do CEP (Zonas Regionais).
+  - Implementação de teto máximo de preço solicitado pela regra de negócio.
+  - Prazo de entrega dinâmico por distância estimada.
 
----
+## Tecnologias Utilizadas
 
-## 🏗️ Como iniciar o Desenvolvimento
+### Front-end
+- React.js 18
+- Vite
+- Tailwind CSS
+- Lucide React (Ícones)
+- Shadcn/ui (Componentes de Design)
 
-Por ser organizado no modelo de monorepo sem um pacote "master" de `package.json`, você precisará entrar ativamente na pasta que deseja testar.
+### Back-end
+- Python 3
+- Flask (Web Framework)
+- Flask-CORS (Tratamento de políticas de acesso)
 
-### 👉 Rodando o Frontend
+### Infraestrutura e Deploy
+- Vercel (Hospedagem de Front-end e Funções Serverless)
 
-Você precisará estar com o `Node.js` v18+ instalado. Pelo seu terminal na raiz:
+## Configuração de Desenvolvimento Local
 
-1. Acesse o escopo da UI e instale localmente todas as depedências NPM:
-   ```bash
-   cd frontend
+Para rodar o projeto localmente, é necessário ter Node.js e Python instalados em sua máquina.
+
+1. Instale as dependências da raiz:
    npm install
-   ```
-2. Então suba a aplicação com um servidor de Reload Instantâneo:
-   ```bash
-   npm run dev
-   ```
-Prontinho, os arquivos estarão expostos acessando a URL provida no terminal (geralmente [http://localhost:5173/](http://localhost:5173/)).
 
-### 👉 Rodando o Backend
-*(A infraestrutura desta sessão logo será populada dentro de `/backend`)*
+2. Instale as dependências do frontend:
+   npm run install-all
+
+3. Inicie todos os serviços simultaneamente (Vite + Python):
+   npm run dev
+
+O frontend estará disponível em http://localhost:5173 e as APIs em http://127.0.0.1:5005 e 8000.
+
+## Estrutura de Produção (Vercel)
+
+A plataforma utiliza o modelo de Funções Serverless do Vercel. As rotas de API são mapeadas da seguinte forma:
+
+- /api/chat -> Processa mensagens do chatbot e lógica de intenção.
+- /api/freight -> Realiza os cálculos de logística e prazo.
+
+Desenvolvido por Lavinia Ogawa
