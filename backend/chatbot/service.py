@@ -17,16 +17,60 @@ QA_BASE = {
     "boa noite": ("Boa noite! Que tal aproveitar a tranquilidade para escolher seu próximo look?", "/offers"),
     "quem é você": ("Sou o assistente virtual da SIGA, especializado em moda e em te ajudar a ter a melhor experiência de compra!", None),
     
-    # Redirecionamentos para Produtos e Filtros
-    "roupas": ("Temos uma coleção completa de roupas premium! Você pode filtrar por categoria aqui:", "/products?category=Roupas"),
+    # Redirecionamentos para Produtos e Filtros (Categorias Inteligentes)
+    "roupas": ("Temos uma coleção completa de roupas premium! Confira aqui:", "/products?category=Roupas"),
+    "blusa": ("Confira nossas blusas e peças de vestuário premium:", "/products?category=Roupas"),
+    "camiseta": ("Veja nossas camisetas e opções de vestuário:", "/products?category=Roupas"),
+    "calça": ("Procurando calças? Veja nossa coleção completa de vestuário:", "/products?category=Roupas"),
+    "bermuda": ("Confira nossas bermudas e roupas de verão:", "/products?category=Roupas"),
+    "casaco": ("Veja nossas opções de casacos e agasalhos:", "/products?category=Roupas"),
+    "moletom": ("Confira nossos moletons e peças de frio:", "/products?category=Roupas"),
+    "vestido": ("Veja nossa belíssima coleção de vestidos:", "/products?category=Roupas"),
+    
     "calçados": ("Nossos calçados são sinônimo de conforto e estilo. Confira as opções:", "/products?category=Calçados"),
     "sapato": ("Procurando sapatos? Temos modelos incríveis esperando por você:", "/products?category=Calçados"),
-    "tênis": ("Temos tênis que unem performance e design. Veja o que separei:", "/products?search=tenis"),
+    "tênis": ("Temos tênis que unem performance e design. Veja nossa coleção completa:", "/products?category=Calçados"),
+    "tenis": ("Temos tênis que unem performance e design. Veja nossa coleção completa:", "/products?category=Calçados"),
+    "bota": ("Confira nossa linha de botas e calçados:", "/products?category=Calçados"),
+    "sandália": ("Veja nossas sandálias e opções leves:", "/products?category=Calçados"),
+    "chinelo": ("Confira nossos chinelos e calçados casuais:", "/products?category=Calçados"),
+
+    "acessórios": ("Complete seu look com nossos acessórios exclusivos:", "/products?category=Acessórios"),
+    "acessorio": ("Complete seu look com nossos acessórios exclusivos:", "/products?category=Acessórios"),
+    "relógio": ("Confira nossa curadoria de relógios premium:", "/products?category=Acessórios"),
+    "relogio": ("Confira nossa curadoria de relógios premium:", "/products?category=Acessórios"),
+    "óculos": ("Veja nossos modelos de óculos e acessórios:", "/products?category=Acessórios"),
+    "oculos": ("Veja nossos modelos de óculos e acessórios:", "/products?category=Acessórios"),
+    "boné": ("Confira nossos bonés e acessórios de estilo:", "/products?category=Acessórios"),
+    "bolsa": ("Veja nossa linha de bolsas e acessórios:", "/products?category=Acessórios"),
+    "mochila": ("Confira nossas mochilas e acessórios para o dia a dia:", "/products?category=Acessórios"),
+    
+    # Marketing e Promoções
     "ofertas": ("Adora uma promoção? Preparei uma seleção com descontos imperdíveis para você:", "/offers"),
     "promoção": ("Economizar com estilo é o melhor dos mundos! Veja nossas ofertas:", "/offers"),
     "desconto": ("Economizar com estilo é o melhor dos mundos! Veja nossas ofertas:", "/offers"),
     "tendências": ("Fique por dentro de tudo o que está em alta no mundo da moda agora:", "/trends"),
     "novidades": ("Nossa nova coleção acabou de chegar! Venha conferir as peças exclusivas:", "/trends"),
+
+    # Filtros por Estilo (Tendências)
+    "urbano": ("Confira nossa curadoria de estilo Urbano com as últimas tendências:", "/trends?filter=Urbano"),
+    "urban": ("Confira nossa curadoria de estilo Urbano com as últimas tendências:", "/trends?filter=Urbano"),
+    "minimalista": ("Veja nossa coleção Minimalista, focada no essencial e no estilo:", "/trends?filter=Minimalista"),
+    "minimalismo": ("Veja nossa coleção Minimalista, focada no essencial e no estilo:", "/trends?filter=Minimalista"),
+    "atemporal": ("Descubra peças Atemporais que nunca saem de moda:", "/trends?filter=Atemporal"),
+
+    # Navegação e Funcionalidades
+    "carrinho": ("Acesse seu carrinho de compras aqui:", "/cart"),
+    "sacola": ("Acesse sua sacola de compras aqui:", "/cart"),
+    "finalizar": ("Pronto para fechar seu pedido? Vamos ao checkout:", "/checkout"),
+    "pagamento": ("Redirecionando para as opções de pagamento:", "/checkout"),
+    "conta": ("Acesse sua área exclusiva de cliente:", "/customer"),
+    "perfil": ("Acesse seu perfil e histórico de pedidos:", "/customer"),
+    "favoritos": ("Veja os produtos que você salvou em sua lista de desejos:", "/favorites"),
+    "wishlist": ("Veja os produtos que você salvou em sua lista de desejos:", "/favorites"),
+    "lista de desejos": ("Veja os produtos que você salvou em sua lista de desejos:", "/favorites"),
+    "desejos": ("Veja os produtos que você salvou em sua lista de desejos:", "/favorites"),
+    "lista": ("Deseja ver sua lista de desejos ou seus pedidos?", "/favorites"),
 
     # Informações de Loja (FAQ)
     "frete": ("Entregamos em todo o Brasil! O frete é grátis para compras acima de R$ 250,00.", None),
@@ -97,8 +141,15 @@ def get_chat_response(message):
             return response_text, False, link
             
     # Caso não encontre palavra-chave, trata como busca de produto
-    response_text = f"Veja os resultados para \"{message}\" em nossa loja."
-    search_link = f"/products?search={message.strip()}"
+    # Limpeza de termos comuns para busca mais assertiva
+    search_query = message.strip()
+    stop_words = ["tamanho", "de", "com", "para", "em", "pelo", "pela", "um", "uma", "o", "a"]
+    words = search_query.split()
+    cleaned_words = [w for w in words if w.lower() not in stop_words]
+    final_query = " ".join(cleaned_words) if cleaned_words else search_query
+
+    response_text = f"Veja os resultados para \"{final_query}\" em nossa loja."
+    search_link = f"/products?search={final_query}"
     
     return response_text, False, search_link
 
