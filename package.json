@@ -1,0 +1,14 @@
+{
+  "name": "projeto-siga",
+  "version": "1.0.0",
+  "description": "SIGA E-commerce - Unified Dev Environment",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx concurrently -n \"FRONTEND,FREIGHT,CHATBOT\" -c \"cyan,green,magenta\" \"npm run dev --prefix frontend\" \"python backend/frete_service.py\" \"python backend/chatbot_service.py\"",
+    "stop": "taskkill /F /IM python.exe /T",
+    "install-all": "npm install --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
