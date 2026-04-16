@@ -22,7 +22,7 @@ export const ProductCard = ({ product, className, innerRef, animationDelay, comp
   const [showQuickAdd, setShowQuickAdd] = useState(false);
 
   const handleAddToCart = (product: Product, size: string) => {
-    addToCart(product, size);
+    addToCart(product, size, "Padrão");
     toast.success(`${product.name} (${size}) adicionado!`);
     setShowQuickAdd(false);
   };

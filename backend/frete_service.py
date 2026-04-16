@@ -8,6 +8,7 @@ from urllib.error import URLError
 PORT = 8000
 BASE_FIXA = 15.00  # Valor base de frete
 PESO_PRECO_KG = 2.50  # Preço por kg
+MAX_FRETE = 40.00  # Teto máximo de frete solicitado pelo usuário
 
 class FreightHandler(http.server.BaseHTTPRequestHandler):
     """
@@ -111,6 +112,10 @@ class FreightHandler(http.server.BaseHTTPRequestHandler):
                     distancia_km = 1200
                     valor_total = 49.90
                     prazo_estimado = 10
+
+                # Aplica o teto máximo de frete conforme regra de negócio
+                if valor_total > MAX_FRETE:
+                    valor_total = MAX_FRETE
 
                 response = {
                     "valor": round(valor_total, 2),

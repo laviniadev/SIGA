@@ -30,6 +30,7 @@ export default function CustomerArea() {
   const [profileBairro, setProfileBairro] = useState(personalInfo?.bairro || '')
   const [profileCidade, setProfileCidade] = useState(personalInfo?.cidade || '')
   const [profileEstado, setProfileEstado] = useState(personalInfo?.estado || '')
+  const [profileErrors, setProfileErrors] = useState<Record<string, string>>({})
 
   const [focusedField, setFocusedField] = useState<string | null>(null)
 
@@ -120,7 +121,7 @@ export default function CustomerArea() {
       const fetchAddress = async () => {
         try {
           const data = await getAddressByCep(cleanCep);
-          if (data && !data.erro) {
+          if (data && !data.error) {
             setProfileEndereco(data.logradouro || "");
             setProfileBairro(data.bairro || "");
             setProfileCidade(data.localidade || "");
@@ -739,12 +740,12 @@ export default function CustomerArea() {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-x-3 gap-y-4">
                     <div className="md:col-span-5 space-y-1 relative">
                       <Label htmlFor="name" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Nome Completo</Label>
-                      <Input id="name" value={profileName} onFocus={() => setFocusedField('nome')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileName(e.target.value.replace(/[0-9]/g, '')); if (profileErrors.nome) setProfileErrors(prev => ({ ...prev, nome: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                      <Input id="name" value={profileName} onFocus={() => setFocusedField('nome')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileName(e.target.value.replace(/[0-9]/g, '')); if (profileErrors.nome) setProfileErrors((prev: Record<string, string>) => ({ ...prev, nome: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
                       <ValidationTooltip field="nome" value={profileName} />
                     </div>
                     <div className="md:col-span-2 space-y-1 relative">
                       <Label htmlFor="cpf" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">CPF</Label>
-                      <Input id="cpf" placeholder="000.000.000-00" value={profileCpf} onFocus={() => setFocusedField('cpf')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileCpf(e.target.value.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})/, '$1-$2').replace(/(-\d{2})\d+?$/, '$1')); if (profileErrors.cpf) setProfileErrors(prev => ({ ...prev, cpf: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2 tracking-tighter" />
+                      <Input id="cpf" placeholder="000.000.000-00" value={profileCpf} onFocus={() => setFocusedField('cpf')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileCpf(e.target.value.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})/, '$1-$2').replace(/(-\d{2})\d+?$/, '$1')); if (profileErrors.cpf) setProfileErrors((prev: Record<string, string>) => ({ ...prev, cpf: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2 tracking-tighter" />
                       <ValidationTooltip field="cpf" value={profileCpf} />
                     </div>
                     <div className="md:col-span-2 space-y-1">
@@ -753,7 +754,7 @@ export default function CustomerArea() {
                     </div>
                     <div className="md:col-span-3 space-y-1 relative">
                       <Label htmlFor="email" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">E-mail</Label>
-                      <Input id="email" type="email" value={profileEmail} onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileEmail(e.target.value); if (profileErrors.email) setProfileErrors(prev => ({ ...prev, email: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
+                      <Input id="email" type="email" value={profileEmail} onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileEmail(e.target.value); if (profileErrors.email) setProfileErrors((prev: Record<string, string>) => ({ ...prev, email: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px]" />
                       <ValidationTooltip field="email" value={profileEmail} />
                     </div>
                     </div>
@@ -768,12 +769,12 @@ export default function CustomerArea() {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-x-3 gap-y-4">
                     <div className="md:col-span-2 space-y-1 relative">
                       <Label htmlFor="phone" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Celular</Label>
-                      <Input id="phone" value={profilePhone} onFocus={() => setFocusedField('telefone')} onBlur={() => setFocusedField(null)} onChange={e => { setProfilePhone(e.target.value.replace(/\D/g, '').replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2").replace(/(-\d{4})\d+?$/, "$1")); if (profileErrors.telefone) setProfileErrors(prev => ({ ...prev, telefone: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2 tracking-tighter" />
+                      <Input id="phone" value={profilePhone} onFocus={() => setFocusedField('telefone')} onBlur={() => setFocusedField(null)} onChange={e => { setProfilePhone(e.target.value.replace(/\D/g, '').replace(/(\d{2})(\d)/, "($1) $2").replace(/(\d{5})(\d)/, "$1-$2").replace(/(-\d{4})\d+?$/, "$1")); if (profileErrors.telefone) setProfileErrors((prev: Record<string, string>) => ({ ...prev, telefone: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2 tracking-tighter" />
                       <ValidationTooltip field="telefone" value={profilePhone} />
                     </div>
                     <div className="md:col-span-2 space-y-1 relative">
                       <Label htmlFor="cep" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">CEP</Label>
-                      <Input id="cep" placeholder="00000-000" value={profileCep} onFocus={() => setFocusedField('cep')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileCep(e.target.value.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2').replace(/(-\d{3})\d+?$/, '$1')); if (profileErrors.cep) setProfileErrors(prev => ({ ...prev, cep: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2" />
+                      <Input id="cep" placeholder="00000-000" value={profileCep} onFocus={() => setFocusedField('cep')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileCep(e.target.value.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2').replace(/(-\d{3})\d+?$/, '$1')); if (profileErrors.cep) setProfileErrors((prev: Record<string, string>) => ({ ...prev, cep: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] px-2" />
                       <ValidationTooltip field="cep" value={profileCep} />
                     </div>
                     <div className="md:col-span-8 space-y-1">
@@ -783,7 +784,7 @@ export default function CustomerArea() {
 
                       <div className="md:col-span-1 space-y-1 relative">
                         <Label htmlFor="numero" className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/80">Nº</Label>
-                        <Input id="numero" placeholder="123" value={profileNumero} onFocus={() => setFocusedField('numero')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileNumero(e.target.value); if (profileErrors.numero) setProfileErrors(prev => ({ ...prev, numero: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] placeholder:text-[10px]" />
+                        <Input id="numero" placeholder="123" value={profileNumero} onFocus={() => setFocusedField('numero')} onBlur={() => setFocusedField(null)} onChange={e => { setProfileNumero(e.target.value); if (profileErrors.numero) setProfileErrors((prev: Record<string, string>) => ({ ...prev, numero: "" })); }} className="h-9 md:h-9 border-muted-foreground/20 focus:border-primary text-[11px] placeholder:text-[10px]" />
                         <ValidationTooltip field="numero" value={profileNumero} />
                       </div>
                       <div className="md:col-span-3 space-y-1">

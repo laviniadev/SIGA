@@ -78,8 +78,7 @@ export function ChatWidget() {
         return cleaned.trim().replace(/\s+/g, ' ');
       };
 
-      // Intents that represent a successful match
-      let matchedIntent = false;
+
 
       if (lowMsg.match(/^(oi|olá|ola|bom dia|boa tarde|boa noite)/)) {
         setFailureCount(0);
